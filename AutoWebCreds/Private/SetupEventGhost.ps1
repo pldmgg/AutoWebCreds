@@ -1,4 +1,4 @@
-function InstallEventGhost {
+function SetupEventGhost {
     [CmdletBinding()]
     param()
 
@@ -33,7 +33,21 @@ function InstallEventGhost {
     }
 
     # Start EventGhost with the appropriate configuration file (and install referenced plugins if necessary)
+    $PluginParentDir = 'C:\Program Files (x86)\EventGhost\plugins'
     $PluginsToCheckFor = @('AutoRemote','TextGrab','TCPEvents')
-    
+    $PluginsToCheckFor | foreach {
+        $PluginDirPath = $PluginParentDir + '\' + $_
+        if (!$(Test-Path $PluginDirPath)) {
+            $ModulePluginPath = $PSScriptRoot + '\' + 'EventGhost' + '\' + 'Plugins' + '\' + $_
+            try {
+                $null = Copy-Item -Path $ModulePluginPath -Destination $PluginDirPath -Force
+            } catch {
+                Write-Error $_
+                return
+            }
+        }
+    }
 
+    $EventGhostConfigFile = $PSScriptRoot + '\' + 'EventGhost' + '\' + 'ConfigurationFiles' + '\' + 'eventghosttreett.xml'
+    & $EventGhostPath -file $EventGhostConfigFile
 }

@@ -35,6 +35,24 @@ if (!$(Get-Command chromedriver.exe -ErrorAction SilentlyContinue)) {
     }
 }
 
+# Make sure EventGhost is setup
+try {
+    $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
+    if ($EventGhostProcess) {
+        # Determine if the correct configuration file is loaded
+        if (!$($EventGhostProcess.MainWindowTitle -match 'eventghosttreett')) {
+            # Kill EventGhost if it is running
+            $null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue
+        }
+    }
+
+    SetupEventGhost
+
+} catch {
+    Write-Error $_
+    return
+}
+
 $ChromeUserData = "$HOME\AppData\Local\Google\Chrome\User Data"
 #$ChromeProfile = "Profile 1" # LindaProfile
 $ChromeProfile = "Profile 0"
@@ -44,8 +62,6 @@ try {
     # The below Tab + Enter will clear either the "Chrome was not shutdown properly" message or the "Chrome is being controlled by automated software" message
     #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Tab).Perform()
     #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Enter).Perform()
-    # Send TCP Event to EventGhost (Using the Plugin TCPEvents - https://github.com/per1234/TCPEvents):
-    # & "C:\Program Files (x86)\EventGhost\EventGhost.exe" -n 127.0.0.1:1024 Unsecure321! ClearChromeRestoreMsg
     & "C:\Program Files (x86)\EventGhost\EventGhost.exe" -event ClearChromeRestoreMsg
     Enter-SeUrl $SiteUrl -Driver $Driver
 
