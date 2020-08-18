@@ -54,35 +54,14 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         $Module = Get-Module $env:BHProjectName
         $Module.Name -eq $env:BHProjectName | Should Be $True
         $Commands = $Module.ExportedCommands.Keys
-        $Commands -contains 'AddLastWriteTimeToRegKeys' | Should Be $False
         $Commands -contains 'GetElevation' | Should Be $False
-        $Commands -contains 'GetMSIFileInfo' | Should Be $False
-        $Commands -contains 'GetNativePath' | Should Be $False
-        $Commands -contains 'ManualPSGalleryModuleInstall' | Should Be $False
-        $Commands -contains 'PauseForWarning' | Should Be $False
-        $Commands -contains 'UnzipFile' | Should Be $False
         
-        $Commands -contains 'Get-AllPackageInfo' | Should Be $True
-        $Commands -contains 'Get-ExePath' | Should Be $True
-        $Commands -contains 'Get-InstalledProgramsFromRegistry' | Should Be $True
-        $Commands -contains 'Install-ChocolateyCmdLine' | Should Be $True
-        $Commands -contains 'Install-Program' | Should Be $True
-        $Commands -contains 'New-Runspace' | Should Be $True
-        $Commands -contains 'Uninstall-Program' | Should Be $True
-        $Commands -contains 'Update-ChocolateyEnv' | Should Be $True
-        $Commands -contains 'Update-PackageManagement' | Should Be $True
-        $Commands -contains 'Update-SystemPathNow' | Should Be $True
+        $Commands -contains 'New-WebLogin' | Should Be $True
     }
 
     It "Module '$env:BHProjectName' Private Functions Are Available in Internal Scope" {
         $Module = Get-Module $env:BHProjectName
-        [bool]$Module.Invoke({Get-Item function:AddLastWriteTimeToRegKeys}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:GetElevation}) | Should Be $True
-        [bool]$Module.Invoke({Get-Item function:GetMSIFileInfo}) | Should Be $True
-        [bool]$Module.Invoke({Get-Item function:GetNativePath}) | Should Be $True
-        [bool]$Module.Invoke({Get-Item function:ManualPSGalleryModuleInstall}) | Should Be $True
-        [bool]$Module.Invoke({Get-Item function:PauseForWarning}) | Should Be $True
-        [bool]$Module.Invoke({Get-Item function:UnzipFile}) | Should Be $True
     }
 }
 

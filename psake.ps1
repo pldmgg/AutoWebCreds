@@ -64,12 +64,19 @@ Task Init -RequiredVariables  {
 
 Task Compile -Depends Init {
     $BoilerPlateFunctionSourcing = @'
+$ThisModule = $(Get-Item $PSCommandPath).BaseName
+
+if (!$IsWindows) {
+    Write-Error "This $ThisModule must be run on PowerShell 6 or higher on a Windows operating system! Halting!"
+    return
+}
+
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
 # Get public and private function definition files.
 [array]$Public  = Get-ChildItem -Path "$PSScriptRoot\Public\*.ps1" -ErrorAction SilentlyContinue
 [array]$Private = Get-ChildItem -Path "$PSScriptRoot\Private\*.ps1" -ErrorAction SilentlyContinue
-$ThisModule = $(Get-Item $PSCommandPath).BaseName
+
 
 # Dot source the Private functions
 foreach ($import in $Private) {
@@ -83,8 +90,9 @@ foreach ($import in $Private) {
 
 [System.Collections.Arraylist]$ModulesToInstallAndImport = @()
 if (Test-Path "$PSScriptRoot\module.requirements.psd1") {
-    $ModuleManifestData = Import-PowerShellDataFile "$PSScriptRoot\module.requirements.psd1"
-    $ModuleManifestData.Keys | Where-Object {$_ -ne "PSDependOptions"} | foreach {$null = $ModulesToinstallAndImport.Add($_)}
+    $ModuleManifestDataPrep = Import-PowerShellDataFile "$PSScriptRoot\module.requirements.psd1"
+    $ModuleManifestDataPrep.Keys | Where-Object {$_ -ne "PSDependOptions"} | foreach {$null = $ModulesToinstallAndImport.Add($_)}
+    $ModuleManifestData = $($ModuleManifestDataPrep.GetEnumerator()) | Where-Object {$_.Name -ne "PSDependOptions"}
 }
 
 if ($ModulesToInstallAndImport.Count -gt 0) {
@@ -113,7 +121,9 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
     }
 
     # Attempt to import the Module Dependencies
-    foreach ($ModuleName in $ModulesToInstallAndImport) {
+    foreach ($ModuleData in $ModuleManifestData) {
+        $ModuleName = $ModuleData.Name
+
         # Make sure it's installed
         $GetModResult = @(Get-Module -ListAvailable -Name $ModuleName)
         if ($GetModResult.Count -eq 0) {
@@ -155,7 +165,28 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
             }
         }
         
-        # Import the Module        
+        # Import the Module
+        if ($ModuleData.Value.PSVersion -eq "WinPS") {
+            powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "Install-Module $ModuleName -Force"
+            try {
+                Import-Module $ModuleName -UseWindowsPowerShell -ErrorAction Stop
+            } catch {
+                Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
+                return
+            }
+        }
+        else {
+            try {
+                Import-Module -Name $ModuleName -ErrorAction Stop
+            }
+            catch {
+                Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
+                return
+            }
+        }
+
+        # Alternate Module Import Logic (that assumes $ThisModule is compatible with WinPS and PSCore)
+        <#
         try {
             Import-Module -Name $ModuleName -ErrorAction Stop
         }
@@ -175,7 +206,7 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                 return
             }
         }
-        
+        #>
     }
 }
 

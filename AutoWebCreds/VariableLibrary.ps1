@@ -1,22 +1,6 @@
 [System.Collections.ArrayList]$script:FunctionsForSBUse = @(
-    ${Function:AddLastWriteTimeToRegKey}.Ast.Extent.Text
     ${Function:GetElevation}.Ast.Extent.Text
-    ${Function:GetMSIFileInfo}.Ast.Extent.Text
-    ${Function:GetNativePath}.Ast.Extent.Text
-    ${Function:InvokePSCompatibility}.Ast.Extent.Text
-    ${Function:MaualPSGalleryModuleInstall}.Ast.Extent.Text
-    ${Function:PauseForWarning}.Ast.Extent.Text
-    ${Function:UnzipFile}.Ast.Extent.Text
-    ${Function:Get-AllPackageInfo}.Ast.Extent.Text
-    ${Function:Get-ExePath}.Ast.Extent.Text
-    ${Function:Get-InstalledProgramsFromRegistry}.Ast.Extent.Text
-    ${Function:Install-ChocolateyCmdLine}.Ast.Extent.Text
-    ${Function:Install-Program}.Ast.Extent.Text
-    ${Function:New-Runspace}.Ast.Extent.Text
-    ${Function:Uninstall-Program}.Ast.Extent.Text
-    ${Function:Update-ChocolateyEnv}.Ast.Extent.Text
-    ${Function:Update-PackageManagement}.Ast.Extent.Text
-    ${Function:Update-SystemPathNow}.Ast.Extent.Text
+    ${Function:New-WebLogin}.Ast.Extent.Text
 )
 
 # SIG # Begin signature block

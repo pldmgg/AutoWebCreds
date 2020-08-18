@@ -9,28 +9,28 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-RootModule = 'ProgramManagement.psm1'
+RootModule = 'AutoWebCreds.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.3.1'
+ModuleVersion = '0.0.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '5c98c573-55e4-4566-ac05-074b47931dba'
+GUID = '4561d042-b729-408e-8873-5899854f5f2f'
 
 # Author of this module
 Author = 'pldmgg'
 
 # Company or vendor of this module
-CompanyName = 'Boop'
+CompanyName = 'Tech Targets, LLC'
 
 # Copyright statement for this module
-Copyright = '(c) 2018 pldmgg. All rights reserved.'
+Copyright = '(c) 2020 pldmgg. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This Module makes it easier to Install/Uninstall programs on Windows, regardless of the method of installation (PSGet, Chocolatey CmdLine, .msi, etc). GitHub: https://github.com/pldmgg/ProgramManagement'
+Description = 'This Module uses Selenium to automatically log into your favorite entertainment services. GitHub: https://github.com/pldmgg/AutoWebCreds'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.1'
@@ -69,9 +69,7 @@ PowerShellVersion = '5.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-AllPackageInfo','Get-InstalledProgramsFromRegistry',
-                    'Install-ChocolateyCmdLine', 'Install-Program','New-Runspace','Uninstall-Program',
-                    'Update-ChocolateyEnv','Update-PackageManagement'
+FunctionsToExport = 'New-WebLogin'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
