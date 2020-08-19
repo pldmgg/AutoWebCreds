@@ -24,6 +24,40 @@ function NewUniqueString {
     }
 }
 
+function Setup-SplashServer {
+    [CmdletBinding()]
+    Param ()
+
+    if (!$(Get-Command apt -ErrorAction SilentlyContinue)) {
+        Write-Error "The Setup-SplashServer function must be run on Debian or Ubuntu. Halting!"
+        return
+    }
+
+    if (!$(Get-Command docker -ErrorAction SilentlyContinue)) {
+        Write-Error "Please install docker before using the Setup-SplashServer function. Halting!"
+        return
+    }
+
+    $DotnetSDKCheck = apt list --installed 2>/dev/null | grep dotnet-sdk-3.1
+    if (!$DotnetSDKCheck) {
+        sudo apt install -y dotnet-sdk-3.1
+    }
+    $DotnetSDKCheck = apt list --installed 2>/dev/null | grep dotnet-sdk-3.1
+    if (!$DotnetSDKCheck) {
+        Write-Error "The apt package dotnet-sdk-3.1 is not installed. Halting!"
+        return
+    }
+
+    docker run -d --restart=always -p 8050:8050 -p 5023:5023 --name=splashserver scrapinghub/splash
+    
+    try {
+        Install-DotNetScript -ErrorAction Stop
+    } catch {
+        Write-Error $_
+        return
+    }
+}
+
 function Install-DotNetScript {
     [CmdletBinding()]
     Param ()
