@@ -66,10 +66,12 @@ Task Compile -Depends Init {
     $BoilerPlateFunctionSourcing = @'
 $ThisModule = $(Get-Item $PSCommandPath).BaseName
 
+<#
 if (!$IsWindows) {
     Write-Error "This $ThisModule must be run on PowerShell 6 or higher on a Windows operating system! Halting!"
     return
 }
+#>
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
@@ -106,10 +108,10 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
     $LatestWinPSSystemPath = "$env:ProgramFiles\WindowsPowerShell\Modules"
 
     $AllPSModulePaths = @(
-        $PSCoreUserDocsModulePath
+        #$PSCoreUserDocsModulePath
         $WinPSUserDocsModulePath
-        $($LatestPSCoreDirPath | Split-Path -Parent)
-        $LatestPSCoreSystemPath
+        #$($LatestPSCoreDirPath | Split-Path -Parent)
+        #$LatestPSCoreSystemPath
         $LatestWinPSSystemPath
         "$env:SystemRoot\system32\WindowsPowerShell\v1.0\Modules"
     )
@@ -133,7 +135,7 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
             catch {
                 # Try Manual Install
                 $DLDir = $([IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName()) -split [regex]::Escape('.'))[0]
-                $null = [IO.Directory]::CreateDirectory($tempDirectory)
+                $null = [IO.Directory]::CreateDirectory($DLDir)
 
                 $InstallSplatParams = @{
                     ModuleName          = $ModuleName
@@ -167,9 +169,13 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         
         # Import the Module
         if ($ModuleData.Value.PSVersion -eq "WinPS") {
-            powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "Install-Module $ModuleName -Force"
+            powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Force"
             try {
-                Import-Module $ModuleName -UseWindowsPowerShell -ErrorAction Stop
+                if ($PSVersionTable.PSEdition -eq 'Core') {
+                    Import-Module $ModuleName -UseWindowsPowerShell -ErrorAction Stop
+                } else {
+                    Import-Module $ModuleName -ErrorAction Stop
+                }
             } catch {
                 Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
                 return
@@ -359,8 +365,8 @@ Task Deploy -Depends Build {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU31HQIidaRVUaEuplCifJwDuO
-# 9vigggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUMaZ4pK88n0g37po+tH9gUeOw
+# nTmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -417,11 +423,11 @@ Task Deploy -Depends Build {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTQvqk6WrmCeumwJ7NybQ5skipYLDANBgkqhkiG9w0BAQEFAASCAQBARo+W
-# WAL2ldUWOACSPOATOH2l0wKDE8e5hRskW4U5EmWqlN3CxTH7iWZVQcn1kdIfj3dU
-# aTf8mIMWcqcHen9sHNmwsL/4UdTI7Be4Pe7CzUf1OWHfwz1arA7SFOetU1mrIbjH
-# q+N4CCmXewilYPe6FZ66Kp5AamdTuHuN8yMlkAE+dj7uR1WNqmAvUhRNwJVUvzHD
-# SkWt0bAdrKZxluQPY9NJicku2G6RuEnGIPm3wtS6qO6fWx2A4hetIT5y2ZwVG7mV
-# s7dK9tfgE8QTn0a4N/KtvK6QLy07x8nR9t/QwJv8IleNcm4xEAEDrMyHCA81yub6
-# ampLB+JfHHfKtzD4
+# BDEWBBRvT6zy2XdX7kALC1KQVC74srFC0DANBgkqhkiG9w0BAQEFAASCAQA4R0xk
+# SqVmlFozQZp3SywGksl+BmThNVXDhzWscBVp6bS3az6qhBIw/IRa5hQSgonnuH28
+# 8OCi38P9Ln0J7wdx9zCn/QAn4jymWDw5BA0QqzSZO68lSI5TUCilZt3E1irOtyXq
+# wXH5uMsSqb8Wf7NwCRi1CkLV/xqqyulj0wLc2hTjNeK1cV8xf5eps4shj1USCxLG
+# nLwGtx0ES6QMbvBwe7yCeN/AoUkyPB99XcR6kCnriVnx0pfV6A9ikkVxhmgp0+VF
+# NfDTIeqJkNVGJzknhrvodigJWKswioCV1QSWE3GfjkJUIQjmPr2xH7j5BGS5TnLL
+# 3ijYXyHd2lq+SPzE
 # SIG # End signature block

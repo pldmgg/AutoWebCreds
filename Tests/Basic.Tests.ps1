@@ -60,6 +60,7 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         $Commands -contains 'AmazonMusicUserNamePwdLogin' | Should Be $False
         $Commands -contains 'AppleAccountLogin' | Should Be $False
         $Commands -contains 'AudibleSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'CheckUrlStatus' | Should Be $False
         $Commands -contains 'ChromeDriverAndEventGhostCheck' | Should Be $False
         $Commands -contains 'FacebookAccountLogin' | Should Be $False
         $Commands -contains 'GetAnyBoxPSCreds' | Should Be $False
@@ -85,7 +86,9 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         $Commands -contains 'TuneInUserNamePwdLogin' | Should Be $False
         $Commands -contains 'TwitterAccountLogin' | Should Be $False
         $Commands -contains 'UpdateSystemPathNow' | Should Be $False
+        $Commands -contains 'UWPCredPrompt' | Should Be $False
         $Commands -contains 'YouTubeSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'YouTubeMusicSeleniumLoginCheck' | Should Be $False
         $Commands -contains 'New-WebLogin' | Should Be $True
     }
 
@@ -96,6 +99,7 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         [bool]$Module.Invoke({Get-Item function:AmazonMusicUserNamePwdLogin}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:AppleAccountLogin}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:AudibleSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:CheckUrlStatus}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:ChromeDriverAndEventGhostCheck}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:FacebookAccountLogin}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:GetAnyBoxPSCreds}) | Should Be $True
@@ -121,15 +125,17 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         [bool]$Module.Invoke({Get-Item function:TuneInUserNamePwdLogin}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:TwitterAccountLogin}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:UpdateSystemPathNow}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:UWPCredPrompt}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:YouTubeSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:YouTubeMusicSeleniumLoginCheck}) | Should Be $True
     }
 }
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU6ICdC7gR7tZpab9sNaJ6J4YO
-# GxagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUty3Q1fzELpInmuzS2gSu3iBV
+# d3WgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -186,11 +192,11 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS/BgOoCx+jJaQJv3koB8R9dFP16zANBgkqhkiG9w0BAQEFAASCAQBt56UF
-# I02f74TB8cS4oxWzIaJFsMyx2BzotCFHZ/DWQmmNKRJQrCYW9mTIkzhRonEVzVB5
-# reDTCOBmuI/uQ6ha1KOVfRCwaJaGbShAg4TOMyMub7LnqZM2YdjQaOsiLaowfrkw
-# dTUfm2hmNU80gjWWeO1iiMO35wKgFZJuzvXsmHQh0PyyVAnFjXiRwRo291BLZy98
-# vUjEjM+4G7uZIg1T+7CtH+ZM71h01CbadhHK3NxR8jQl07i+fmRphzXDcKWdm6+d
-# q5XOspjCElQvcf31OSOQnoiDjLxk+PqJqrKwjK3ULOH7UP77CLm/zoHLCm+JJLGE
-# NuWuDF9gWmg7dXkP
+# BDEWBBRaKIM38oZqUu45AA5aMK0c1kmKtzANBgkqhkiG9w0BAQEFAASCAQBiQtiS
+# 4+DP/RGvMvvgWdp4S3IYJMrMSmJFs8TKrdU0lFJzHdfqHbPHCxiq2JdPf6fgnH7j
+# Xp8LQKmIns1x462ABkPQweZV6w9RfxOOBqSHr07+yOSsxPo1xIpIYxeRuSgs6lmf
+# RbHqJdup9OnrP3y673qPoaTeOmjxNhuG4G8quURIH6iczSSQdKQdSuDeVRmc1jHJ
+# ThhMjzv/jg+QDPxmV0XbYdjmiY2rknLDhkQAe1gVLMioROfB5EXnd4ycI2Cjd4FJ
+# 3HWsQez8lAqfNiSBfIi/E6HUZrVzK+Uxex2LAtwTQjoUcdbp5WYuZGrtO289Muws
+# GmZryABpxe/7h/yY
 # SIG # End signature block

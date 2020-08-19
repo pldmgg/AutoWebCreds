@@ -87,7 +87,7 @@ AliasesToExport = '*'
 # ModuleList = @()
 
 # List of all files packaged with this module
-FileList = 'ProgramManagement.psm1', 'ProgramManagement.psd1'
+FileList = 'AutoWebCreds.psm1', 'AutoWebCreds.psd1'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
@@ -114,7 +114,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-HelpInfoURI = 'https://github.com/pldmgg/ProgramManagement'
+HelpInfoURI = 'https://github.com/pldmgg/AutoWebCreds'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
@@ -124,8 +124,8 @@ HelpInfoURI = 'https://github.com/pldmgg/ProgramManagement'
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8SXlC3qLYKQKWvQ0sfo/J1kQ
-# olCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0wjzA6SfJU1YPGbxyVNTMCjX
+# K46gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +182,11 @@ HelpInfoURI = 'https://github.com/pldmgg/ProgramManagement'
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRERWXuTTKbbYgnc4e3jkjjd8ad9TANBgkqhkiG9w0BAQEFAASCAQDligJJ
-# P39PH3SXSMAOfR6JG/E9uiqyIS9BaA9vX2OK6/FDC7wpwat5uRXc+HmSoEbULPb2
-# TFksd58/KBxgYl45BBYvvE7vlzPT9gBxTXjdu0piAGDUOzxYNjHdZVg90YC0r5Z7
-# 58XyPl7fDsZX3oKEzwfWQOIJIE/sE6y9ZbrqJVCw7k8nJDelW4B6Lircn5zg1ABG
-# 6iVHlPERLSkYgRyW6PkVP/3oVPP4SM3LpMSIBhJ4Tr9/D0FAvTEPOWIqYPIMKHWQ
-# /VrAMeyqL9pbDdMLiBIkjfpKup8WYycrxqKrExcLmFRlVYNF4Aj3BX7YqOMVmvmm
-# Np0/apl9gkSoDZSR
+# BDEWBBRxokvsRxfNGggXOJTo4SfBYA+rszANBgkqhkiG9w0BAQEFAASCAQBJt0HQ
+# rrwopobrrOtRZn45CzZAyapwsIZfP4crWqmbZhaUiePpJC1K+W3K4yfifQaJka8K
+# Qfwkzavs1G0BAaeE6kI0pDxGymhk2mrZyKWv2Te42acvW4yTu8KT8QXY0mfU8p6a
+# KLUl8zgL5klXKC6K2zNz4jSytx/PXXcQS04jFv41yvyTEwf5MZi4F08G0L4yS4eH
+# +a7OgkdA/4lbo0Smz1bYuatpo9P/xaZ6pRoDHC9k0+wYQB5D+uzWlz9/xumPLz2l
+# IRzhOoWs3Zwv+mK/NHfL2jux13kHrNX6Yj1IPo+9lBZnfIcpiheKbEXHXo0NGgx9
+# 4Dh4LGUyx9qfKN5d
 # SIG # End signature block

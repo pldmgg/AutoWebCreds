@@ -5,6 +5,7 @@
     ${Function:AmazonMusicUserNamePwdLogin}.Ast.Extent.Text
     ${Function:AppleAccountLogin}.Ast.Extent.Text
     ${Function:AudibleSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:CheckUrlStatus}.Ast.Extent.Text
     ${Function:ChromeDriverAndEventGhostCheck}.Ast.Extent.Text
     ${Function:FacebookAccountLogin}.Ast.Extent.Text
     ${Function:GetAnyBoxPSCreds}.Ast.Extent.Text
@@ -30,15 +31,17 @@
     ${Function:TuneInUserNamePwdLogin}.Ast.Extent.Text
     ${Function:TwitterAccountLogin}.Ast.Extent.Text
     ${Function:UpdateSystemPathNow}.Ast.Extent.Text
+    ${Function:UWPCredPrompt}.Ast.Extent.Text
     ${Function:YouTubeSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:YouTubeMusicSeleniumLoginCheck}.Ast.Extent.Text
     ${Function:New-WebLogin}.Ast.Extent.Text
 )
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUj3A/65wIFq2qJRXJS6vxijfX
-# 61ugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUqKllJynqI3MgiyHbyrItHip+
+# 6X6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -95,11 +98,11 @@
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSCGFbkzW6CD0OKjofjf0okG0VtzTANBgkqhkiG9w0BAQEFAASCAQAizM6K
-# l4PDlxR5dl0IBe3PDWO9nwXLczdkgVvlc0VQdCLY24M86iYkZnqgkntgmADLzLWp
-# 5qYWZwnDvBsU9uJi0JpYXkLBrglXmQb4E6uxWMBtSIATFUx42nZ8l3rsC/oAfMY5
-# Q6X2MRQWWlOAnETCeUa/VnDWA3WEJg12DgIZMha2LrPMSLQ9CPavHGbpx8avEdyI
-# pEm1qoA07VUKJyMOcQ9T87SPn8wmgla0czCKMQ0VSGie15RiBuBQiekpd93/kudf
-# pSbPw+RJOvYqgLSyQdA/A0rHyNhsKn9cdSWdJ/DApvS5LtwNFpc3rNJysFRke8t3
-# cItm2KNd+Rek9PjW
+# BDEWBBQkvrEIP8myHoQC8UqDzt8d5Yv+WDANBgkqhkiG9w0BAQEFAASCAQBih5nE
+# u/Vmnp9mvRYxmMQ0wcyZUMVmrv1NZR1+xXSudvWZ2QX06H+NipqiXSi/v19EHzRp
+# u11Ue+XG0tztQ6BZKj+vLAQiSv14PnUyJM19AfP2Aci8Xufnel27seZ3DKSMCAaq
+# hJ/Tp0DbH91lQB1PQlkQvcsgfOpzrNey4pMLVjBg7GOndCuOrgQITjbM4YthZ4hb
+# 0DuderQRF91Ju/JoBfc+1j9OKEctK7dfIlZkLtZBqSOQvHvLcluPRPTvrNfD22qj
+# m1UzjccYmOVoNb1U+kbtWl8YSaNGoftqZPBN+UTK7Ror7PElg7ZrIVPqbiufPJr5
+# TxJXlWlRwi+8l9tI
 # SIG # End signature block

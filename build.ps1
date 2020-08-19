@@ -294,8 +294,8 @@ if ([bool]$(Get-Module -Name $env:BHProjectName -ErrorAction SilentlyContinue)) 
 
 ##### BEGIN Tasks Unique to this Module's Build #####
 
-Remove-Module PowerShellGet -Force -ErrorAction SilentlyContinue
-Remove-Module PackageManagement -Force -ErrorAction SilentlyContinue
+#Remove-Module PowerShellGet -Force -ErrorAction SilentlyContinue
+#Remove-Module PackageManagement -Force -ErrorAction SilentlyContinue
 
 ##### END Tasks Unique to this Module's Build #####
 
@@ -486,8 +486,8 @@ exit ( [int]( -not $psake.build_success ) )
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUZ1Ikq65ywWPdxTLIM8o4FgXx
-# 7VGgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUTUTIUk7C6tTv5VLLakLPZQul
+# XN+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -544,11 +544,11 @@ exit ( [int]( -not $psake.build_success ) )
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSLjQpkEvkbwxM8OPrw5WQFoDdQrDANBgkqhkiG9w0BAQEFAASCAQBjQ0ka
-# /dLn1eOOiQrxA14MXNCXAS3FUdZAUuSwU0Cuizw9/D92OlFJsOwH7N2Cew06foso
-# UmPieFxmyeNTgNP9xGkexYlARndKNoIjwAce5wKC2OHBDVPznqdb3InwApzJ3WMh
-# 3lZ5vY2qykY89miW3hBQOPH6PkdztUL/KgVWI2h8i4tJvFPI8v5qDp5nNBWO6SYQ
-# v0T6qCQNH4ksLbkHfDBGB7JqGV8KGnwVZ0ARGeC72gVIUrSt8RQ090oOmbZbwvRl
-# G2vI/1DZzsSpk+BFpm8+kZMRhaIejSQkFoj1leN9Nmhgq32jVOWJvIQzgIVJ485I
-# hlwkBgXsE/s1faNc
+# BDEWBBS4tzy3+UQ4KIsFk6kzAn93Yr1+YzANBgkqhkiG9w0BAQEFAASCAQD1KBW8
+# wAOYjpUqwUF+Evg3sECcUyJ5iuxEvS+ZcPsBAHijceModI6rpPn8ZHav+2yOZ9A/
+# HzszjzM8aN3B0rmUdGXsHTbW1AZX1byJfkLhAg7jbMk7Lzl9lfwAg7+il2eGcnRj
+# irPUWAsyI4uVa7Fq1+mjpuKXuzLulwQN6AnFNDxuSJMJawHcYotKpPe+bhSMSO7U
+# pSIRbtjit/olqzDHxy6J21YOS+Wz+RI4CCaLYw/keNuCKmgvG3wYcSvH01RXw1sq
+# ziMRRhK/pYLdIHzrLyNjRAk7xNHnRUPptvvDy7m0t/jHbaFWPm6OwXLSONlIwgOH
+# vZMRnlmUqBGFiOQg
 # SIG # End signature block
