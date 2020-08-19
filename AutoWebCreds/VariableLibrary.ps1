@@ -1,5 +1,36 @@
 [System.Collections.ArrayList]$script:FunctionsForSBUse = @(
+    ${Function:AddPath}.Ast.Extent.Text
+    ${Function:AmazonAccountLogin}.Ast.Extent.Text
+    ${Function:AmazonMusicSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:AmazonMusicUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:AppleAccountLogin}.Ast.Extent.Text
+    ${Function:AudibleSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:ChromeDriverAndEventGhostCheck}.Ast.Extent.Text
+    ${Function:FacebookAccountLogin}.Ast.Extent.Text
+    ${Function:GetAnyBoxPSCreds}.Ast.Extent.Text
     ${Function:GetElevation}.Ast.Extent.Text
+    ${Function:GoogleAccountLogin}.Ast.Extent.Text
+    ${Function:GooglePlayMusicSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:InstallEventGhost}.Ast.Extent.Text
+    ${Function:InternetArchiveSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:InternetArchiveUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:NPRSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:NPRUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:PandoraSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:PandoraUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:ReelGoodSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:ReelGoodUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:SeleniumDriverSetup}.Ast.Extent.Text
+    ${Function:SetupEventGhost}.Ast.Extent.Text
+    ${Function:SpotifySeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:SpotifyUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:TidalSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:TidalUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:TuneInSeleniumLoginCheck}.Ast.Extent.Text
+    ${Function:TuneInUserNamePwdLogin}.Ast.Extent.Text
+    ${Function:TwitterAccountLogin}.Ast.Extent.Text
+    ${Function:UpdateSystemPathNow}.Ast.Extent.Text
+    ${Function:YouTubeSeleniumLoginCheck}.Ast.Extent.Text
     ${Function:New-WebLogin}.Ast.Extent.Text
 )
 

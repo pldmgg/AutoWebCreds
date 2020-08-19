@@ -54,14 +54,74 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         $Module = Get-Module $env:BHProjectName
         $Module.Name -eq $env:BHProjectName | Should Be $True
         $Commands = $Module.ExportedCommands.Keys
+        $Commands -contains 'AddPath' | Should Be $False
+        $Commands -contains 'AmazonAccountLogin' | Should Be $False
+        $Commands -contains 'AmazonMusicSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'AmazonMusicUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'AppleAccountLogin' | Should Be $False
+        $Commands -contains 'AudibleSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'ChromeDriverAndEventGhostCheck' | Should Be $False
+        $Commands -contains 'FacebookAccountLogin' | Should Be $False
+        $Commands -contains 'GetAnyBoxPSCreds' | Should Be $False
         $Commands -contains 'GetElevation' | Should Be $False
-        
+        $Commands -contains 'GoogleAccountLogin' | Should Be $False
+        $Commands -contains 'GooglePlayMusicSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'InstallEventGhost' | Should Be $False
+        $Commands -contains 'InternetArchiveSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'InternetArchiveUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'NPRSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'NPRUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'PandoraSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'PandoraUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'ReelGoodSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'ReelGoodUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'SeleniumDriverSetup' | Should Be $False
+        $Commands -contains 'SetupEventGhost' | Should Be $False
+        $Commands -contains 'SpotifySeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'SpotifyUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'TidalSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'TidalUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'TuneInSeleniumLoginCheck' | Should Be $False
+        $Commands -contains 'TuneInUserNamePwdLogin' | Should Be $False
+        $Commands -contains 'TwitterAccountLogin' | Should Be $False
+        $Commands -contains 'UpdateSystemPathNow' | Should Be $False
+        $Commands -contains 'YouTubeSeleniumLoginCheck' | Should Be $False
         $Commands -contains 'New-WebLogin' | Should Be $True
     }
 
     It "Module '$env:BHProjectName' Private Functions Are Available in Internal Scope" {
         $Module = Get-Module $env:BHProjectName
+        [bool]$Module.Invoke({Get-Item function:AddPath}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:AmazonMusicSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:AmazonMusicUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:AppleAccountLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:AudibleSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:ChromeDriverAndEventGhostCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:FacebookAccountLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:GetAnyBoxPSCreds}) | Should Be $True
         [bool]$Module.Invoke({Get-Item function:GetElevation}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:GoogleAccountLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:GooglePlayMusicSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:InstallEventGhost}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:InternetArchiveSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:InternetArchiveUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:NPRSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:NPRUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:PandoraSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:PandoraUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:ReelGoodSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:ReelGoodUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:SeleniumDriverSetup}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:SetupEventGhost}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:SpotifySeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:SpotifyUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:TidalSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:TidalUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:TuneInSeleniumLoginCheck}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:TuneInUserNamePwdLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:TwitterAccountLogin}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:UpdateSystemPathNow}) | Should Be $True
+        [bool]$Module.Invoke({Get-Item function:YouTubeSeleniumLoginCheck}) | Should Be $True
     }
 }
 
