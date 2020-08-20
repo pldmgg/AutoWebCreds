@@ -17,7 +17,7 @@ Thanks for your interest in contributing to this free open source project! Pleas
 - Comment your code.
 - Code must be formatted according to [PEP8](https://www.python.org/dev/peps/pep-0008). All other formatting should be consistent with the current code.
 - Update the [documentation](https://github.com/per1234/TCPEvents/blob/master/README.md) if your changes require it. This should be done in the same commit as the change.
-- **All commits must be atomic**. This means that the commit completely accomplishes a single task. Each commit should result in fully functional code. Multiple tasks should not be combined in a single commit. For more information please read http://www.freshconsulting.com/atomic-commits.
+- **All commits must be atomic**. This means that the commit completely accomplishes a single task. Each commit should result in fully functional code. Multiple tasks Should -Not be combined in a single commit. For more information please read http://www.freshconsulting.com/atomic-commits.
 - Commit messages: Use the [imperative mood](http://chris.beams.io/posts/git-commit/#imperative) in the commit title. Completely explain the purpose of the commit. Please read http://chris.beams.io/posts/git-commit for more tips on writing good commit messages.
 - Each pull request should address a single bug fix or enhancement, this may consist of multiple commits. If you have multiple, unrelated fixes or enhancements to contribute, then do each in a separate pull request.
 - Open a pull request at https://github.com/per1234/TCPEvents/compare.

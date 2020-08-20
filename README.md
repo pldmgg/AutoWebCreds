@@ -2,7 +2,8 @@
 
 
 # AutoWebCreds
-<Synopsis>
+This Module takes advantage of Selenium chromedriver.exe, EventGhost, and the Windows Credential Manager to automatically login to many different web services.
+Currently, this module does not handle 2-factor authentication, I'll see what I can do in the future.
 
 ## Getting Started
 

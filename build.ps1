@@ -77,7 +77,7 @@ catch {
 
 Set-BuildEnvironment -Force -Path $PSScriptRoot -ErrorAction SilentlyContinue
 
-# Now the following Environment Variables with similar values should be available to use...
+# Now the following Environment Variables with similar values Should -Be available to use...
 <#
     $env:BHBuildSystem = "Unknown"
     $env:BHProjectPath = "U:\powershell\ProjectRepos\Sudo"
@@ -143,7 +143,7 @@ if ($Cert) {
     # Make sure the Cert is good for Code Signing
     if ($Cert.EnhancedKeyUsageList.ObjectId -notcontains "1.3.6.1.5.5.7.3.3") {
         $CNOfCert = $($($Cert.Subject -split ",")[0] -replace "CN=","").Trim()
-        Write-Error "The provided Certificate $CNOfCert says that it should be sued for $($Cert.EnhancedKeyUsageList.FriendlyName -join ','), NOT 'Code Signing'! Halting!"
+        Write-Error "The provided Certificate $CNOfCert says that it should be used for $($Cert.EnhancedKeyUsageList.FriendlyName -join ','), NOT 'Code Signing'! Halting!"
         $global:FunctionResult = "1"
         return
     }
@@ -359,7 +359,7 @@ if ($env:BHBuildSystem -ne 'AppVeyor') {
         # Make sure the Cert is good for Code Signing
         if ($Cert.EnhancedKeyUsageList.ObjectId -notcontains "1.3.6.1.5.5.7.3.3") {
             $CNOfCert = $($($Cert.Subject -split ",")[0] -replace "CN=","").Trim()
-            Write-Error "The provided Certificate $CNOfCert says that it should be sued for $($Cert.EnhancedKeyUsageList.FriendlyName -join ','), NOT 'Code Signing'! Halting!"
+            Write-Error "The provided Certificate $CNOfCert says that it should be used for $($Cert.EnhancedKeyUsageList.FriendlyName -join ','), NOT 'Code Signing'! Halting!"
             $global:FunctionResult = "1"
             return
         }
@@ -486,8 +486,8 @@ exit ( [int]( -not $psake.build_success ) )
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUTUTIUk7C6tTv5VLLakLPZQul
-# XN+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYsmHoxiLvwlEqA0fSGFO179t
+# r12gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -544,11 +544,11 @@ exit ( [int]( -not $psake.build_success ) )
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS4tzy3+UQ4KIsFk6kzAn93Yr1+YzANBgkqhkiG9w0BAQEFAASCAQD1KBW8
-# wAOYjpUqwUF+Evg3sECcUyJ5iuxEvS+ZcPsBAHijceModI6rpPn8ZHav+2yOZ9A/
-# HzszjzM8aN3B0rmUdGXsHTbW1AZX1byJfkLhAg7jbMk7Lzl9lfwAg7+il2eGcnRj
-# irPUWAsyI4uVa7Fq1+mjpuKXuzLulwQN6AnFNDxuSJMJawHcYotKpPe+bhSMSO7U
-# pSIRbtjit/olqzDHxy6J21YOS+Wz+RI4CCaLYw/keNuCKmgvG3wYcSvH01RXw1sq
-# ziMRRhK/pYLdIHzrLyNjRAk7xNHnRUPptvvDy7m0t/jHbaFWPm6OwXLSONlIwgOH
-# vZMRnlmUqBGFiOQg
+# BDEWBBRE5IR+znwNvriw/MIRMCqQqvinZzANBgkqhkiG9w0BAQEFAASCAQAFvfOs
+# cBqQNbemrNOg1Aov+BjiW1FmaQel15Z4yNdlX3tWpEh2WZpRFjqHtpwNJ1bKfzTO
+# A7BD3PIze0bPgcomwiLP6LM/10kVb7Sfx/mCyVdSvT5UKaXE0ocMCTBJ7JLvpya5
+# LfDAxxVNcQb30qoTcNXCryOg/vPwi91oH5+HMnPzQ9WlYNPmXUofM6bSEiM4k43A
+# N68P5gEOG4Plx1h2IdlCkI+xuqtwGrP5snvsj7fgIgVpsWB8j/Ph1JFVeacbM38l
+# jcqYb6/9tDqzcPqrRI+yYpqem/mhnH79dQ4SfZuDchdKfwX/dLnZY9sRv2u1Y2bD
+# L2+66OXKdK0KzB5B
 # SIG # End signature block

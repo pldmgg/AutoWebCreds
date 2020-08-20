@@ -29,13 +29,13 @@ Describe 'Text files formatting' {
     Context 'Files encoding' {
         It "Doesn't use Unicode encoding" {
             $unicodeFilesCount = 0
-            $allTextFiles | Foreach-Object {
+            $allTextFiles | Where-Object {$_ -ne $null} | Foreach-Object {
                 if (Test-FileInUnicode $_) {
                     $unicodeFilesCount += 1
                     Write-Warning "File $($_.FullName) contains 0x00 bytes. It's probably uses Unicode and need to be converted to UTF-8. Use Fixer 'Get-UnicodeFilesList `$pwd | ConvertTo-UTF8'."
                 }
             }
-            $unicodeFilesCount | Should Be 0
+            $unicodeFilesCount | Should -Be 0
         }
     }
 
@@ -49,7 +49,7 @@ Describe 'Text files formatting' {
                     $totalTabsCount++
                 }
             }
-            $totalTabsCount | Should Be 0
+            $totalTabsCount | Should -Be 0
         }
     }
 }
@@ -57,8 +57,8 @@ Describe 'Text files formatting' {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU920hMad4qdEHQNXdKcm/iTAS
-# kKqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9KoVSW6vYEJvuZb+71l3/pPD
+# /yugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -115,11 +115,11 @@ Describe 'Text files formatting' {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS5t4HgB04mONPVp/hfUaGbGQFyUzANBgkqhkiG9w0BAQEFAASCAQDv8BSc
-# ckgZ1zspEQu78+0lE/6F0Hl07T5OEBobIzeq37/ocvKN25BrGauOY9ebmCMP6sCL
-# oOwfFcuGp1xePbvgX0CoUNGkzqf/rAcrcFdFTFlMvCzv6yy2/sTGQUaaSRZ+mlsy
-# 0M7p22HNVrlnYOfBH8hTR69MgBT/3imK/3YnpJuPZlAu68J+A/XovdSlHwxOsizU
-# ubr/uFju7R0i8KPPmPuZG//GyljTgtD3kCLRVY49e9sj7hP1xAz6wb/arDGPWUZY
-# rJEAa4C57bCbak++GHa1v7bDckWBCjTv3ph6V5W5G9lSws4xWM3H7E4ahuDYcE24
-# fXbmeWwUTuXqrLJy
+# BDEWBBTnQOWV+HBgcTISBU9RFauiWCWaSTANBgkqhkiG9w0BAQEFAASCAQDPZaLE
+# zyPKktC5j3BWIhRfLLEWmYlnWksxDltTNRLNda1+zNRWxqlYsVcMs1kdzd1x7PJR
+# t8dSPBU70a+xexfpXJVWIw5tVRqMFa3ckSciDeUswEPjtsjkNIcq0Nuqsa0bgSsA
+# Twz3P2yxJ9XgihtmDCphkEVzsBlTsKrniPyJi34j8FYKdB1G5XJpZpythAQTu+sw
+# ElYlRoCwPJ08iFE2IkjK1OkXiv3oEYkPK8o+I9YEMuy65QZ6adlnxoNOdjaaE6Ec
+# Gy4N/Sayv15ABFsYFbCSd823w+wqBgv8vnzgiJiniCg4AVoennoZdam0fvd/xsJ5
+# CnJ6ChvaPbdkHAV3
 # SIG # End signature block

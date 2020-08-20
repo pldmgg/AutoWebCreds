@@ -28,51 +28,53 @@ Describe 'Module manifest' {
         It 'has a valid manifest' {
             {
                 $script:manifest = Test-ModuleManifest -Path $env:BHPSModuleManifest -Verbose:$false -ErrorAction Stop -WarningAction SilentlyContinue
-            } | Should Not Throw
+            } | Should -Not -Throw
         }
 
         It 'has a valid name in the manifest' {
-            $script:manifest.Name | Should Be $env:BHProjectName
+            $script:manifest.Name | Should -Be $env:BHProjectName
         }
 
         It 'has a valid root module' {
-            $script:manifest.RootModule | Should Be "$env:BHProjectName.psm1"
+            $script:manifest.RootModule | Should -Be "$env:BHProjectName.psm1"
         }
 
         It 'has a valid version in the manifest' {
-            $script:manifest.Version -as [Version] | Should Not BeNullOrEmpty
+            $script:manifest.Version -as [Version] | Should -Not -BeNullOrEmpty
         }
 
         It 'has a valid description' {
-            $script:manifest.Description | Should Not BeNullOrEmpty
+            $script:manifest.Description | Should -Not -BeNullOrEmpty
         }
 
         It 'has a valid author' {
-            $script:manifest.Author | Should Not BeNullOrEmpty
+            $script:manifest.Author | Should -Not -BeNullOrEmpty
         }
 
         It 'has a valid guid' {
             {
                 [guid]::Parse($script:manifest.Guid)
-            } | Should Not throw
+            } | Should -Not -Throw
         }
 
         It 'has a valid copyright' {
-            $script:manifest.CopyRight | Should Not BeNullOrEmpty
+            $script:manifest.CopyRight | Should -Not -BeNullOrEmpty
         }
 
         $script:changelogVersion = $null
         It 'has a valid version in the changelog' {
+            $changelogPath = Join-Path -Path $env:BHProjectPath -Child 'CHANGELOG.md'
+            Write-Host "##### changelogPath is $changelogPath #####"
             $script:changelogVersion = $($(Get-Content $changelogpath) | Select-String -Pattern "^##[\s](\d+\.){1,3}\d+").Matches.Value | foreach {
                 $($_ -split "[\s]")[-1]
             } | Select-Object -Index 0
             
-            $script:changelogVersion               | Should Not BeNullOrEmpty
-            $script:changelogVersion -as [Version] | Should Not BeNullOrEmpty
+            $script:changelogVersion               | Should -Not -BeNullOrEmpty
+            $script:changelogVersion -as [Version] | Should -Not -BeNullOrEmpty
         }
 
         It 'changelog and manifest versions are the same' {
-            $script:changelogVersion -as [Version] | Should be ( $script:manifest.Version -as [Version] )
+            $script:changelogVersion -as [Version] | Should -Be ( $script:manifest.Version -as [Version] )
         }
 
         if (Get-Command git.exe -ErrorAction SilentlyContinue) {
@@ -84,13 +86,13 @@ Describe 'Module manifest' {
                     $script:tagVersion = $matches[1]
                 }
 
-                $script:tagVersion               | Should Not BeNullOrEmpty
-                $script:tagVersion -as [Version] | Should Not BeNullOrEmpty
+                $script:tagVersion               | Should -Not -BeNullOrEmpty
+                $script:tagVersion -as [Version] | Should -Not -BeNullOrEmpty
             }
 
             It 'all versions are the same' {
-                $script:changelogVersion -as [Version] | Should be ( $script:manifest.Version -as [Version] )
-                #$script:manifest.Version -as [Version] | Should be ( $script:tagVersion -as [Version] )
+                $script:changelogVersion -as [Version] | Should -Be ( $script:manifest.Version -as [Version] )
+                #$script:manifest.Version -as [Version] | Should -Be ( $script:tagVersion -as [Version] )
             }
         }
     }
@@ -99,8 +101,8 @@ Describe 'Module manifest' {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8LeQiYyaS9FSgMrgMezL+FXd
-# i8agggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUmaFL810sfE1hs38iK+2Ffuw6
+# 7wSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -157,11 +159,11 @@ Describe 'Module manifest' {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR8nfxMBng20yxlqWn1w8dOAUcs/DANBgkqhkiG9w0BAQEFAASCAQCK6fIq
-# N6WaY1KmCIj1GKkSl+57pPdIljQju9tNwL39z+WjyeMAD/7QkRM4RIfVBWasAH1x
-# R5xRuacn5IN1p06Cueah8UyeOeU6//nbDESm0zBhI4/eiYKKLxAZyum8u7AfheIE
-# eOJ8NRGgpyRN2hZ2ZYlQBoqjWEHeGDRefVmhaBmn5KWBPWD4UHDdx7E8pww2yR0I
-# R21OStvEyVV5IjtcbGrH3PD/Q0wplO7l0ARXDJpr+Czp1TehH1/NN1BW5q/+JIx6
-# KPy7oBw4ZSvjEJcT+9V6+IVAvQYOz+DEXSi5qlqSAGPH0gCXxy0yAb3jMoxgypWy
-# Gk9H7LaLKuypMmNU
+# BDEWBBSHeQMQJ4sc4tXeXy9QuzZV4hQmYTANBgkqhkiG9w0BAQEFAASCAQAzlEAX
+# 7yk3IOxa9DebQYngMridVnbW3Tt6yZwiNf3Er8L+CeJZrpGhjuhAFCq7lBHmeOA9
+# +fI4w8T8ybH7v7BtwM+xDThgB/wgFs+/lDf2IG4m/6qbyVq3lVN56p/cwcf9aknN
+# SlXRZAelRxQOapsp1IjQnhJsjaqR77uxDqEfBKxPAqekabbN2wdEbhEbLpRvUpbV
+# 4pfdoDfiwpAxH2amJG8R4pUoAHWKy9RjrLLfwgYVuQKdKSbTqfVy0yOm2KUdEx6x
+# v4rFEng7Vywj/g4b8b4Xfbd/ub4VMQGcXe4UM4XN0H3ArVi/1E2IDfbSwQJjHCAT
+# h/Hetk3XbP4NiBeS
 # SIG # End signature block
