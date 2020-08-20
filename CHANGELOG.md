@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.6 (August 20, 2020)
+
+- Fixed issue with installing/importing Module dependencies (hopefully for real this time)
+
 ## 0.0.5 (August 20, 2020)
 
 - Fixed issue with installing/importing Module dependencies

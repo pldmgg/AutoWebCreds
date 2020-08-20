@@ -15,7 +15,7 @@
     'CredentialManager' = @{
         DependencyType  = 'PSGalleryNuget'
         Version         = 'Latest'
-        PSVersion       = "WinPS"
+        PSVersion       = "WinPSAndPSCore"
     }
 
     'AnyBox' = @{

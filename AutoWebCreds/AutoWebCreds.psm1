@@ -42,64 +42,60 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
     $LatestWinPSSystemPath = "$env:ProgramFiles\WindowsPowerShell\Modules"
 
     $AllPSModulePaths = @(
-        #$PSCoreUserDocsModulePath
+        $PSCoreUserDocsModulePath
         $WinPSUserDocsModulePath
-        #$($LatestPSCoreDirPath | Split-Path -Parent)
-        #$LatestPSCoreSystemPath
+        $($LatestPSCoreDirPath | Split-Path -Parent)
+        $LatestPSCoreSystemPath
         $LatestWinPSSystemPath
         "$env:SystemRoot\system32\WindowsPowerShell\v1.0\Modules"
     )
 
+    <#
     foreach ($ModPath in $AllPSModulePaths) {
         if (![bool]$($($env:PSModulePath -split ";") -match [regex]::Escape($ModPath))) {
             $env:PSModulePath = "$ModPath;$env:PSModulePath"
         }
     }
+    #>
 
     # Attempt to import the Module Dependencies
     foreach ($ModuleData in $ModuleManifestData) {
         $ModuleName = $ModuleData.Name
 
         # Make sure it's installed
-        $GetModResult = @(Get-Module -ListAvailable -Name $ModuleName)
+        $GetModResult = [System.Collections.Generic.List[object]]::new()
+        @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
+        $AllPSModulePaths | foreach {
+            $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
+            if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+        }
+
         if ($GetModResult.Count -eq 0) {
             try {
-                if ($ModuleData.Value.PSVersion -eq "WinPS") {
+                if ($ModuleData.Value.PSVersion -eq "WinPS" -and $PSVersionTable.PSEdition -eq "Core") {
                     powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Scope CurrentUser -AllowClobber -Force"
                 }
-                else {
+                if ($($ModuleData.Value.PSVersion -eq "PSCore" -and $PSVersionTable.PSEdition -eq "Core") -or $PSVersionTable.PSEdition -eq "Desktop") {
+                    $null = Install-Module -Name $ModuleName -Scope CurrentUser -AllowClobber -Force -ErrorAction Stop -WarningAction SilentlyContinue
+                }
+                if ($ModuleData.Value.PSVersion -eq "WinPSAndPSCore" -and $PSVersionTable.PSEdition -eq "Core") {
+                    powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Scope CurrentUser -AllowClobber -Force"
                     $null = Install-Module -Name $ModuleName -Scope CurrentUser -AllowClobber -Force -ErrorAction Stop -WarningAction SilentlyContinue
                 }
             }
             catch {
-                # Try Manual Install
-                $DLDir = $([IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName()) -split [regex]::Escape('.'))[0]
-                $null = [IO.Directory]::CreateDirectory($DLDir)
-
-                $InstallSplatParams = @{
-                    ModuleName          = $ModuleName
-                    DownloadDirectory   = $DLDir
-                    ErrorAction         = 'Stop'
-                    WarningAction       = 'SilentlyContinue'
-                }
-                
-                try {
-                    $null = ManualPSGalleryModuleInstall @InstallSplatParams
-                }
-                catch {
-                    try {
-                        # It might be a PreRelease
-                        $InstallSplatParams.Add('PreRelease',$True)
-                        $null = ManualPSGalleryModuleInstall @InstallSplatParams
-                    }
-                    catch {
-                        Write-Error "Problem installing Module dependency $ModuleName ! Halting!"
-                        return
-                    }
-                }
+                Write-Error "Problem installing Module dependency $ModuleName ! Halting!"
+                return
             }
 
-            $GetModResult = @(Get-Module -ListAvailable -Name $ModuleName)
+            # Check again to make sure it's installed
+            $GetModResult = [System.Collections.Generic.List[object]]::new()
+            @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
+            $AllPSModulePaths | foreach {
+                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
+                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            }
+
             if ($GetModResult.Count -eq 0) {
                 Write-Error "Problem installing Module dependency $ModuleName ! Halting!"
                 return
@@ -107,7 +103,7 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         }
         
         # Import the Module
-        if ($ModuleData.Value.PSVersion -eq "WinPS") {
+        if ($ModuleData.Value.PSVersion -eq "WinPS" -or $ModuleData.Value.PSVersion -eq "WinPSAndPSCore") {
             try {
                 if ($PSVersionTable.PSEdition -eq 'Core') {
                     Import-Module $ModuleName -UseWindowsPowerShell -ErrorAction Stop
@@ -334,8 +330,8 @@ function Update-StoredCredential {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU4Dq9Cf8MQ/g1NNK/npft9KgE
-# xjOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUgx4Fz+7x2Ej+hWW36/cso30Y
+# g8GgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -392,11 +388,11 @@ function Update-StoredCredential {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQMVhaOP5Aaiu4ln1JYfiSDuRRgVjANBgkqhkiG9w0BAQEFAASCAQDXzGYt
-# rqRpt5APJawm9s+O34KQ/P7lg5DIiqi49xsImI7HiUmFTRIiPORoAkf6VAGbyiTD
-# cQ0pkFKQxXWIc9sSW468SRyyl+acWvL1iHLKXbgDocWyBJCCKy98z3T/8cnKxjgE
-# njrXyejGgzO2TAsFDt+aWjvS7T/+LH/TVNt/q9BAE+4mrpbTPvG5rzdeRw8b4dHr
-# RhYHoxAex74iDpkhD2oUv6znHVOBBBgfKccMo/j/7oEwHfQrEPyXHLlnZhiZFjJY
-# p8bu+mbYk18ruw/+mZBvZdeqHFk7y3B5NAxYZGqYwwrxX5bAshhBxMkAUUhM2/oR
-# h/bB0VozNWcO2FaV
+# BDEWBBTFDww/K83UwJniEE5X59iqSLpiETANBgkqhkiG9w0BAQEFAASCAQCB5gXD
+# Hr4cER7euWhfY3jeYvtADJtFPwFAltBX/qBkVftPThCzcMsOIuHxy383RU0BRPpn
+# w9mUJSB5SddG4I3NvHZMKrjyHPz+2KbSBF9d5MLkLWSXdBYOgFCqDa1L3fG0uFmZ
+# kkPeUBIwlen8OnNnb3fzOUiatJxdOp3I+cTTgApEq5DdXNDxiEZiC9JmcUT5JyqN
+# 5o6MAbjVEWgKSoE5S1Yr74Qi5g6baHquVyR8dIrMugQywz8hswp7+L+5Mf2602so
+# R+GZdZOOaLyGD9qHU5H4cMOMCLzmAD5BwGGRc54+3w9YI89SeQKQ4s/GJjmQoiSm
+# MjloHI42HLBXAY5u
 # SIG # End signature block
