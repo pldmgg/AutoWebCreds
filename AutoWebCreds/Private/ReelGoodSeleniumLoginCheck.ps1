@@ -48,7 +48,12 @@ function ReelGoodSeleniumLoginCheck {
         #& "C:\Program Files (x86)\EventGhost\EventGhost.exe" -event ClearChromeRestoreMsg
         $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
         if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
-        Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
+        $EventGhostConfigFilePath = $(Get-Module AutoWebCreds).ModuleBase + '\' + 'EventGhost' + '\' + 'ConfigurationFiles' + '\' + 'eventghosttreett.xml'
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-file `"$EventGhostConfigFilePath`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"MinimizeEventGhost`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
         Enter-SeUrl $SiteUrl -Driver $Driver
 
         # Determine if we see a "Login" button. If we do, then we need to login
@@ -161,8 +166,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUXr7JJlLjq6JLOqRxvsV0C2Kr
-# x3igggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8hv9nbkeCefNRysEHi8oUSd3
+# vuegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -219,11 +224,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT4PVFxC9VRke4XKq52viU6dcLqPTANBgkqhkiG9w0BAQEFAASCAQDLRWfF
-# WkiTtfsUpkhjW8X0UgJ/hj9jw+Bo8WVVAtkXrMOBI2OqdDOiZxveulm+aNCRNE2D
-# 1BapuSOv+t1xI5z4Es3OC7ybaMnaMJ2KeiLhHlaFpf1Kn4o36cUVsvVV6ySPG6EB
-# 8aQEkGGs8npFLwarU96gazc99XEY5rCNnYPClyoGienjgHLaxxyOB1JqZv5fBfID
-# X45kLUDqg1KwyF8CGBoQKpTbFqEIa2Va+UgH5PEVM6/QIt6BlsWI2ZL+nTA0h5zM
-# SM0MQLS0JdSrQB7RX5h721owvO7U3KPTEoQgCC6rL4O1lxfG2Erczxw4i6xUJaqE
-# Hs6NjDfARo619JSA
+# BDEWBBRY8yZWAEWvtNtqSTtG93o83eKQMjANBgkqhkiG9w0BAQEFAASCAQDwLZ2e
+# 5SkhSYhOgnHARTCZSw6JziMhLYYp1w8ITG7kqtTgH6WooiJDCp/Q5dvH/r7wH6f0
+# 2vm3ou7l3Rbf6mxgNjGFIuvsSuu3y5jnd3huXiRYKGRUmjsj4u5hSTWSGxItGPML
+# Iva/8MaKoDLHS0oIMEw3TQb7SGgCefn+MhBVOZpaMYunn0wOhGA1+sR5k+7fVi90
+# OQL9XlRicttoD4jHGqcFOMNsOsQpz29hevzKdcx6ZCqWA1xsFVmdyjdoRqBJgK+z
+# 55dpCG1eY9Y9zsuF902Y19c7J2zU+INP3gXeOPJ7Vs3vRbObyvToT+FQKKL6hWqS
+# 5Wp6ugTJ9i4mE9Dh
 # SIG # End signature block

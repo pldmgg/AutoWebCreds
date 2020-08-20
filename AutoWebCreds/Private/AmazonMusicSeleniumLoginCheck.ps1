@@ -41,7 +41,12 @@ function AmazonMusicSeleniumLoginCheck {
         #& "C:\Program Files (x86)\EventGhost\EventGhost.exe" -event ClearChromeRestoreMsg
         $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
         if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
-        Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
+        $EventGhostConfigFilePath = $(Get-Module AutoWebCreds).ModuleBase + '\' + 'EventGhost' + '\' + 'ConfigurationFiles' + '\' + 'eventghosttreett.xml'
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-file `"$EventGhostConfigFilePath`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"MinimizeEventGhost`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
         Enter-SeUrl $SiteUrl -Driver $Driver
 
         # Determine if we see a "Sign In" button. If we do, then we need to login
@@ -110,8 +115,8 @@ function AmazonMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkjRFRvBj9fDCDI5auxcUUZyH
-# HtCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdeJO0n4bJe/Gtl6EmzazIMry
+# EX6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -168,11 +173,11 @@ function AmazonMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRfrB872NfFdPzDtgIVrBigH5tB8TANBgkqhkiG9w0BAQEFAASCAQDnJeTp
-# IRNzaQL2tK+DqYjE/PUHWJJO+WKAHX25n94NuNgge8QClC5/gL9UFKCERckt9meO
-# GWAeJfSdyHIFGaSZTHDlMQiFe+4HOmmY0Op/uuwqJOfXvE+sutmiRCoXMNCzNIUN
-# Wwu1U/PUxtCw6ZItrEcTzojVLvIz+0l4epKXob0EfCC8Ui3qIuB4i9TQ0w4zReQf
-# /uxZq10hRNhbOt14EvfEvkLgcEAjqne6JrquCwxG4vH62HbzMAunxYXzATAsI1kv
-# uI3trUlklApOdkypdzkU/Gqp7yTdgRzUzdJpkyK7Z25TX17rtR2SlLCE/GBhPFgK
-# gqF1zrYFgNa6o+1F
+# BDEWBBRpnJNZEQvzYou+oE1LrXH5Dj1VGTANBgkqhkiG9w0BAQEFAASCAQBs+ZOy
+# uT0QXwfwUF+Ap7i9V0LKmGQj7SA1wrR41fkSgYGhqAw3coHdSXHs5i0lJtehpg2D
+# 9QaKzosMQb6TwiBZ4w6xl0XSOKiikZCCKbevC08ufqYiigcAxjIsdSRGJ+0gbb3A
+# EB79MdiyLfh4VrZpB5pg9pCp5EwKsV6w6DssfI8YzkvN4PAdYZqZdXfbbTz6USU7
+# vqHlay3WqntOef8CngufrHz99fTaLFUDV01IsgC1FYVarcKuHLBctpX55CGUGveW
+# Ch3xYfMXQqdTecAR2za+RMnwxj+YUxMPolc6FqJf3F21UQsu6hWo70z735ahj1f6
+# x/s0Xn1eZHpw8a+i
 # SIG # End signature block

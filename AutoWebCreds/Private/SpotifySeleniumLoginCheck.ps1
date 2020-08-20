@@ -18,6 +18,12 @@ function SpotifySeleniumLoginCheck {
         return
     }
 
+    switch ($LoginType) {
+        'UserNamePwd'   {$Message = "Login to $ServiceName with a dedicated $ServiceName UserName and Password"}
+        'Apple'         {$Message = "Login to $ServiceName using your Apple account UserName and Password"}
+        'Facebook'      {$Message = "Login to $ServiceName using your Facebook account UserName and Password"}
+    }
+
     # Make sure we can connect to the Url
     try {
         $null = CheckUrlStatus -SiteUrl $SiteUrl
@@ -41,7 +47,12 @@ function SpotifySeleniumLoginCheck {
         #& "C:\Program Files (x86)\EventGhost\EventGhost.exe" -event ClearChromeRestoreMsg
         $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
         if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
-        Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
+        $EventGhostConfigFilePath = $(Get-Module AutoWebCreds).ModuleBase + '\' + 'EventGhost' + '\' + 'ConfigurationFiles' + '\' + 'eventghosttreett.xml'
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-file `"$EventGhostConfigFilePath`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"MinimizeEventGhost`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
         Enter-SeUrl $SiteUrl -Driver $Driver
 
         # Determine if we see a "Login" button. If we do, then we need to login
@@ -149,8 +160,8 @@ function SpotifySeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIty5n0tk5UCD/DNV0Sh0iCNA
-# e16gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUwQGEkMZUG9Bn+5A7/lmSEgQ8
+# JSSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -207,11 +218,11 @@ function SpotifySeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTBsf6KODFalbh4ZbGrrDa/XNdIUTANBgkqhkiG9w0BAQEFAASCAQCRhWv5
-# gzsVzDTUJUqAXeHD9cb00JGcqkP/0nUX6JS68lEG+CLDygb3QEZVGrQ4Ym8pz0/p
-# kjPXQfttWXGBKIZWkyhaGcpOjMPCUsiurTApLSTuhImxccZF7/7ALtkQIG0VwMCo
-# 0EcIQbRyS70R8UWhk3h3ClMkDQTiPhwdcSybjiG2c3qDicy8ynqalWEM4EPkGw+8
-# qpT3OLy+NECEPlgJZdSQ1JUcEUzA9+r7m4mhniHhG9rJZcd3QAJS4Wz+u5P4hB7W
-# HMnK/gDa68InVX65sd0SOQX/386zKBV/gw74T4jjr1ONnDqZCJpxzfna/WcQgPAR
-# p8sw957e43MLRRiP
+# BDEWBBS4TfqhKyjk/HrlqFm4heAZGZXghjANBgkqhkiG9w0BAQEFAASCAQCDQVpe
+# 3+y4X32qK6SHVMMwPvYYQEDDuy3P/EgDXKTnpv1hGeMUsp3QTxWp1Yam9zDbkinp
+# /IvIHKwo59f+ttWAyn/oRoevUN8aGj75iArNTke8KeSmMqeQgP7IeYFKarOH3LJy
+# A713oX1PxiXnrGP7AqyHJiGnDMowREz5ox3crkOAmr2De/ljhe7VxVQ/l1V9gKur
+# DT/YhwAbL5tUceh4JedpKwjAlL4lhkccPDgivliuY0hHB1Yhdr8JFQM6fBJ7Vb5j
+# mlM4yMi6yWYSxiNrAzc7pZcG9MSskq687kcS4rnO3usqB0MFili9wFBxZbB6aaO9
+# Z5om4axN7KI4f51h
 # SIG # End signature block

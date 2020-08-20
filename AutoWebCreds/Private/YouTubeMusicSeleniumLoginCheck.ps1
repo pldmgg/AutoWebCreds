@@ -40,7 +40,12 @@ function YouTubeMusicSeleniumLoginCheck {
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Enter).Perform()
         $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
         if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
-        Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
+        $EventGhostConfigFilePath = $(Get-Module AutoWebCreds).ModuleBase + '\' + 'EventGhost' + '\' + 'ConfigurationFiles' + '\' + 'eventghosttreett.xml'
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-file `"$EventGhostConfigFilePath`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"MinimizeEventGhost`""
+        Start-Sleep -Seconds 1
+        $null = Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
         Enter-SeUrl $SiteUrl -Driver $Driver
 
         # Determine if we see a "Sign In" button. If we do, then we need to login
@@ -110,8 +115,8 @@ function YouTubeMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUY20ILSmqRvc048ugEN22yeqS
-# 8V6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU48jl0WXgZpsr4yqkfjf0cH2j
+# N/SgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -168,11 +173,11 @@ function YouTubeMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRATErCQUtsgvbyV8YO2wsWAdAFLzANBgkqhkiG9w0BAQEFAASCAQBoW9WZ
-# mg6rOXdeYK3ue2gscwMGBuYyENElA0gSB6hwiQnXTROX+D6TTe26UxYMsRcUlR1F
-# 4vgfXLzzxKGkHbY/m/Haa/O7YbjpKdGc7Oz1Q8MLh6mxNlhr5LfIV3VV8gej3TFq
-# tZtv2/2GW51CFFjIWtN6+b5mxDMBf9fE4Rl12vsicWLMr2Sh1JXQYowjCFf4dGBF
-# hJZw0/OR017y+d76egGYZBflM8NKIi8geoLvGBQeVaXzmjROuLfJ5ELsvWwJPBoO
-# RsyvG4y33TdAEeBqk9IlLqV2PY/sZu6ScPo1jCKhH3GeQE8h32jPKdeiJI0O3Vl+
-# +k5w2k3BgUCm+g7g
+# BDEWBBSjoMDWd/grAApcpbljyFaPLRVJijANBgkqhkiG9w0BAQEFAASCAQA94l4W
+# qvY2TBKgF/GUs4RWFby40r570mqZd2RgdSAm2Q4Cnmd+plpzEyEiSkoIE6YkQdFd
+# PzsxmsJvxgJBDT8WsV/rzVDqWYLnpwzZHBlqpRHpWVr8VkbMQcHuK6OMaEqEqwBG
+# rMqaeZ62aPFyBuKrqZtAb9wjZtQUk5LTaOWCgzKCD9RflJpyieVQYOmn6savYKQA
+# 8899l6mb0QLcO82RaGXIwXHF8umOL6QUi31PUJlfXUQ5ay2rhblKdA10gNA5l46A
+# 8foAHwHFrdttmsgHdlLlySkClSwuzYvGYuSbBK3A5cY1wPalwYdCW4Zgtp/F45sU
+# qRdk863n+MCipu5n
 # SIG # End signature block

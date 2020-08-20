@@ -8,7 +8,11 @@ function UWPCredPrompt {
 
         [parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
-        [string]$SiteUrl
+        [string]$SiteUrl,
+
+        [parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Message
     )
 
     # Reference: https://www.meziantou.net/how-to-prompt-for-a-password-on-windows.htm
@@ -29,6 +33,10 @@ function UWPCredPrompt {
     }
 
     #endregion >> Helper Functions
+
+    if (!$Message) {
+        $Message = "This will allow authentication to $ServiceName"
+    }
 
     # See if we can get the user's $ServiceName Credentials from the Windows Credential Manager
     try {
@@ -54,7 +62,7 @@ function UWPCredPrompt {
         $Options = [Windows.Security.Credentials.UI.CredentialPickerOptions]::new()
         $Options.TargetName = if ($SiteUrl) {$SiteUrl} else {$ServiceName}
         $Options.Caption = if ($SiteUrl) {$SiteUrl} else {$ServiceName}
-        $Options.Message = "This will allow authentication to $ServiceName"
+        $Options.Message = $Message
         $Options.CredentialSaveOption = [Windows.Security.Credentials.UI.CredentialSaveOption]::Unselected
         $Options.AuthenticationProtocol = [Windows.Security.Credentials.UI.AuthenticationProtocol]::Basic
 
@@ -64,7 +72,7 @@ function UWPCredPrompt {
         #$PwdSS = ConvertTo-SecureString $CredentialPickerResults.CredentialPassword -AsPlainText -Force
 
         #$CredManObj = New-StoredCredential -Target $ServiceName -Username $UserName -Password $CredentialPickerResults.CredentialPassword
-        $ArgList = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command `"New-StoredCredential -Target $ServiceName -UserName $UserName -Password $($CredentialPickerResults.CredentialPassword)`""
+        $ArgList = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command `"`$null = New-StoredCredential -Target $ServiceName -UserName $UserName -Password $($CredentialPickerResults.CredentialPassword)`""
         $null = Start-Process -FilePath powershell.exe -NoNewWindow -Wait -ArgumentList $ArgList
         $StoredCreds = Get-StoredCredential -Target $ServiceName -ErrorAction Stop
     }
@@ -79,8 +87,8 @@ function UWPCredPrompt {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUtSm/3d6b9eIpDlf4JxTbRQb8
-# f0qgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUY4M9ZsmcEse7Jjpe+cyG1hP3
+# TCygggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -137,11 +145,11 @@ function UWPCredPrompt {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQWiBeVzgz2ynWv0d1oiQtmry0IIDANBgkqhkiG9w0BAQEFAASCAQBZPifu
-# 92EAIwYqbmglP/C4jd7e9r8T2tM4/gy2ActXWdauoKuoUS0F5ydbeaybRvCabrzi
-# 8FjmK/g+8nJG13CcL+KnJY2hi2JBByzKHF0+/khDv8X5CjiorqL5txvbkNC673j2
-# T8aSa38ZFWAP8QGLVuQZo27Yd5vhFAIW++cKEBxs7iTp7fcG31dzgxlRkwJGeZi3
-# 8IfNm51F+oE3zkcZ2ZaFn0TIT8jKIOQt7whgLq8gOczKDeNIToevHyWbFZM7mLUd
-# 9j1s8O/x2xbR2nn+KwQdiku73CcS1PfmlWVPi84+Ly33f/qSdCz2ngndpKixEnV3
-# wgTCprOYj/U6t00M
+# BDEWBBRVD23B3SAIfHMDfa+RGj/YSoqLBjANBgkqhkiG9w0BAQEFAASCAQDswTJZ
+# 9Yz7nqOj6G6+UuGYFv6fye6Nch0flsNE3bEGKU7CIBKd5Csf+hRoDiWWoFRYZpBX
+# R7u4j3hrMfMJ0jnDlqKBihYVN9lbDAm45ItwC4+g4L3RiiXCBEFoAPh/ruVjPBzQ
+# tiWZiUHqgNOc9OZgaiiuIRyKkgz/mqWEMClVXZ2joyOENKmEKKbisyhVxBdvBgwZ
+# zVUKcKNoRjXIpJVgxjD91txSF9adhKRuocvrvM5E0jqxUZALqxG1DqsQSGYi6MJY
+# as4VeWLp8wj4blkXVPPylqP4PN2R28VLRvz9fWEcU+jKXE3aK/pNTklMyfRhjhwQ
+# CrBRN0IJrJZYLAn4
 # SIG # End signature block
