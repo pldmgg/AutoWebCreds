@@ -39,6 +39,8 @@ function SpotifySeleniumLoginCheck {
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Tab).Perform()
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Enter).Perform()
         #& "C:\Program Files (x86)\EventGhost\EventGhost.exe" -event ClearChromeRestoreMsg
+        $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
+        if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
         Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
         Enter-SeUrl $SiteUrl -Driver $Driver
 
@@ -147,8 +149,8 @@ function SpotifySeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUMvG9lSn7S2pCdEEYVIPoDEr6
-# NGSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIty5n0tk5UCD/DNV0Sh0iCNA
+# e16gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -205,11 +207,11 @@ function SpotifySeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR4+IkfpLu9dB8lvuCjcXqBmW3TcjANBgkqhkiG9w0BAQEFAASCAQDRn6+g
-# 4sFkiCa8h4qsGw6I2dIRVenHXuF3nlIF9iI2tNrDTSNjU9BgMOWURdYppVT4nHJw
-# k6mNufP/3cZiGEOmeMYvRW9foWyVjrHEuWYww5Rp2TEAtoHQ+ARyqcMYivBuNv6W
-# 2tuP3EnrPpNS+orcTZS1Jgszb16X138maW0PYFHJDONXaK48E1dceMopOnTnFu4x
-# BUzxB9ZRgxikpsmbMn2I415ritmqHeyIq8BPv6t3p8UteFtDSlEupH06dBZKTNPQ
-# zn4tXGV9bVFqfitThATys8aIKabOOxT6/ieuZOjkkTMpHGLpy3ka07RM2LPIxkvH
-# JuOX/hJHYoHUcnSe
+# BDEWBBTBsf6KODFalbh4ZbGrrDa/XNdIUTANBgkqhkiG9w0BAQEFAASCAQCRhWv5
+# gzsVzDTUJUqAXeHD9cb00JGcqkP/0nUX6JS68lEG+CLDygb3QEZVGrQ4Ym8pz0/p
+# kjPXQfttWXGBKIZWkyhaGcpOjMPCUsiurTApLSTuhImxccZF7/7ALtkQIG0VwMCo
+# 0EcIQbRyS70R8UWhk3h3ClMkDQTiPhwdcSybjiG2c3qDicy8ynqalWEM4EPkGw+8
+# qpT3OLy+NECEPlgJZdSQ1JUcEUzA9+r7m4mhniHhG9rJZcd3QAJS4Wz+u5P4hB7W
+# HMnK/gDa68InVX65sd0SOQX/386zKBV/gw74T4jjr1ONnDqZCJpxzfna/WcQgPAR
+# p8sw957e43MLRRiP
 # SIG # End signature block

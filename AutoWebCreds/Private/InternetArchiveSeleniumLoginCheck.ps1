@@ -39,6 +39,8 @@ function InternetArchiveSeleniumLoginCheck {
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Tab).Perform()
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Enter).Perform()
         #& "C:\Program Files (x86)\EventGhost\EventGhost.exe" -event ClearChromeRestoreMsg
+        $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
+        if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
         Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
 
         # For Internet Archive, we cannot get Selenium to identify the Log In button/link, so we should just directly navigate to https://archive.org/account/login
@@ -95,8 +97,8 @@ function InternetArchiveSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUw2Nmztbqy3MiZgg9Q/fSLhtI
-# 1v2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUG9ys9/P2n/1L8T58PE+kMocl
+# /QygggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -153,11 +155,11 @@ function InternetArchiveSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQf5HeXiRvyv8OZ3BnUpEjwBTrzazANBgkqhkiG9w0BAQEFAASCAQBcjny1
-# Wjhp9Esatq4Tc7/34bRTwmdF7xt1oH1eUmhnpx1N8tR7RZTQX6EyjCYdEuwA8/3k
-# qozjgyuB/S/KHRVYPRKncH21roVkhV7wVw3HHq7r8Oiy1FESG7I56E+OGnJDKr7a
-# xOWtwULCliZW2TPo9KCwr0qmCGOMy3+QudqLnyWNQmhWY+xAq8ASGyzDkPspw0Vd
-# guRdWUzXHqL7XaT0wQGzyVam0o4MSW6PInZggglOy8GPA/q9o5uwKX1JBCY8GRet
-# 75O64TgI6zFEWCx+yvE+lmPD1ejIBE26X7sueYtgwe1JVbasi1mRzKY2mEQ98omS
-# HgAtNsiNEMbVmqTu
+# BDEWBBQAR3REQJaxpyCQw9cDryjzWkc1kzANBgkqhkiG9w0BAQEFAASCAQDsYzBq
+# JCwzkqdUGctogOyvHk5YXOmLTOf7JmYjGS7sfsBhqlyZKsnL+oQOsEFjhezM25X/
+# AuGsCmta+islOpg34fo/AJcZPFYyFAM/kNAcch5APExv8FJFX1GXv+vV8irpxTiI
+# /u3P8JXqhUF77mcdf/JaJ6mbCY6TKQBo4nwuYZQ8XRrnTLgUJH42De52ZstTv013
+# 97KpD7o2cDasJT8tl5y4DJRvbQDhb129urMTp4avvtp5wGgCGYRysisTDAVQb4pe
+# 47RGFOgcxgm7rHd7spGaMWcY5FX40xjoIMB/vqtIYD31z8k4DAhl66uiLXwVQSbn
+# njvHHafb603wbH4g
 # SIG # End signature block

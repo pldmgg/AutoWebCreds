@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<EventGhost Version="1722" Guid="{422DEE9E-DB84-457E-B935-CEA6A4765FA0}" Time="1597780837.73">
+<EventGhost Version="1722" Guid="{C288EDBF-9F48-4F0D-9C9E-1F05800477B8}" Time="1597929194.58">
     <Autostart Name="Autostart" Expanded="True">
         <Plugin Identifier="X10" Guid="{C3E96757-E507-4CC3-A2E6-465D48B87D09}" File="X10">
             gAJLAl1xAChLAUsCSwNLBEsFSwZLB0sISwlLCksLSwxLDUsOSw9LEGVYAwAAAFgxMHEBh3ECLg==
@@ -17,16 +17,13 @@
             EventGhost.EnableExclusive(XmlIdLink(222))
         </Action>
         <Plugin Identifier="AutoRemote" Guid="{C18A174E-71E3-4C74-9A2B-8653CE9991E1}" File="AutoRemote">
-            gAIoVQpBdXRvUmVtb3RlcQBNGgdYCgAAAEV2ZW50R2hvc3RxAV1xAihYFAAAAGxkZmFtYmlfTGluZGFQcm9maWxlcQNVAHEEWKwAAABnb28uZ2w6Z2NtQVBBOTFiR0pabnJpRzBBOTJRM1FuRVZCTW1qOTNpZTFGLVRvX094aGRIMkFqTmpuUUQ2eGhMVFQ0ZFpWdWlqaEhNcmY1N0hUaFJqU3dqNXpwZ2J3RjhIdk5UU0VKVHNNY0sxUFhEdkxUaExSTU5QS1ltOG5rdDFJb0YtQXZaa0dRU1RPQ1RJdTlIOHhFZjdRTENuZnpnX2V1NXBfQ3ZFSDR3cQVYAAAAAHEGiU50cQdhaAZYFgAAAEQ6XEF1dG9SZW1vdGVUcmFuc2ZlcnNxCIhYZwAAADEvLzBkaUpCMFcyN2xoVG5DZ1lJQVJBQUdBMFNOd0YtTDlJcnBNMm1IX2tPb1A4eWtOemdGRjdGelE2U3haRWplRHJoLUdJcHUtMjJHNlByd3ZWUTNoYWxTdXp0OFVSUTB3S3ZhZ1VxCYmIWBIAAABTZW5kIHRvIEV2ZW50R2hvc3RxCohoBoh0cQsu
+            gAIoVQpBdXRvUmVtb3RlcQBNGgdYCgAAAEV2ZW50R2hvc3RxAV1xAihYFAAAAGxkZmFtYmlfTGluZGFQcm9maWxlcQNVAHEEWKwAAABnb28uZ2w6Z2NtQVBBOTFiR0pabnJpRzBBOTJRM1FuRVZCTW1qOTNpZTFGLVRvX094aGRIMkFqTmpuUUQ2eGhMVFQ0ZFpWdWlqaEhNcmY1N0hUaFJqU3dqNXpwZ2J3RjhIdk5UU0VKVHNNY0sxUFhEdkxUaExSTU5QS1ltOG5rdDFJb0YtQXZaa0dRU1RPQ1RJdTlIOHhFZjdRTENuZnpnX2V1NXBfQ3ZFSDR3cQVYAAAAAHEGiU50cQdhaAZYFgAAAEM6XEF1dG9SZW1vdGVUcmFuc2ZlcnNxCIhYZwAAADEvLzBkaUpCMFcyN2xoVG5DZ1lJQVJBQUdBMFNOd0YtTDlJcnBNMm1IX2tPb1A4eWtOemdGRjdGelE2U3haRWplRHJoLUdJcHUtMjJHNlByd3ZWUTNoYWxTdXp0OFVSUTB3S3ZhZ1VxCYmIWBIAAABTZW5kIHRvIEV2ZW50R2hvc3RxCohoBoh0cQsu
         </Plugin>
-        <Action>
-            AutoRemote.RegisterEventGhost(u'ldfambi_LindaProfile', '', u'goo.gl:gcmAPA91bGJZnriG0A92Q3QnEVBMmj93ie1F-To_OxhdH2AjNjnQD6xhLTT4dZVuijhHMrf57HThRjSwj5zpgbwF8HvNTSEJTsMcK1PXDvLThLRMNPKYm8nkt1IoF-AvZkGQSTOCTIu9H8xEf7QLCnfzg_eu5p_CvEH4w', u'')
-        </Action>
         <Plugin Identifier="TextGrabPlugin" Guid="TextGrab" File="TextGrab">
             gAIpLg==
         </Plugin>
         <Plugin Identifier="TCPEvents" Guid="{198090B7-0574-4F91-B2E7-1AF5BB37E2DE}" File="TCPEvents">
-            gAIoTQAEWAwAAABVbnNlY3VyZTMyMSFxAFgDAAAAVENQcQGIR0AUAAAAAAAAR0AUAAAAAAAAdHECLg==
+            gAIoTQAEWAAAAABxAFgDAAAAVENQcQGIR0AUAAAAAAAAR0AUAAAAAAAAdHECLg==
         </Plugin>
     </Autostart>
     <Macro Name="Start Zoom Player">
@@ -653,139 +650,11 @@
             </Macro>
         </Folder>
     </Folder>
-    <Folder Name="StartAudioStream">
-        <Macro Name="Start Program: SoundIt.exe" Expanded="True">
-            <Action>
-                System.SetMasterVolume(100.0, u'PCT2235 (2- Intel(R) Display Au')
-            </Action>
-            <Action>
-                System.Command(u'powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "Get-Process -Name SoundIT -ErrorAction SilentlyContinue | Stop-Process -ErrorAction SilentlyContinue"', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                EventGhost.Wait(1.0)
-            </Action>
-            <Action>
-                System.Execute(u'C:\\Users\\ttadmin\\AppData\\Local\\SoundIt\\SoundIt.exe', u'', 0, False, 2, u'C:\\Users\\ttadmin\\AppData\\Local\\SoundIt', False, False, u'', False, False, False, False)
-            </Action>
-            <Action>
-                EventGhost.Wait(5.0)
-            </Action>
-            <Action>
-                Window.SendKeys(u'{Tabulator}{Tabulator}{Tabulator}{Tabulator}{Tabulator}{Tabulator}{Tabulator}{Tabulator}{Return}', False, 2)
-            </Action>
-            <Action>
-                EventGhost.Wait(2.0)
-            </Action>
-            <Action>
-                Window.SendKeys(u'{Tabulator}{Return}', False, 2)
-            </Action>
-        </Macro>
-    </Folder>
-    <Folder Name="LaunchReelGood" Expanded="True">
-        <Macro Name="LaunchReelGood" id="324" Expanded="True">
-            <Action Enabled="False">
-                System.Command(u'powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "Get-Process -Name chrome -ErrorAction SilentlyContinue | Stop-Process -ErrorAction SilentlyContinue"', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                System.Command(u'C:\\Windows\\Syswow64\\TaskKill /F /IM chrome.exe', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                EventGhost.Wait(1.0)
-            </Action>
-            <Action Enabled="False">
-                System.Command(u'cmd /s/c ""C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe" --profile-directory="Profile 1" reelgood.com"', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                System.Command(u'powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "&amp; ${env:ProgramFiles(x86)}\\Google\\Chrome\\Application\\chrome.exe --profile-directory=\\"Profile 1\\" reelgood.com"', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                EventGhost.Wait(4.0)
-            </Action>
-            <Action>
-                Window.SendKeys(u'{Tabulator}{Tabulator}{Return}', False, 2)
-            </Action>
-            <Action>
-                Window.FindWindow(u'chrome.exe', u'Streaming Service Search Engine - Netflix, Disney+, Hulu, Prime, Apple TV+, HBO - Google Chrome', u'Chrome_WidgetWin_1', None, None, None, False, 0.0, 0)
-            </Action>
-            <Action>
-                System.Command(u'cmd /s/c ""C:\\Program Files\\PowerShell\\7\\pwsh.exe" -File C:\\Scripts\\eventghost\\ReelGoodSeleniumLoginCheck.ps1"', True, False, u'', True, False, False, False, False)
-            </Action>
-        </Macro>
-    </Folder>
-    <Folder Name="LaunchSpotifyWebPlayer" Expanded="True">
-        <Macro Name="LaunchSpotifyWebPlayer" Expanded="True">
-            <Action>
-                System.Command(u'C:\\Windows\\Syswow64\\TaskKill /F /IM chrome.exe', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                EventGhost.Wait(1.0)
-            </Action>
-            <Action>
-                System.Command(u'powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "&amp; ${env:ProgramFiles(x86)}\\Google\\Chrome\\Application\\chrome.exe --profile-directory=\\"Profile 1\\" open.spotify.com"', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                EventGhost.Wait(4.0)
-            </Action>
-            <Action>
-                Window.SendKeys(u'{Tabulator}{Tabulator}{Return}', False, 2)
-            </Action>
-            <Action>
-                Window.FindWindow(u'chrome.exe', u'Streaming Service Search Engine - Netflix, Disney+, Hulu, Prime, Apple TV+, HBO - Google Chrome', u'Chrome_WidgetWin_1', None, None, None, False, 0.0, 0)
-            </Action>
-        </Macro>
-    </Folder>
-    <Folder Name="GrabChromeText">
-        <Macro Name="GrabChromeText" Expanded="True">
-            <Action>
-                Window.FindWindow(u'chrome.exe', u'Streaming Service Search Engine - Netflix, Disney+, Hulu, Prime, Apple TV+, HBO - Google Chrome', u'Chrome_WidgetWin_1', None, None, None, False, 0.0, 0)
-            </Action>
-            <Action>
-                TextGrabPlugin.GrabText()
-            </Action>
-            <Action>
-                System.SetClipboard(u'{eg.globals.grabbedText}')
-            </Action>
-            <Action Enabled="False">
-                EventGhost.ShowMessageBox(u'GrabTextResult', u'{eg.globals.grabbedText}', u'', u'', False, 0, 0, 0)
-            </Action>
-        </Macro>
-    </Folder>
-    <Folder Name="Testing" Expanded="True">
-        <Macro Name="AutoRemote: Sending cnn.com to ldfambi_LindaProfile" Expanded="True">
-            <Event Name="AutoRemote.Message.LaunchReelgood u'LaunchReelgood'" Enabled="False" />
-            <Event Name="AutoRemote.Message.LaunchReelgood" Enabled="False" />
-            <Action>
-                AutoRemote.SendMessage(u'ldfambi_LindaProfile', '', u'goo.gl:gcmAPA91bGJZnriG0A92Q3QnEVBMmj93ie1F-To_OxhdH2AjNjnQD6xhLTT4dZVuijhHMrf57HThRjSwj5zpgbwF8HvNTSEJTsMcK1PXDvLThLRMNPKYm8nkt1IoF-AvZkGQSTOCTIu9H8xEf7QLCnfzg_eu5p_CvEH4w', u'cnn.com', u'', u'', u'', '', u'', u'')
-            </Action>
-            <Action>
-                System.Command(u'cmd.exe', True, False, u'', True, False, False, False, False)
-            </Action>
-            <Action>
-                TCPEvents.SendEvent(u'127.0.0.1', 1024, u'Unsecure321!', u'', u'{eg.result}', u'', None)
-            </Action>
-        </Macro>
-    </Folder>
-    <Folder Name="LaunchProgramOnAutoRemoteMessage" Expanded="True">
-        <Macro Name="LaunchProgramOnAutoRemoteMessage" Expanded="True">
-            <Event Name="AutoRemote.Message.LaunchReelgood" />
-            <Action>
-                EventGhost.NewJumpIf(XmlIdLink(324), 2, True)
-            </Action>
-        </Macro>
-    </Folder>
     <Folder Name="ClearChromeRestoreMsg" Expanded="True">
         <Macro Name="ClearChromeRestoreMsg" Expanded="True">
             <Event Name="ClearChromeRestoreMsg" />
             <Action>
                 Window.SendKeys(u'{Tabulator}{Return}', False, 2)
-            </Action>
-        </Macro>
-    </Folder>
-    <Folder Name="TCPEventsTest" Expanded="True">
-        <Macro Name="TCPEventsTest" Expanded="True">
-            <Event Name="TCP.ClearChromeRestoreMsg" />
-            <Action>
-                System.Command(u'powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "&amp; ${env:ProgramFiles(x86)}\\Google\\Chrome\\Application\\chrome.exe --profile-directory=\\"Profile 1\\" reelgood.com"', True, False, u'', True, False, False, False, False)
             </Action>
         </Macro>
     </Folder>

@@ -38,6 +38,8 @@ function YouTubeMusicSeleniumLoginCheck {
         # The below Tab + Enter will clear either the "Chrome was not shutdown properly" message or the "Chrome is being controlled by automated software" message
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Tab).Perform()
         #[OpenQA.Selenium.Interactions.Actions]::new($Driver).SendKeys([OpenQA.Selenium.Keys]::Enter).Perform()
+        $EventGhostProcess = Get-Process eventghost -ErrorAction SilentlyContinue
+        if ($EventGhostProcess) {$null = $EventGhostProcess | Stop-Process -ErrorAction SilentlyContinue}
         Start-Process -FilePath "C:\Program Files (x86)\EventGhost\EventGhost.exe" -ArgumentList "-event `"ClearChromeRestoreMsg`""
         Enter-SeUrl $SiteUrl -Driver $Driver
 
@@ -108,8 +110,8 @@ function YouTubeMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULlOQcIMMXOH5gbq3rhrDOCqb
-# BtWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUY20ILSmqRvc048ugEN22yeqS
+# 8V6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -166,11 +168,11 @@ function YouTubeMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTHOswFy1kStcAG8qYqZsZ7qCh3fjANBgkqhkiG9w0BAQEFAASCAQCRwfa4
-# hZyTD1uiluBCtYIOCOKSIbEdB/f73DHQ+eOiiQNnJwPw2BVBpnZFOKOmlaXefG1d
-# 15cg2Has5iszzqzztCNXxXeCQaTQHXC4+73Ma5lpalCOg69JlJgBg9ip+MW7cwof
-# 3WeMbRAXamWjjkP+DVXRfDeaiPRvlu8ivVbNqxlOlcv3kJaPiYopNh8RarsoMn6W
-# z3MInyiHRYyTKemQ2XRAykigfwGf5UxtVmE53HIxwsCn06Aag659Az/rc6CnLWmK
-# 2DtLppN2bkezrBGehgl2O1VeTgv8ZPRnhNwHGzgA6bhPmWxb/50hbp0RV59jVb4J
-# 4sTwsN0HfP5+7zTh
+# BDEWBBRATErCQUtsgvbyV8YO2wsWAdAFLzANBgkqhkiG9w0BAQEFAASCAQBoW9WZ
+# mg6rOXdeYK3ue2gscwMGBuYyENElA0gSB6hwiQnXTROX+D6TTe26UxYMsRcUlR1F
+# 4vgfXLzzxKGkHbY/m/Haa/O7YbjpKdGc7Oz1Q8MLh6mxNlhr5LfIV3VV8gej3TFq
+# tZtv2/2GW51CFFjIWtN6+b5mxDMBf9fE4Rl12vsicWLMr2Sh1JXQYowjCFf4dGBF
+# hJZw0/OR017y+d76egGYZBflM8NKIi8geoLvGBQeVaXzmjROuLfJ5ELsvWwJPBoO
+# RsyvG4y33TdAEeBqk9IlLqV2PY/sZu6ScPo1jCKhH3GeQE8h32jPKdeiJI0O3Vl+
+# +k5w2k3BgUCm+g7g
 # SIG # End signature block
