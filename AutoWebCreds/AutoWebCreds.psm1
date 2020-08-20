@@ -66,8 +66,10 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         $GetModResult = [System.Collections.Generic.List[object]]::new()
         @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
         $AllPSModulePaths | foreach {
-            $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-            if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            if (Test-Path $_) {
+                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
+                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            }
         }
 
         if ($GetModResult.Count -eq 0) {
@@ -92,8 +94,10 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
             $GetModResult = [System.Collections.Generic.List[object]]::new()
             @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
             $AllPSModulePaths | foreach {
-                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                if (Test-Path $_) {
+                    $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
             }
 
             if ($GetModResult.Count -eq 0) {
@@ -330,8 +334,8 @@ function Update-StoredCredential {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUgx4Fz+7x2Ej+hWW36/cso30Y
-# g8GgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUFkAtmsqO1H+qwy8j6EHpa7q+
+# zhCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -388,11 +392,11 @@ function Update-StoredCredential {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTFDww/K83UwJniEE5X59iqSLpiETANBgkqhkiG9w0BAQEFAASCAQCB5gXD
-# Hr4cER7euWhfY3jeYvtADJtFPwFAltBX/qBkVftPThCzcMsOIuHxy383RU0BRPpn
-# w9mUJSB5SddG4I3NvHZMKrjyHPz+2KbSBF9d5MLkLWSXdBYOgFCqDa1L3fG0uFmZ
-# kkPeUBIwlen8OnNnb3fzOUiatJxdOp3I+cTTgApEq5DdXNDxiEZiC9JmcUT5JyqN
-# 5o6MAbjVEWgKSoE5S1Yr74Qi5g6baHquVyR8dIrMugQywz8hswp7+L+5Mf2602so
-# R+GZdZOOaLyGD9qHU5H4cMOMCLzmAD5BwGGRc54+3w9YI89SeQKQ4s/GJjmQoiSm
-# MjloHI42HLBXAY5u
+# BDEWBBSr9P+xWXW4DRQaTPjlpEXSdyhxWTANBgkqhkiG9w0BAQEFAASCAQDVG9j8
+# /hEAPtG0YvznAFgLkHyNGW4dvoF9ock7e1FxsoltRUi9K5bw8bCx8c9WDTAhXRBb
+# +QA4iL8Nc9b+ocRYR7XXAxZp+rm9sB8SfgjJbO5VFEZkWMEdPhxYsLiNLaSu5R3T
+# 1X+UuupJ8uXIc2ZIkIACi5deIExY3enpcmcHLv0ltA+YqIhT9nXtoQi/f+hEF5dP
+# 9itwsgwOJAouZPzmWbbTa6qF+yLDO7MGklB/dTQIqqtGYsH3UtEaTlZoI4CRCO1H
+# 0ClhcnQfG4pYjD2+9UD4ocs5ij7CBVUIjfbNiYBR16Q2dQP2aNJ9Cja1jY0OOR8/
+# EPShx3RsshDrrs5H
 # SIG # End signature block

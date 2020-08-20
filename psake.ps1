@@ -132,8 +132,10 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         $GetModResult = [System.Collections.Generic.List[object]]::new()
         @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
         $AllPSModulePaths | foreach {
-            $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-            if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            if (Test-Path $_) {
+                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
+                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            }
         }
 
         if ($GetModResult.Count -eq 0) {
@@ -158,8 +160,10 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
             $GetModResult = [System.Collections.Generic.List[object]]::new()
             @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
             $AllPSModulePaths | foreach {
-                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                if (Test-Path $_) {
+                    $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
             }
 
             if ($GetModResult.Count -eq 0) {
@@ -365,8 +369,8 @@ Task Deploy -Depends Build {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULvEBDrFuvLGkbPxWMwTNDZB/
-# 7wGgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYQPBE8AdFHkv55ft//OlAGxQ
+# ahmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -423,11 +427,11 @@ Task Deploy -Depends Build {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTyBoZJk/zREdNVpcYy4O51lTyLKjANBgkqhkiG9w0BAQEFAASCAQDqGYy6
-# dOnVbY4cRQNIVsTn//N4mI5cTayD0iZh3T/GffKyKwuFlkJoVON4Qj2zSHvwX+l1
-# 8OUOVWnb5ZWsy7hXfs74sQYA9JPrIn0qAPTJAeqIlTxdR58k3Tg0OPC6k0bF/bOA
-# nGCOJvUqnbexJCgWzNZEGt56uynrp2TGBWNk8CQy8e0vdc1PcuIdPjkIklxtlXGD
-# BCwYALWB0xzrBxSpv2HEEo3N8fXr/IdBgy6+n4z/ze2WZwJHwJ2SlRp1S010+hdF
-# W6tDaMj5TfNZykx7F0TwMj5bi78eIgZJxfmBgxacTCdHnqeDXzbVhjog14XV5FGj
-# yslwSzNxMV3EaNHG
+# BDEWBBQXZ3LYpI22KLvFvjdojcxzs5i0tzANBgkqhkiG9w0BAQEFAASCAQACFOe4
+# sLMOvvPO3P1Jk6gmUs7WzPYIseMFwEMRy1hhaOD2I1mxBsggi2ymVr0Txv42S8hu
+# uha6r48rgSUyWcYzsQWVUp4k8IweETN2w82jQQPtoReNquqwCACQpjd1AvyrKrHj
+# njhKrgwZPJ1GWJojRxA1Rb3FUkolTqqpkpBKikz8VxTC1WYHdVff2L+B8EjmZW8H
+# YS7ez1VGaoX/pbS5Vixt6RGst69QMhtH6lusvGdra3XBMXyiBdplga9rUd2WFFKM
+# r5L3d5lV8Pt7/M5PRCGhKcF3++3FfpUMAT3dWy7+983obPo9xE8BcJ0TuvzZYD4h
+# 4cx1cl0aFMJUf42F
 # SIG # End signature block
