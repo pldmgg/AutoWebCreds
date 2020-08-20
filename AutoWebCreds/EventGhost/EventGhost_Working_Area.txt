@@ -1,5 +1,5 @@
 # Send TCP Event to EventGhost (Using the Plugin TCPEvents - https://github.com/per1234/TCPEvents):
-# & "C:\Program Files (x86)\EventGhost\EventGhost.exe" -n 127.0.0.1:1024 Unsecure321! ClearChromeRestoreMsg
+# & "C:\Program Files (x86)\EventGhost\EventGhost.exe" -n 127.0.0.1:1024 <password> ClearChromeRestoreMsg
 
 
 
