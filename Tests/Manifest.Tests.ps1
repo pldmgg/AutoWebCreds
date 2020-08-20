@@ -64,7 +64,7 @@ Describe 'Module manifest' {
         $script:changelogVersion = $null
         It 'has a valid version in the changelog' {
             $changelogPath = Join-Path -Path $env:BHProjectPath -Child 'CHANGELOG.md'
-            Write-Host "##### changelogPath is $changelogPath #####"
+            #Write-Host "##### changelogPath is $changelogPath #####"
             $script:changelogVersion = $($(Get-Content $changelogpath) | Select-String -Pattern "^##[\s](\d+\.){1,3}\d+").Matches.Value | foreach {
                 $($_ -split "[\s]")[-1]
             } | Select-Object -Index 0
@@ -101,8 +101,8 @@ Describe 'Module manifest' {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUmaFL810sfE1hs38iK+2Ffuw6
-# 7wSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWXJFM+KapI6hB+eeXXauQktg
+# VSagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -159,11 +159,11 @@ Describe 'Module manifest' {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSHeQMQJ4sc4tXeXy9QuzZV4hQmYTANBgkqhkiG9w0BAQEFAASCAQAzlEAX
-# 7yk3IOxa9DebQYngMridVnbW3Tt6yZwiNf3Er8L+CeJZrpGhjuhAFCq7lBHmeOA9
-# +fI4w8T8ybH7v7BtwM+xDThgB/wgFs+/lDf2IG4m/6qbyVq3lVN56p/cwcf9aknN
-# SlXRZAelRxQOapsp1IjQnhJsjaqR77uxDqEfBKxPAqekabbN2wdEbhEbLpRvUpbV
-# 4pfdoDfiwpAxH2amJG8R4pUoAHWKy9RjrLLfwgYVuQKdKSbTqfVy0yOm2KUdEx6x
-# v4rFEng7Vywj/g4b8b4Xfbd/ub4VMQGcXe4UM4XN0H3ArVi/1E2IDfbSwQJjHCAT
-# h/Hetk3XbP4NiBeS
+# BDEWBBQ4FHAyBQkkixr4iWb8jzshmW/fFzANBgkqhkiG9w0BAQEFAASCAQBV6SXK
+# JYqpLhqijZuDwITe3TRAsg7KHMtSbXqWG5+HQrWJo7iemdh3ollQYLFa3q7zeR5n
+# 3sQIM5MB972l6Q8RWs/W9Dvm6vH4Qb1q03HJyIZFUTtpZchgr+lXLKuHRH4eGNwX
+# KMuIM4k4yAQiUbcGSMPmfFfQG/nqUwf6gnLDsHK8Q2RHLX9Yv/88VMWa0zOZKpL0
+# y93LHpzzc/Kk+sA8pgux7ho1+jn5UBhN7z20Xz7zWwBGhy0jYcJpWJniAIjT5zj0
+# FCFnp9FXgLI9QsQLR0jjM8HhtdJdkjCDyItZxu+0HarRjjh2PT5k8x8z/V4bePBg
+# Svmm5p9XFq8XrC2C
 # SIG # End signature block

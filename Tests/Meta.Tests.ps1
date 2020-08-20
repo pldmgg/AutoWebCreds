@@ -42,7 +42,7 @@ Describe 'Text files formatting' {
     Context 'Indentations' {
         It 'Uses spaces for indentation, not tabs' {
             $totalTabsCount = 0
-            $allTextFiles | Foreach-Object {
+            $allTextFiles | Where-Object {$_ -ne $null} | Foreach-Object {
                 $fileName = $_.FullName
                 (Get-Content $_.FullName -Raw) | Select-String "`t" | Foreach-Object {
                     Write-Warning "There are tab in $fileName. Use Fixer 'Get-TextFilesList `$pwd | ConvertTo-SpaceIndentation'."
@@ -57,8 +57,8 @@ Describe 'Text files formatting' {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9KoVSW6vYEJvuZb+71l3/pPD
-# /yugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUjp4G/5AiI1nwpucffpEMJ2sc
+# PlCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -115,11 +115,11 @@ Describe 'Text files formatting' {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTnQOWV+HBgcTISBU9RFauiWCWaSTANBgkqhkiG9w0BAQEFAASCAQDPZaLE
-# zyPKktC5j3BWIhRfLLEWmYlnWksxDltTNRLNda1+zNRWxqlYsVcMs1kdzd1x7PJR
-# t8dSPBU70a+xexfpXJVWIw5tVRqMFa3ckSciDeUswEPjtsjkNIcq0Nuqsa0bgSsA
-# Twz3P2yxJ9XgihtmDCphkEVzsBlTsKrniPyJi34j8FYKdB1G5XJpZpythAQTu+sw
-# ElYlRoCwPJ08iFE2IkjK1OkXiv3oEYkPK8o+I9YEMuy65QZ6adlnxoNOdjaaE6Ec
-# Gy4N/Sayv15ABFsYFbCSd823w+wqBgv8vnzgiJiniCg4AVoennoZdam0fvd/xsJ5
-# CnJ6ChvaPbdkHAV3
+# BDEWBBSR9f8jrIRQrX9kXY36ckytSn7gHjANBgkqhkiG9w0BAQEFAASCAQCheaL8
+# 0MogjFbWzvb3A9nwArnvySIvTtCHLw+8j7QmjL8B6IyupmHIYEYjqV+kNsc8XZA+
+# 7GLwLrw+ftPgX7l8eFpkocWLapbcW8Htg1SmjtjOfw9S9iuhebMeUQcTku/Rqp8D
+# xQgniJrz+93IDbHtcnVzpyS9ebcE9jr7MlnsLwe9lbpcnRpXvpbrSowJLhF/T9GW
+# SCFZ8zeyDZXSy8wDQNmxJf1SvVnxiZQpMOqQ0LR4uMoq8PwMa8OYzmBiWG5qsCM5
+# Pcdgc1rUZbIlFIriHsyV+VHSgRlEW+2m/44iHhnN4eCoqsZ6QX4Ctb3dPb7mnd6P
+# M+JPQHthqpg0A5XU
 # SIG # End signature block
