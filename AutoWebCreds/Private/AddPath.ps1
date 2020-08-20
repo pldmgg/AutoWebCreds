@@ -8,8 +8,6 @@ function AddPath {
         [switch]$UpdateSystemPath
     )
 
-    $DirSep = [System.IO.Path]::DirectorySeparatorChar
-
     # Update PowerShell $env:Path
     [System.Collections.Arraylist][array]$CurrentEnvPathArray = $env:PATH -split ';' | Where-Object {![System.String]::IsNullOrWhiteSpace($_)} | Sort-Object -Unique
     if ($CurrentEnvPathArray -notcontains $PathToAdd) {
@@ -26,8 +24,8 @@ function AddPath {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdWfex/WQTsYw2AECN/cPcuba
-# 85qgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUb4K3xFAnYz92HGmcD2BPewvW
+# +06gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -84,11 +82,11 @@ function AddPath {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQf2uBzEobPYHSynyJ7d29W/XRqXTANBgkqhkiG9w0BAQEFAASCAQDAfBB5
-# rcLaG7tAy4t12yHUr9M6z4YPgUOBMFLVhVR8bZbMcVBT3CoD0ZsADSfHjg5doAQ6
-# NhKmdIbW3Q4bl6C7aNyjFYF7keHWBeNQ0M11Wy1IaWlTcaGSvtZcwI1BHAmmO3CP
-# heMAjnj2E4o0eK91O/Q2DDN2wsrGBKAysCKp53NvsmADLo9wo+hG2uq0Ke0SA5q/
-# 7qtzYSnWpRwSzjouJeHdY9XtREIHbkAchVFOjWKulttG/As/z6HgxtF+Mb0EBh+3
-# xXasaGFCt7ayyZ981l2cCnJDQhpypN3IEvyJTpIX8VOXRLrwH/WpsARV7Po19HtN
-# cHku7VRZBFYpKcoN
+# BDEWBBRUXgyzQN+UThG4rh9hx3q2KzCEjzANBgkqhkiG9w0BAQEFAASCAQA5aDou
+# kXxpl1Bo6u3UZR9W7RtakAZtC0tqcaDSnmtq/Vc0txPHodoHX8U7qz6NYA2eCxwc
+# w7I0POKgRByPPkMDezu7gJXHa4kJtZuGFP5n9KFTwwtXvPAt8YvtUNq/CZv2Y0c+
+# v3epsIJjb4Vynali1UF6wT/GlbRKKXF8rTKX1qpOxTzL2sDgctLDqzE8S/U1mKem
+# QF+muW1qntLsqb7jJsHhrasddTYRWsOCbzTVFlxHcY+t++Ih91ZZMxwOrnLNa4WY
+# Y3+jEP+BynlnFno/4NpTYmxyEne+0j9noFR/JftAo3oyrQxrHFNa2IQFj2rh25xw
+# EbIVmUQSchJIz0UW
 # SIG # End signature block

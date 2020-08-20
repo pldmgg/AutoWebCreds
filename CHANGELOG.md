@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.4 (August 20, 2020)
+
+- Make sure UWP Windows Security Credential Prompt window appears on top of everything else (sometimes it gets hidden under other windows)
+
 ## 0.0.3 (August 20, 2020)
 
 - Ensure EventGhost runs the proper configuration file

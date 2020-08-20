@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<EventGhost Version="1722" Guid="{C288EDBF-9F48-4F0D-9C9E-1F05800477B8}" Time="1597929194.58">
+<EventGhost Version="1722" Guid="{BAD67584-1DD3-4F9D-99FD-2285521487E7}" Time="1597950540.48">
     <Autostart Name="Autostart" Expanded="True">
         <Plugin Identifier="X10" Guid="{C3E96757-E507-4CC3-A2E6-465D48B87D09}" File="X10">
             gAJLAl1xAChLAUsCSwNLBEsFSwZLB0sISwlLCksLSwxLDUsOSw9LEGVYAwAAAFgxMHEBh3ECLg==
@@ -14,7 +14,7 @@
             gAIpLg==
         </Plugin>
         <Action>
-            EventGhost.EnableExclusive(XmlIdLink(222))
+            EventGhost.EnableExclusive(XmlIdLink(221))
         </Action>
         <Plugin Identifier="AutoRemote" Guid="{C18A174E-71E3-4C74-9A2B-8653CE9991E1}" File="AutoRemote">
             gAIoVQpBdXRvUmVtb3RlcQBNGgdYCgAAAEV2ZW50R2hvc3RxAV1xAihYFAAAAGxkZmFtYmlfTGluZGFQcm9maWxlcQNVAHEEWKwAAABnb28uZ2w6Z2NtQVBBOTFiR0pabnJpRzBBOTJRM1FuRVZCTW1qOTNpZTFGLVRvX094aGRIMkFqTmpuUUQ2eGhMVFQ0ZFpWdWlqaEhNcmY1N0hUaFJqU3dqNXpwZ2J3RjhIdk5UU0VKVHNNY0sxUFhEdkxUaExSTU5QS1ltOG5rdDFJb0YtQXZaa0dRU1RPQ1RJdTlIOHhFZjdRTENuZnpnX2V1NXBfQ3ZFSDR3cQVYAAAAAHEGiU50cQdhaAZYFgAAAEM6XEF1dG9SZW1vdGVUcmFuc2ZlcnNxCIhYZwAAADEvLzBkaUpCMFcyN2xoVG5DZ1lJQVJBQUdBMFNOd0YtTDlJcnBNMm1IX2tPb1A4eWtOemdGRjdGelE2U3haRWplRHJoLUdJcHUtMjJHNlByd3ZWUTNoYWxTdXp0OFVSUTB3S3ZhZ1VxCYmIWBIAAABTZW5kIHRvIEV2ZW50R2hvc3RxCohoBoh0cQsu
@@ -29,7 +29,7 @@
     <Macro Name="Start Zoom Player">
         <Event Name="DVD" />
         <Action>
-            EventGhost.JumpIfLongPress(3.0, XmlIdLink(138))
+            EventGhost.JumpIfLongPress(3.0, XmlIdLink(137))
         </Action>
         <Action>
             System.Execute(u'{eg.folderPath.ProgramFiles}\\Zoom Player\\zplayer.exe', u'/TCP: 4769', 0, False, 2, u'')
@@ -47,19 +47,19 @@
     <Macro Name="Switch to mode: Zoom Player">
         <Event Name="Task.Activated.zplayer" />
         <Action>
-            EventGhost.EnableExclusive(XmlIdLink(35))
+            EventGhost.EnableExclusive(XmlIdLink(34))
         </Action>
     </Macro>
     <Macro Name="Switch to mode: Winamp">
         <Event Name="Task.Activated.winamp" />
         <Action>
-            EventGhost.EnableExclusive(XmlIdLink(140))
+            EventGhost.EnableExclusive(XmlIdLink(139))
         </Action>
     </Macro>
     <Macro Name="Switch to mode: Mouse Emulation">
         <Event Name="Setup" />
         <Action>
-            EventGhost.EnableExclusive(XmlIdLink(187))
+            EventGhost.EnableExclusive(XmlIdLink(186))
         </Action>
     </Macro>
     <Macro Name="Switch to mode: Keyboard Emulation">
@@ -67,11 +67,11 @@
         <Event Name="Task.Deactivated.zplayer" />
         <Event Name="Task.Deactivated.winamp" />
         <Action>
-            EventGhost.EnableExclusive(XmlIdLink(222))
+            EventGhost.EnableExclusive(XmlIdLink(221))
         </Action>
     </Macro>
     <Folder Name="Context Folder">
-        <Folder Name="Zoom Player" id="35" Enabled="False">
+        <Folder Name="Zoom Player" id="34" Enabled="False">
             <Macro Name="Context Navigator">
                 <Event Name="X10.Rename" />
                 <Event Name="Menu" />
@@ -286,13 +286,13 @@
                     ZoomPlayer.fnExit()
                 </Action>
             </Macro>
-            <Macro Name="Forced Restart" id="138">
+            <Macro Name="Forced Restart" id="137">
                 <Action Name="Taskkill ZoomPlayer">
                     System.Execute(u'{eg.folderPath.System}\\taskkill.exe', u'/F /IM zplayer.exe /T', 1, True, 2, u'')
                 </Action>
             </Macro>
         </Folder>
-        <Folder Name="Winamp" id="140" Enabled="False">
+        <Folder Name="Winamp" id="139" Enabled="False">
             <Macro Name="Play">
                 <Event Name="Play" />
                 <Event Name="Ok" />
@@ -391,7 +391,7 @@
                 </Action>
             </Macro>
         </Folder>
-        <Folder Name="Mouse Emulation" id="187" Enabled="False">
+        <Folder Name="Mouse Emulation" id="186" Enabled="False">
             <Macro Name="Mouse Move Up">
                 <Event Name="Up" />
                 <Event Name="Num2" />
@@ -457,7 +457,7 @@
                 </Action>
             </Macro>
         </Folder>
-        <Folder Name="Keyboard Emulation" id="222" Expanded="True">
+        <Folder Name="Keyboard Emulation" id="221" Expanded="True">
             <Macro Name="Up">
                 <Event Name="Up" />
                 <Action>
@@ -578,51 +578,51 @@
     </Folder>
     <Folder Name="Other Examples">
         <Folder Name="State Folder Example">
-            <Folder Name="Folder1" id="280">
+            <Folder Name="Folder1" id="279">
                 <Macro Name="Enable other Folder">
                     <Event Name="Blue" />
                     <Action>
-                        EventGhost.EnableExclusive(XmlIdLink(284))
+                        EventGhost.EnableExclusive(XmlIdLink(283))
                     </Action>
                 </Macro>
             </Folder>
-            <Folder Name="Folder2" id="284" Enabled="False">
+            <Folder Name="Folder2" id="283" Enabled="False">
                 <Macro Name="Enable other Folder">
                     <Event Name="Blue" />
                     <Action>
-                        EventGhost.EnableExclusive(XmlIdLink(288))
+                        EventGhost.EnableExclusive(XmlIdLink(287))
                     </Action>
                 </Macro>
             </Folder>
-            <Folder Name="Folder3" id="288" Enabled="False">
+            <Folder Name="Folder3" id="287" Enabled="False">
                 <Macro Name="Enable other Folder">
                     <Event Name="Blue" />
                     <Action>
-                        EventGhost.EnableExclusive(XmlIdLink(280))
+                        EventGhost.EnableExclusive(XmlIdLink(279))
                     </Action>
                 </Macro>
             </Folder>
         </Folder>
         <Folder Name="State Macro Example" Expanded="True">
-            <Macro Name="State1" id="293" Enabled="False">
+            <Macro Name="State1" id="292" Enabled="False">
                 <Event Name="Green" />
                 <Action>
-                    EventGhost.DisableItem(XmlIdLink(293))
+                    EventGhost.DisableItem(XmlIdLink(292))
                 </Action>
                 <Action>
-                    EventGhost.EnableItem(XmlIdLink(298))
+                    EventGhost.EnableItem(XmlIdLink(297))
                 </Action>
                 <Action Enabled="False">
                     System.MonitorPowerOff()
                 </Action>
             </Macro>
-            <Macro Name="State2" id="298">
+            <Macro Name="State2" id="297">
                 <Event Name="Green" />
                 <Action>
-                    EventGhost.EnableItem(XmlIdLink(293))
+                    EventGhost.EnableItem(XmlIdLink(292))
                 </Action>
                 <Action>
-                    EventGhost.DisableItem(XmlIdLink(298))
+                    EventGhost.DisableItem(XmlIdLink(297))
                 </Action>
                 <Action>
                     System.MonitorPowerOn()
@@ -630,22 +630,22 @@
             </Macro>
         </Folder>
         <Folder Name="State Macro Example 2">
-            <Macro Name="Macro1" id="304" Enabled="False">
+            <Macro Name="Macro1" id="303" Enabled="False">
                 <Event Name="Yellow" />
                 <Action>
-                    EventGhost.EnableExclusive(XmlIdLink(307))
+                    EventGhost.EnableExclusive(XmlIdLink(306))
                 </Action>
             </Macro>
-            <Macro Name="Macro2" id="307">
+            <Macro Name="Macro2" id="306">
                 <Event Name="Yellow" />
                 <Action>
-                    EventGhost.EnableExclusive(XmlIdLink(310))
+                    EventGhost.EnableExclusive(XmlIdLink(309))
                 </Action>
             </Macro>
-            <Macro Name="Macro3" id="310" Enabled="False">
+            <Macro Name="Macro3" id="309" Enabled="False">
                 <Event Name="Yellow" />
                 <Action>
-                    EventGhost.EnableExclusive(XmlIdLink(304))
+                    EventGhost.EnableExclusive(XmlIdLink(303))
                 </Action>
             </Macro>
         </Folder>
@@ -655,6 +655,17 @@
             <Event Name="ClearChromeRestoreMsg" />
             <Action>
                 Window.SendKeys(u'{Tabulator}{Return}', False, 2)
+            </Action>
+        </Macro>
+    </Folder>
+    <Folder Name="FocusCredPrompt" Expanded="True">
+        <Macro Name="FocusCredPrompt" Expanded="True">
+            <Event Name="Task.NewWindow.CredentialUIBroker" />
+            <Action>
+                Window.FindWindow(u'CredentialUIBroker.exe', None, None, None, None, None, False, 0.0, 0)
+            </Action>
+            <Action>
+                Window.BringToFront()
             </Action>
         </Macro>
     </Folder>
