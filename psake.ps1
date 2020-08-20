@@ -130,7 +130,12 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         $GetModResult = @(Get-Module -ListAvailable -Name $ModuleName)
         if ($GetModResult.Count -eq 0) {
             try {
-                $null = Install-Module -Name $ModuleName -Scope CurrentUser -AllowClobber -Force -ErrorAction Stop -WarningAction SilentlyContinue
+                if ($ModuleData.Value.PSVersion -eq "WinPS") {
+                    powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Scope CurrentUser -AllowClobber -Force"
+                }
+                else {
+                    $null = Install-Module -Name $ModuleName -Scope CurrentUser -AllowClobber -Force -ErrorAction Stop -WarningAction SilentlyContinue
+                }
             }
             catch {
                 # Try Manual Install
@@ -169,7 +174,6 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         
         # Import the Module
         if ($ModuleData.Value.PSVersion -eq "WinPS") {
-            powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Force"
             try {
                 if ($PSVersionTable.PSEdition -eq 'Core') {
                     Import-Module $ModuleName -UseWindowsPowerShell -ErrorAction Stop
@@ -365,8 +369,8 @@ Task Deploy -Depends Build {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUMaZ4pK88n0g37po+tH9gUeOw
-# nTmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkH2BKx3GYkqnGh9vNQkM8oR8
+# h2igggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -423,11 +427,11 @@ Task Deploy -Depends Build {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRvT6zy2XdX7kALC1KQVC74srFC0DANBgkqhkiG9w0BAQEFAASCAQA4R0xk
-# SqVmlFozQZp3SywGksl+BmThNVXDhzWscBVp6bS3az6qhBIw/IRa5hQSgonnuH28
-# 8OCi38P9Ln0J7wdx9zCn/QAn4jymWDw5BA0QqzSZO68lSI5TUCilZt3E1irOtyXq
-# wXH5uMsSqb8Wf7NwCRi1CkLV/xqqyulj0wLc2hTjNeK1cV8xf5eps4shj1USCxLG
-# nLwGtx0ES6QMbvBwe7yCeN/AoUkyPB99XcR6kCnriVnx0pfV6A9ikkVxhmgp0+VF
-# NfDTIeqJkNVGJzknhrvodigJWKswioCV1QSWE3GfjkJUIQjmPr2xH7j5BGS5TnLL
-# 3ijYXyHd2lq+SPzE
+# BDEWBBQ9qfnWJmT5un45aDc5TLQg2yJh+TANBgkqhkiG9w0BAQEFAASCAQBR6Wwg
+# 70XNonuC6G07Q5dgpOBKOi5SqWLOhaBr7bSKk0cOMjwJouSxfYbVwqOEjt1JXD5R
+# QzIO42iP5PNGdL7vZHBjiJCzwUpAeA5soRn6kTzV+RwhovuyX6YsGtmfzmTN6Hzj
+# 2Lb4hwGGI6+y2YtkATAfDKQZXU8Pth5x8Rt4JufK0EC/hGFxbzC5Ydq/AwHc1MNE
+# R+fZfW9RBYc8m5DBE/wKIQI5FDX2p+F+oluCoKZ4QUGq47Z/jpqeZApWZmLM9gQK
+# WI6be5WBO4kC2k/zOhuvLiv7gxj2/9TV5d8X7NimGuiknim7r1H7aUn1+p8K9gK4
+# TzZsBc34RiZR1hrl
 # SIG # End signature block

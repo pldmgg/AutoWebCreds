@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.5 (August 20, 2020)
+
+- Fixed issue with installing/importing Module dependencies
+
 ## 0.0.4 (August 20, 2020)
 
 - Make sure UWP Windows Security Credential Prompt window appears on top of everything else (sometimes it gets hidden under other windows)

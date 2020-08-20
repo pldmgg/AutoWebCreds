@@ -64,7 +64,12 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         $GetModResult = @(Get-Module -ListAvailable -Name $ModuleName)
         if ($GetModResult.Count -eq 0) {
             try {
-                $null = Install-Module -Name $ModuleName -Scope CurrentUser -AllowClobber -Force -ErrorAction Stop -WarningAction SilentlyContinue
+                if ($ModuleData.Value.PSVersion -eq "WinPS") {
+                    powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Scope CurrentUser -AllowClobber -Force"
+                }
+                else {
+                    $null = Install-Module -Name $ModuleName -Scope CurrentUser -AllowClobber -Force -ErrorAction Stop -WarningAction SilentlyContinue
+                }
             }
             catch {
                 # Try Manual Install
@@ -103,7 +108,6 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         
         # Import the Module
         if ($ModuleData.Value.PSVersion -eq "WinPS") {
-            powershell.exe -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Install-Module $ModuleName -Force"
             try {
                 if ($PSVersionTable.PSEdition -eq 'Core') {
                     Import-Module $ModuleName -UseWindowsPowerShell -ErrorAction Stop
@@ -330,8 +334,8 @@ function Update-StoredCredential {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUAPsKLMcjyGGeBeblzOMOQf5e
-# I4+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU4Dq9Cf8MQ/g1NNK/npft9KgE
+# xjOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -388,11 +392,11 @@ function Update-StoredCredential {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSmBgG66B0w/XZvpELAlJCrbjgWpjANBgkqhkiG9w0BAQEFAASCAQDHQUCB
-# sEwbpRvf21uTgX1S6ZbZHWd2/PxfftmjkNu29oKkdZBaNf3AymvJrC4TO/vzAFlj
-# 4gqMWK9RDiH4cFp/kDyDuBDC1Hm4C9gvxPKYcQ+WPYEt75Q/GWyZZeFrIABW/ZlC
-# kuoLc0lX9FDguv7RZ3v4yRa5tesse3Hm8/gCmMLy4eCwzAvgtBVF7GcXf3KYtzNc
-# XYVpIuB0lchhEdxCfSSYrWWgBH5aP42bz6AwO1YsSc4aflOpj4EXwLb1KSid8JZ3
-# eTJ2ItBg+Jz/MMXjZJooPgUdzDSGxAvojQJNA0mR60Xnf95jMset2OG5ovm4xVck
-# qM/kamU0za6z4TgA
+# BDEWBBQMVhaOP5Aaiu4ln1JYfiSDuRRgVjANBgkqhkiG9w0BAQEFAASCAQDXzGYt
+# rqRpt5APJawm9s+O34KQ/P7lg5DIiqi49xsImI7HiUmFTRIiPORoAkf6VAGbyiTD
+# cQ0pkFKQxXWIc9sSW468SRyyl+acWvL1iHLKXbgDocWyBJCCKy98z3T/8cnKxjgE
+# njrXyejGgzO2TAsFDt+aWjvS7T/+LH/TVNt/q9BAE+4mrpbTPvG5rzdeRw8b4dHr
+# RhYHoxAex74iDpkhD2oUv6znHVOBBBgfKccMo/j/7oEwHfQrEPyXHLlnZhiZFjJY
+# p8bu+mbYk18ruw/+mZBvZdeqHFk7y3B5NAxYZGqYwwrxX5bAshhBxMkAUUhM2/oR
+# h/bB0VozNWcO2FaV
 # SIG # End signature block
