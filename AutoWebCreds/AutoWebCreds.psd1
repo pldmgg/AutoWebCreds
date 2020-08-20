@@ -69,7 +69,7 @@ PowerShellVersion = '5.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'New-WebLogin'
+FunctionsToExport = 'New-WebLogin','Update-StoredCredential'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -124,8 +124,8 @@ HelpInfoURI = 'https://github.com/pldmgg/AutoWebCreds'
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0wjzA6SfJU1YPGbxyVNTMCjX
-# K46gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU5uRfcsEmI28iEMXFgOOyOAzV
+# SeCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +182,11 @@ HelpInfoURI = 'https://github.com/pldmgg/AutoWebCreds'
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRxokvsRxfNGggXOJTo4SfBYA+rszANBgkqhkiG9w0BAQEFAASCAQBJt0HQ
-# rrwopobrrOtRZn45CzZAyapwsIZfP4crWqmbZhaUiePpJC1K+W3K4yfifQaJka8K
-# Qfwkzavs1G0BAaeE6kI0pDxGymhk2mrZyKWv2Te42acvW4yTu8KT8QXY0mfU8p6a
-# KLUl8zgL5klXKC6K2zNz4jSytx/PXXcQS04jFv41yvyTEwf5MZi4F08G0L4yS4eH
-# +a7OgkdA/4lbo0Smz1bYuatpo9P/xaZ6pRoDHC9k0+wYQB5D+uzWlz9/xumPLz2l
-# IRzhOoWs3Zwv+mK/NHfL2jux13kHrNX6Yj1IPo+9lBZnfIcpiheKbEXHXo0NGgx9
-# 4Dh4LGUyx9qfKN5d
+# BDEWBBRAtGUr01Z8SJBYMYxa6YHYCR8MhTANBgkqhkiG9w0BAQEFAASCAQCLOCFO
+# vRCS+Ap95zh5sgTUb1tqAVsGLBYsevA3yjnElhfpahtbcUWn62GWD8SYmvi3gsRH
+# wgBla9ziZX4EHdhLy7oMWxOZ3eqIlava/2smD5stWwQ5uhR76xUFEKhfpHvY6m8r
+# Sq5esZ2KBzY+aXU93zluB+mwaTFdZZa6amK87AJi/l+nmTNRrbBXYFGgIecZW1cx
+# nVgmS1nJ5/HBbAhgq7YNbOn5z+N08fRmmrYQlRVlV95di8q8Zh+bqwRBOoYyY4Zc
+# JWPFaPWrbqHivjmOIVdiCoFIqduXrxlHC8juV/0T63/KbSZnRAkcHFPsmi05zoM6
+# J0Zo8sUepe0INWOQ
 # SIG # End signature block

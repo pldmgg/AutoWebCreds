@@ -90,6 +90,7 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
         $Commands -contains 'YouTubeSeleniumLoginCheck' | Should Be $False
         $Commands -contains 'YouTubeMusicSeleniumLoginCheck' | Should Be $False
         $Commands -contains 'New-WebLogin' | Should Be $True
+        $Commands -contains 'Update-StoredCredential' | Should Be $True
     }
 
     It "Module '$env:BHProjectName' Private Functions Are Available in Internal Scope" {
@@ -134,8 +135,8 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUty3Q1fzELpInmuzS2gSu3iBV
-# d3WgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkDH4KTcIAblkjQ4HoFAU4NTG
+# SsWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -192,11 +193,11 @@ Describe -Name "General Project Validation: $env:BHProjectName" -Tag 'Validation
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRaKIM38oZqUu45AA5aMK0c1kmKtzANBgkqhkiG9w0BAQEFAASCAQBiQtiS
-# 4+DP/RGvMvvgWdp4S3IYJMrMSmJFs8TKrdU0lFJzHdfqHbPHCxiq2JdPf6fgnH7j
-# Xp8LQKmIns1x462ABkPQweZV6w9RfxOOBqSHr07+yOSsxPo1xIpIYxeRuSgs6lmf
-# RbHqJdup9OnrP3y673qPoaTeOmjxNhuG4G8quURIH6iczSSQdKQdSuDeVRmc1jHJ
-# ThhMjzv/jg+QDPxmV0XbYdjmiY2rknLDhkQAe1gVLMioROfB5EXnd4ycI2Cjd4FJ
-# 3HWsQez8lAqfNiSBfIi/E6HUZrVzK+Uxex2LAtwTQjoUcdbp5WYuZGrtO289Muws
-# GmZryABpxe/7h/yY
+# BDEWBBQQv0GGN9piyEwgNeDRZTt2ENy9yzANBgkqhkiG9w0BAQEFAASCAQAwMa5D
+# wg6P8IqjaUl1vM6Eja5PeCDCHyTa7W35hF3uAoUroxEgeLiOES4boqCQPuM0F8im
+# t7Rhhk2F9WpYcQAyPbt3WFCCYxHwKZeKT7rpftAPkK1MmSi0K6DKkAR5A6he3JWG
+# sp1j/TmaGY/4yqrTxXkl59TliG7t+Q79T6vupX19WsOrqVdErD7QFjvSmwtGeP5J
+# oo2xM5EZBNYD3iRxQPn6TXAaSwmgutQYEG8t8D/5OjHBFaZI3Jfse+RyxRWwZah6
+# t222JAPBaJVSHqCB43sS62BUvEdK8oZHfORgHG1YU6r4R/B1QleBCy5QqwvOawcd
+# WmSkL3ERGhzo7NP/
 # SIG # End signature block

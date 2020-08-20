@@ -1,52 +1,85 @@
-function GetAnyBoxPSCreds {
+<#
+    .SYNOPSIS
+        This function updates existing credentials in the Windows Credential Manager - or if the credential Target
+        doesn't already exist, this function creates a new Windows Credential Manager entry.
+
+    .DESCRIPTION
+        See .SYNOPSIS
+
+    .NOTES
+
+    .PARAMETER ServiceName
+        This parameter is MANDATORY.
+
+        This parameter takes a string that represents the name of the service that you would like to log into via
+        Google Chrome (chromedriver.exe). Currently, supported services are:
+
+        AmazonMusic, Audible, GooglePlay, InternetArchive, NPR, Pandora, ReelGood, Spotify, Tidal, TuneIn, YouTube,
+        and YouTubeMusic
+
+    .PARAMETER SiteUrl
+        This parameter is OPTIONAL.
+
+        This parameter is takes a string that represents the URL of the website where these credentials are used.
+
+    .EXAMPLE
+        # Open an PowerShell session, import the module, and -
+        
+        PS C:\Users\zeroadmin> Update-StoredCredential -ServiceName Spotify -SiteUrl "https://open.spotify.com"
+#>
+function Update-StoredCredential {
     [CmdletBinding()]
     param(
         [parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet("AmazonMusic","Audible","GooglePlay","InternetArchive","NPR","Pandora","ReelGood","Spotify","Tidal","TuneIn","YouTube","YouTubeMusic")]
-        [string]$ServiceName
+        [string]$ServiceName,
+
+        [parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
+        [string]$SiteUrl
     )
 
-    # See if we can get the user's $ServiceName Credentials from the Windows Credential Manager
-    try {
-        $StoredCreds = Get-StoredCredential -Target $ServiceName -ErrorAction Stop
-        if (!$StoredCreds) {throw "Unable to find Windows Credential Manager Target called '$ServiceName'"}
-    } catch {
-        $CmdString = @"
-if (!`$(Get-Module -ListAvailable AnyBox -ErrorAction SilentlyContinue)) {Install-Module AnyBox}
-if (!`$(Get-Module AnyBox -ErrorAction SilentlyContinue)) {Import-Module AnyBox}
-
-`$InputResult = Show-AnyBox -Title '$ServiceName Credentials' -Message 'Enter Your $ServiceName Credentials' -ContentAlignment 'Center' -Buttons 'Cancel','Submit' -MinWidth 400 -FontSize 20 -Prompts @(
-New-AnyBoxPrompt -Message 'UserName:'
-New-AnyBoxPrompt -Message 'Password:' -InputType Password
-)
-
-'[PSCustomObject]@{UserName = ' + "'" + `$InputResult.Input_0 + "'" + '; ' + 'Password = ' + "'" + [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR(`$InputResult.Input_1)) + "'" + '}'
-"@
+    $ExistingStoredCreds = Get-StoredCredential -Target $ServiceName -ErrorAction SilentlyContinue
+    if ($ExistingStoredCreds) {
         try {
-            $EncodedCmd = [System.Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($CmdString))
-            $InvokeCmdString = powershell.exe -NoProfile -NoLogo -ExecutionPolicy Bypass -EncodedCommand $EncodedCmd
-            $CredentialsPSObj = Invoke-Expression $InvokeCmdString
+            Remove-StoredCredential -Target $ServiceName -ErrorAction Stop
         } catch {
             Write-Error $_
             return
         }
-
-        #$CredManObj = New-StoredCredential -Target $ServiceName -Username $CredentialsPSObj.UserName -Password $CredentialsPSObj.Password
-        $ArgList = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -Command `"New-StoredCredential -Target $ServiceName -UserName $($CredentialsPSObj.UserName) -Password $($CredentialsPSObj.Password)`""
-        $null = Start-Process -FilePath powershell.exe -NoNewWindow -Wait -ArgumentList $ArgList
-        $StoredCreds = Get-StoredCredential -Target $ServiceName -ErrorAction Stop
+    }
+    
+    if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
+        try {
+            # Have the user provide Credentials
+            [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+        } catch {
+            Write-Error $_
+            return
+        }
+    } else {
+        try {
+            if ($SiteUrl) {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+            } else {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName
+            }
+        } catch {
+            Write-Error $_
+            return
+        }
     }
 
-    $StoredCreds
-
+    # Output
+    $PSCreds
 }
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUbNUv4JERqD1rDX7FarjwIGFS
-# Q1mgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUv3L0EmIpjRZg1EH94GbewJBX
+# y3mgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -103,11 +136,11 @@ New-AnyBoxPrompt -Message 'Password:' -InputType Password
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTow+MRs+NRzejH+sgx7kQmoS+jfDANBgkqhkiG9w0BAQEFAASCAQC4383Q
-# cs5h7wRfEB/R2cZ6JFgsaRy0ZYi/nKNmUfQatU5lJwMlRlZkhHPX7DciumfaZgfA
-# 7ATupPmBfYpQGK13UyWcHB0xFzR6dwlUuCC1ELdQVgC/AH9er8Dv8I8LDcTknOeM
-# pK/FhB4n+9QuG2dkYVLpLsf/SJiR6ghSlf6KMYjuqHBKRgkfp9uKISjuUeDy0rh8
-# ILvlAA3dCifQJzd5PwJNn9I+aFrJ7tY0O7JT/YAcqqbBkG3z5gEHGMQxSqWFKKwN
-# bqK3AU1auM5aHgnjy/4W4/NqQoLGT7l2+EyFKG/QlzetjmGCj7Iu2YKhTaz3Lzt3
-# Ce9P3TuBMBscEr/n
+# BDEWBBQM4cWm8IgsSKfsXq7kXtpPAs3OfDANBgkqhkiG9w0BAQEFAASCAQB3+qyM
+# cl/GoMWp+2Jp17tMmlVB6tqhu7FSwHju5GyfkL+1WdAOCdc3s7cJB+5M9KHts0et
+# +iyhNvAj2HhKE1ZbIdz5ITxAuWVn+dYTkF0jUgmGiJPydtz9e+AiyELSg0RQDUUJ
+# cq32ZOYxTJG9M18V6eNPobeNfk4o0CTiO3rgNChr/AAYKRmyXHVwlTBm4T5R/rQf
+# TKlMmLzYpLV4I9p06g8pPCbjGA0ici8UbeRIU32J5nw0bQWhZ3IRVsh9xGKIiSle
+# KefqjmfE4/oohWDsZJeITISxMSce9fesfdt6q6tdU6XFS6VmsyzIxpBDIkN45P8Q
+# UccnUzx6Z8OUlD0N
 # SIG # End signature block

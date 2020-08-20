@@ -3,7 +3,7 @@ function InternetArchiveSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        $ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0'
     )
 
     $ServiceName = "InternetArchive"
@@ -95,8 +95,8 @@ function InternetArchiveSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU19RRxupV2DPEm1tWeBcdMgRC
-# 9D6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUw2Nmztbqy3MiZgg9Q/fSLhtI
+# 1v2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -153,11 +153,11 @@ function InternetArchiveSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTRUXRdK5ptU+o8PskVOsvz1TqTDjANBgkqhkiG9w0BAQEFAASCAQCqf9Fd
-# GmPAzDeu72LM2D5DZJ5sMRsZHP9UELU0sxdfGcav2dJCQjvpXXt46vFYp0eDru+e
-# 35d8uRo8hrYD5a2zyVzIEkftKlqk0GR7kDvLSdMqiso89Gn3ajX1aehIz5U9bhjz
-# XAUJ+VXTDqEuwzzp4r06+sZwvAzAZJgvi+UZKQY0GiIm7lO6Lu+YeoyrfeVEc3C+
-# Z3E8TnG1IVLkwWoG/ya7KlND7VDaeBURtbH+7kf+Fn7x5dMq5yXsXxfnJdyuabxx
-# hoY21MA0BpHQ7VXZAYrzYn5k8c3KNtRM1sTw00HmzfCbGzom6oIaHUYRhiUB4Ica
-# +fVLu9sITLqmP7AB
+# BDEWBBQf5HeXiRvyv8OZ3BnUpEjwBTrzazANBgkqhkiG9w0BAQEFAASCAQBcjny1
+# Wjhp9Esatq4Tc7/34bRTwmdF7xt1oH1eUmhnpx1N8tR7RZTQX6EyjCYdEuwA8/3k
+# qozjgyuB/S/KHRVYPRKncH21roVkhV7wVw3HHq7r8Oiy1FESG7I56E+OGnJDKr7a
+# xOWtwULCliZW2TPo9KCwr0qmCGOMy3+QudqLnyWNQmhWY+xAq8ASGyzDkPspw0Vd
+# guRdWUzXHqL7XaT0wQGzyVam0o4MSW6PInZggglOy8GPA/q9o5uwKX1JBCY8GRet
+# 75O64TgI6zFEWCx+yvE+lmPD1ejIBE26X7sueYtgwe1JVbasi1mRzKY2mEQ98omS
+# HgAtNsiNEMbVmqTu
 # SIG # End signature block

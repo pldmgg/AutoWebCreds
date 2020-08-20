@@ -1,3 +1,35 @@
+<#
+    .SYNOPSIS
+        This function uses chromedriver.exe via Selenium to log you into web service specified by the -ServiceName parameter.
+
+    .DESCRIPTION
+        See .SYNOPSIS
+
+    .NOTES
+
+    .PARAMETER ServiceName
+        This parameter is MANDATORY.
+
+        This parameter takes a string that represents the name of the service that you would like to log into via
+        Google Chrome (chromedriver.exe). Currently, supported services are:
+
+        AmazonMusic, Audible, GooglePlay, InternetArchive, NPR, Pandora, ReelGood, Spotify, Tidal, TuneIn, YouTube,
+        and YouTubeMusic
+
+    .PARAMETER ChromeProfileNumber
+        This parameter is OPTIONAL.
+
+        This parameter is takes an int that represents the Chrome Profile that you would like to use when
+        launching Google Chrome via chromedriver.exe. Use the following PowerShell one-liner to list all available
+        Chrome Profiles under the current Windows user:
+        
+        (Get-ChildItem -Path "$HOME\AppData\Local\Google\Chrome\User Data" -Directory -Filter "Profile *").Name
+
+    .EXAMPLE
+        # Open an PowerShell session, import the module, and -
+        
+        PS C:\Users\zeroadmin> New-WebLogin -ServiceName AmazonMusic -ChromeProfileNumber 1
+#>
 function New-WebLogin {
     [CmdletBinding()]
     param(
@@ -7,7 +39,7 @@ function New-WebLogin {
         [string]$ServiceName,
 
         [parameter(Mandatory=$false)]
-        [string]$ChromeProfileNumber
+        [int]$ChromeProfileNumber
     )
 
     $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
@@ -23,8 +55,8 @@ function New-WebLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYyeewV8FbudxewQGoWdGEKCt
-# AX6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNzPcCYlzGDkbFD3QVTJcSG+J
+# mrugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -81,11 +113,11 @@ function New-WebLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQ6sgdJIUW8TeKA1Q+7DrVBzT7rTzANBgkqhkiG9w0BAQEFAASCAQDqDsCG
-# sVWyT2N4tHplR92vA/BqxOAw6aBJA4xAESkI4L4nfViuiwchWAnJ8biwq2umWNEl
-# F4KKNMxvK4GPm8dfFc+PFFyYlXQnFmClNpoaA0dP30Vs9Y4M9l3Y0j86JcbpvNAz
-# Yv7+mClWoFtdcH/r2iLwdCEFCuWkCbXAOTPmcRMt7p491YzyncmuC7x7SGEecN2f
-# 9F3UAcB104mGQ2uddZRgbRk5MerOSA3vRSHt+9wdOXTD1iQTi1BKOaD9LZcSY3OZ
-# 8CUiTuN+/ZM2k+XSxiPx1JsQ3aL8CNP7Ui74I7dpfX3d4Gj4+8jTHc6q8oUp57W+
-# Y9rVfIkCyOSfz6Ae
+# BDEWBBRJC66NekQZbDAQWV2sYcPDFZRI9TANBgkqhkiG9w0BAQEFAASCAQC3x4ol
+# wIaxQAd1jx23y+U3jN+DIFZl3wzXV26x0w81F596vZWI9kj7o1ebo7m0Wjp26Glp
+# qqqvD+d2Fpkm0/GPyD5ONObXZp5gRou27a8BHozHN0rZ10awS0tFBojYA7K5G6vd
+# /KJhSxvoIMbQk5lFKxbP/A5/EYIAnQaTohyuNXweNTUxzksCs/naV56qNgayTkOf
+# iaNJa3hSUOXS6t3m4sKGHX7kfoRE3WnJ0hpxJDxomQ/a0badOw7ikD6XlRgWqcm9
+# xg74kR8/BXYxX0BrE4vPrRCUpepCPMseU0sSABq/TQx30jOU9wQmXvBQvK65ZZy+
+# 0ByAw4NSMxz47NhN
 # SIG # End signature block

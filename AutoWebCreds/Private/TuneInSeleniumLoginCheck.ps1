@@ -3,7 +3,7 @@ function TuneInSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        $ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0'
     )
 
     $ServiceName = "TuneIn"
@@ -165,8 +165,8 @@ function TuneInSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUTlyGiAaJgxNBRrsl76pEuq4Z
-# zECgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrV8x6eFzHSpQXXofFUhjvW4P
+# IzugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -223,11 +223,11 @@ function TuneInSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTuv7O7DtXHjGW3CDA9Wao66ShFfjANBgkqhkiG9w0BAQEFAASCAQBzTH4k
-# Trs9lli4r2/BXh/spH4rp7TU7zzz+a3kx22hb6WsmgYYYQId03hUMBqe4ESx8oqY
-# O8xv80dQ03Tu97yTD99id2q3Cug3xE4TYI/MI4wy8iaeEFtG69DqxuAZmc7WMM8m
-# bxT4HFnNAObbxYm2F3KDkKx0gaeinFaEqAa/rSGPnwiKfFXhm58LSFhuji5Byp08
-# +UgfcXV7A5K2K3De/1As+9N/AWHsgRcz7HxSfc5CNj2n6sW1FZOyJu2flDS0y6Uz
-# iekwfPNHE5Dvv4nkxjCDpISd3mrciLjP+hZ9L7eplK+M38PObBCufl47L1qlVjab
-# W1AqH/9//Q8wGtjp
+# BDEWBBSx50HMbTLJzLhq9DcLXu/oWzfWkTANBgkqhkiG9w0BAQEFAASCAQDdgN5j
+# Tmsbnle56yrnGoD3303an3GAYraHx/aC1yF3NmKeDgAkfyayR0ufC56/0ERt29ti
+# uYnYDlt47XsU5LfJzvgSB/jXXz0tFGBPvBymM2CLmPfirLg9XmfXjG54lHZQlMF1
+# 2ji33MNkQ9QRciFULh6QgnbfzEELIT882pBGGPdaghS7By2THNy8f8KevaDG7RnF
+# fq5xefEknRNgaLNutKtkpilWQYVff+rLYalEMR7nG9p6edBHlqy8ovgHiE4DGqn/
+# vXVoH2wGVyGiD2xlDQsjs1ejMx8RlNpiRaD6GNih7Jgh2koXAG2XWypMVfzzwACW
+# y3Ldqaq47AW30aDJ
 # SIG # End signature block

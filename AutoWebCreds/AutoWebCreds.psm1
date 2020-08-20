@@ -154,6 +154,38 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
 
 
 
+<#
+    .SYNOPSIS
+        This function uses chromedriver.exe via Selenium to log you into web service specified by the -ServiceName parameter.
+
+    .DESCRIPTION
+        See .SYNOPSIS
+
+    .NOTES
+
+    .PARAMETER ServiceName
+        This parameter is MANDATORY.
+
+        This parameter takes a string that represents the name of the service that you would like to log into via
+        Google Chrome (chromedriver.exe). Currently, supported services are:
+
+        AmazonMusic, Audible, GooglePlay, InternetArchive, NPR, Pandora, ReelGood, Spotify, Tidal, TuneIn, YouTube,
+        and YouTubeMusic
+
+    .PARAMETER ChromeProfileNumber
+        This parameter is OPTIONAL.
+
+        This parameter is takes an int that represents the Chrome Profile that you would like to use when
+        launching Google Chrome via chromedriver.exe. Use the following PowerShell one-liner to list all available
+        Chrome Profiles under the current Windows user:
+        
+        (Get-ChildItem -Path "$HOME\AppData\Local\Google\Chrome\User Data" -Directory -Filter "Profile *").Name
+
+    .EXAMPLE
+        # Open an PowerShell session, import the module, and -
+        
+        PS C:\Users\zeroadmin> New-WebLogin -ServiceName AmazonMusic -ChromeProfileNumber 1
+#>
 function New-WebLogin {
     [CmdletBinding()]
     param(
@@ -163,7 +195,7 @@ function New-WebLogin {
         [string]$ServiceName,
 
         [parameter(Mandatory=$false)]
-        [string]$ChromeProfileNumber
+        [int]$ChromeProfileNumber
     )
 
     $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
@@ -174,6 +206,84 @@ function New-WebLogin {
 
     Invoke-Expression -Command $PSCmdString
 
+}
+
+
+<#
+    .SYNOPSIS
+        This function updates existing credentials in the Windows Credential Manager - or if the credential Target
+        doesn't already exist, this function creates a new Windows Credential Manager entry.
+
+    .DESCRIPTION
+        See .SYNOPSIS
+
+    .NOTES
+
+    .PARAMETER ServiceName
+        This parameter is MANDATORY.
+
+        This parameter takes a string that represents the name of the service that you would like to log into via
+        Google Chrome (chromedriver.exe). Currently, supported services are:
+
+        AmazonMusic, Audible, GooglePlay, InternetArchive, NPR, Pandora, ReelGood, Spotify, Tidal, TuneIn, YouTube,
+        and YouTubeMusic
+
+    .PARAMETER SiteUrl
+        This parameter is OPTIONAL.
+
+        This parameter is takes a string that represents the URL of the website where these credentials are used.
+
+    .EXAMPLE
+        # Open an PowerShell session, import the module, and -
+        
+        PS C:\Users\zeroadmin> Update-StoredCredential -ServiceName Spotify -SiteUrl "https://open.spotify.com"
+#>
+function Update-StoredCredential {
+    [CmdletBinding()]
+    param(
+        [parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet("AmazonMusic","Audible","GooglePlay","InternetArchive","NPR","Pandora","ReelGood","Spotify","Tidal","TuneIn","YouTube","YouTubeMusic")]
+        [string]$ServiceName,
+
+        [parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
+        [string]$SiteUrl
+    )
+
+    $ExistingStoredCreds = Get-StoredCredential -Target $ServiceName -ErrorAction SilentlyContinue
+    if ($ExistingStoredCreds) {
+        try {
+            Remove-StoredCredential -Target $ServiceName -ErrorAction Stop
+        } catch {
+            Write-Error $_
+            return
+        }
+    }
+    
+    if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
+        try {
+            # Have the user provide Credentials
+            [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+        } catch {
+            Write-Error $_
+            return
+        }
+    } else {
+        try {
+            if ($SiteUrl) {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+            } else {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName
+            }
+        } catch {
+            Write-Error $_
+            return
+        }
+    }
+
+    # Output
+    $PSCreds
 }
 
 
@@ -210,16 +320,18 @@ function New-WebLogin {
     ${Function:TuneInUserNamePwdLogin}.Ast.Extent.Text
     ${Function:TwitterAccountLogin}.Ast.Extent.Text
     ${Function:UpdateSystemPathNow}.Ast.Extent.Text
+    ${Function:UWPCredPrompt}.Ast.Extent.Text
     ${Function:YouTubeSeleniumLoginCheck}.Ast.Extent.Text
     ${Function:YouTubeMusicSeleniumLoginCheck}.Ast.Extent.Text
     ${Function:New-WebLogin}.Ast.Extent.Text
+    ${Function:Updated-StoredCredential}.Ast.Extent.Text
 )
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUO84pBVHphKdgOUqivqSep99s
-# Z6igggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUAPsKLMcjyGGeBeblzOMOQf5e
+# I4+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -276,11 +388,11 @@ function New-WebLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS/ZsYiyIFkh8mx+q5FgutA9kPUcTANBgkqhkiG9w0BAQEFAASCAQB63dRe
-# 2mkpavPViiuaaZKobHEes1/f2Rk0tIhfB1fS/4LO2XOb86OrK4r1aqlDAQyg5rRe
-# Te60qhc73+9U18oPGEdFSCz4HjwfyJ7JnyYor9TbTvGu0c2iVOqTypW/o+5GQ1nZ
-# a4WyJIT4i8nEQD+Rg+C3qheoxzklMC1iDFOhfhIkRxllZbotO3168haH51YHbq7Y
-# LlSNlFN0sl/nmpU6hvJb8h1pQuNtdMbhzhIpMxZHrkckU6TQgPjt5u0SDSs4KpUF
-# kgg0DAtNWbTO6Rr50Nq9DZqe/Uwd7yvaqnXQpIF8FypV9V0XXih+jhokLl6Ywczo
-# 3sUDkz919VlIcqlF
+# BDEWBBSmBgG66B0w/XZvpELAlJCrbjgWpjANBgkqhkiG9w0BAQEFAASCAQDHQUCB
+# sEwbpRvf21uTgX1S6ZbZHWd2/PxfftmjkNu29oKkdZBaNf3AymvJrC4TO/vzAFlj
+# 4gqMWK9RDiH4cFp/kDyDuBDC1Hm4C9gvxPKYcQ+WPYEt75Q/GWyZZeFrIABW/ZlC
+# kuoLc0lX9FDguv7RZ3v4yRa5tesse3Hm8/gCmMLy4eCwzAvgtBVF7GcXf3KYtzNc
+# XYVpIuB0lchhEdxCfSSYrWWgBH5aP42bz6AwO1YsSc4aflOpj4EXwLb1KSid8JZ3
+# eTJ2ItBg+Jz/MMXjZJooPgUdzDSGxAvojQJNA0mR60Xnf95jMset2OG5ovm4xVck
+# qM/kamU0za6z4TgA
 # SIG # End signature block

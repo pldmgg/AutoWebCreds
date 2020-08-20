@@ -3,7 +3,7 @@ function ReelGoodSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        $ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0'
     )
 
     $ServiceName = 'ReelGood'
@@ -159,8 +159,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUf4sr2qO8C5BbT/2bjShhqus/
-# 8NagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBp7R4h8wvhE9Uitl8PrDIlcH
+# 5nOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -217,11 +217,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQe0sDVDsp17GH/oZTpvlHw3Ga4qzANBgkqhkiG9w0BAQEFAASCAQCgmwvs
-# /JDB9VIZyMxfyv0HK4RQFoGLm/kNyaJUkNa9MfQmCkt4ptR0BWlopHJwzspqgiV7
-# vqSP7cX13cY5rrCnLuRjcSEWY+Qy9799NOQ1FkhBG0In9bXC8M3mO5mEz53f7KkN
-# Iau7k+4Igk46RrnjXx6UnXgGuaLJc8usF8fdeGBZsgOrMdRc+3dlWSQ/Cp/Nzn13
-# Zr8nOlRLCriXqhi4mzyC9LEMWuPLpfG01Yp3u43vIoGeea7lwOc5tNq6ySzfHIaN
-# 4HtnJV1YjeIlBgCV5k0iiLvdEix/0pRpC5cFpPiiSqdpRf1b2wk8MArl5/+U2Kjx
-# wcmi8esT1NdZiBn8
+# BDEWBBRZ2ZuAimMYaGxYimdzVS3WfNB2CjANBgkqhkiG9w0BAQEFAASCAQDgTlxO
+# b62y3D7Ia6xOjRIasCgzhGPk/lkywniBv5XNUdx2dAT//8jLVOHlkb2gedUux5ia
+# s5O3SRSt6CEtZ8TkmYGtf3mSNibjXvV20iKiqWFWM8nDXR1gMs3o1h0dpgsBMf5x
+# EHP9FA7MyunmfpehqvDKUJQMxDRBgjo7oTSH75DRWoU+d8oiArJP8l6A5uavgbLA
+# pTFoz0yJeEUChw8Wo6Clgiu0BcR8pJL+NfSOIGFQ4V/3TaSomYc8bvUd2a14Xhr8
+# itPFxOTYxUyx/u7AnspChrgSW4BlH1NT89796QYxuCLePQUqNhysVCRAsCrWe6oB
+# oh2x+eCQzlRpjGfn
 # SIG # End signature block

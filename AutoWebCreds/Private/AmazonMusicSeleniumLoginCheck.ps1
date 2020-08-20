@@ -3,7 +3,7 @@ function AmazonMusicSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        $ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0'
     )
 
     $ServiceName = "AmazonMusic"
@@ -108,8 +108,8 @@ function AmazonMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUL+7Uskob1S1u+itcE7K00CSm
-# W+OgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUO5wjKPV1lcjB+/fHmaP0KI0Y
+# 0B6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -166,11 +166,11 @@ function AmazonMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT3Y+AHjbPCzSiGgN8dWVEJgY4kzzANBgkqhkiG9w0BAQEFAASCAQAsy7RT
-# dXeUY1gpiPdRHG3hvC2fi2Rxdl46v37esod0dg/9OIiUsw4b2DWs4A2aP41sUOvf
-# rC/XG4/lHxwAQPN4329ZNcniKcUC8bce2N4SADVSPKF9Hv1Stj92L7tOnHvwHYaP
-# xGE1zk++CJnCwvoO6BExLsFNvnocsHliYjlF0M4B6TYvHxjnfEO/bXxIJTclMmq7
-# LpljnCgzcv8WQFJRDg+sVdP9XZraivavouby17neKuxHBNam4EL7zw3QjaFxej6k
-# td5t+wUDQwc9F8W2OGrP+UwjmjsHGvPIdNhE5n4NSSgSwonf3vYaBv1doowYpz95
-# A/6+LCuvKTL7Fh2Q
+# BDEWBBTc+qoR1sjvGo9I2Xhg7yW4w1iczjANBgkqhkiG9w0BAQEFAASCAQCgf/s8
+# wHKQNBEhwl2NJl1gpQxGYnp0Vb8YlLN5fk2P2dRUi1N5nGDNy4aLvIvojaKFwJ23
+# O4P2qonoudDQ8Qkp8yodxLET6+NUyQaYnDobDNRJz7rxlzjnTCImN77N3P43TNfr
+# 9XPuIej6pmbUsb/u86lFr7u+SALVC2ivAHhG1UxTAMURr4ZLbnimn+OvW5BAdujq
+# VkwgNJ+UUvi7zYmln0yxud5v8Z8jvN7pDPM6RNYXNukd7e7XUd2ymbVDoKhgCrgI
+# MRjjL7E/T3IshMYBiIik69ssnlyLl7rmxLPMQyLIJfb8oh9qLQXY1/tZgLwyBBlB
+# cJwbvCfYPZnU0qxI
 # SIG # End signature block
