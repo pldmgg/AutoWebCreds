@@ -12,8 +12,8 @@ function TwitterAccountLogin {
     if (@($SeleniumDriver.WindowHandles).Count -gt 1) {
         try {
             # The Authentication propmpt is in a Child Window that just opened
-            $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
+            $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
             Write-Error $_
             return
@@ -76,15 +76,21 @@ function TwitterAccountLogin {
     }
 
     if ($ParentWindowHandle) {
-        $SeleniumDriver.SwitchTo().Window($ParentWindowHandle)
+        try {
+            $SeleniumDriver.SwitchTo().Window($ParentWindowHandle)
+        } catch {
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            }
+        }
     }
 }
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0zM1swJ1TxWhWbbPaxoBeB5U
-# ex+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8RZQypqxJSowadTJfgpXdZ+n
+# rqegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -141,11 +147,11 @@ function TwitterAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRtb6MxSA1z5HrWGpirIk8M59nN0DANBgkqhkiG9w0BAQEFAASCAQDD/6WT
-# LRrGNltBvCJob3bs/57WwqItYljMlD9iAC4r1XtIsx0wlsoqM2X10SsDEmuwzX44
-# dTpdxzF2eBEW2RnkXQoHLah9llgXUb9aXxGAPisfiH1s1/koPn+Q9uaSz4D5nHbN
-# VT6lmT/dLD8Qkrm1NaDKED6d4Nn0ZSfyCVzeynpHrX9Jqzpfs2mNNSByJotEugW4
-# CwD1+0QyRQuKBcnPFhZ7q2Hv5CPiPN2LwmHUfd4MMSFSp1CsEA7cHJKWM0MpxJ7i
-# B2X/YKVoAEYaUfcKkK5bxFFJ7/NXv4K6yw7NlbGKJuOV7NFdy3/DaOfTB77ockMR
-# csMnflmxLhBRJWHP
+# BDEWBBT3MxnsCa+5hqEqxnO+uQvUD1bQYzANBgkqhkiG9w0BAQEFAASCAQCljX/1
+# np9ELGCVD5L5XFpD+Ug/QabYW1/y97NpbVqmcOx7hBL5DvAo3TjeqLs9VbB/XCNk
+# KxeJASnWYEPw3sXiuLkVbMuPisx2GSldi7wp7+EGBQaUSqIxaNkgilXacH7cXtXc
+# hcpF3XmCIVgCXD1Qs8u8F8F4svVP3QZm+SS2qtfNX8qTYR/DJ5AJpc/khS7d1w+A
+# N429r/K2gD/SHpbf7gXxq80jpKFIJCOUVujWj1frAWilksud6Qy2+RKfpHAqZxYL
+# a/HMDKo9O1fSOPyTqdLbV029mzneCT4y0XMNC3bnvvyGx9KV3FqLlAFqcWwj9Wdh
+# KSRSjHYLgiyinyMm
 # SIG # End signature block

@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.93 (August 21, 2020)
+
+- Fixed switching back to parent window if login pops open a child window
+
 ## 0.0.92 (August 21, 2020)
 
 - Added Global variable "SuccessfulLogin" to determine if login was successful

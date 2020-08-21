@@ -12,8 +12,8 @@ function GoogleAccountLogin {
     if (@($SeleniumDriver.WindowHandles).Count -gt 1) {
         try {
             # The Authentication propmpt is in a Child Window that just opened
-            $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
+            $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
             Write-Error $_
             return
@@ -89,15 +89,21 @@ function GoogleAccountLogin {
     }
 
     if ($ParentWindowHandle) {
-        $SeleniumDriver.SwitchTo().Window($ParentWindowHandle)
+        try {
+            $SeleniumDriver.SwitchTo().Window($ParentWindowHandle)
+        } catch {
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            }
+        }
     }
 }
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJfJbb9Af/O2jXfycvwb+CW9Z
-# tDCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJeWNfCQ/hQP7ViB2lGd8oSFR
+# BB2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -154,11 +160,11 @@ function GoogleAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT6cMfqmQ9M/M5OjSker4QCKSb/0DANBgkqhkiG9w0BAQEFAASCAQDWzeSG
-# A6R17bnXRsbb08xhGNgp6o1hhXQJWPRHm33g0q5etXVJNMNsfMnOdXcx3dU5BLBZ
-# AzhkazjUT2v6aLKhQv7lQ/ZpFVDORbRLHPGUL+jPg4XGGrUnpl9xJlpYtNkcgq64
-# 9u5tpyQYgqNlRNyHFMms97gpTvZq+rUthnKf0lm4CDU7MZdSmCWctnzdjgAtWTcu
-# 2rotQ7csTH9vVV6RCXCmzOMEc5CJS4yQ3Tkki+A5oiTZgi2KeyQ+SCTqxHcESsq5
-# 8As8fE2xhDAqoithjYv2kku/KjZXItmInjrKPgimTX/75FW6YHAmybAwkyAQUZI7
-# fNoSG3EH+dmx3EMa
+# BDEWBBRIeuk2b8mF92VV2CATZulZXOM/lzANBgkqhkiG9w0BAQEFAASCAQAPFXCm
+# Pz6YowuTLiAzutCE3VnkxJRZyCYzW4KoPfz6zdKa3isQlaXI9VEXK0OWvjXIVjq/
+# ZjY48jiy6Pifll+UkR5JEjBPkFTXSRxHQ1QNMymTvGq5MfYuNuUNG8AVuLkSf4sc
+# cZZhH4fguz12N0iNmvE5mInnsKmlrWL1m2/YxAIt4XsoMnFacALMEcMaf7Rh4kSn
+# vt7XT2ZpjzNqzGOCBiYQACzcqEHe6BOKBIKx15vgn1s4W/M59tINi3/656sbgzjr
+# AgAZRda3W857tR7hQRoQgQxCa3VyDuzRLSgU1iGEHwk+w67U1XNPPja/DFygrX61
+# tp6quDIHA1JSG+d8
 # SIG # End signature block

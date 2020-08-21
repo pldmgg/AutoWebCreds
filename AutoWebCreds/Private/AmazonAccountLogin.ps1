@@ -12,8 +12,8 @@ function AmazonAccountLogin {
     if (@($SeleniumDriver.WindowHandles).Count -gt 1) {
         try {
             # The Authentication propmpt is in a Child Window that just opened
-            $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
+            $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
             Write-Error $_
             return
@@ -76,7 +76,13 @@ function AmazonAccountLogin {
     }
 
     if ($ParentWindowHandle) {
-        $SeleniumDriver.SwitchTo().Window($ParentWindowHandle)
+        try {
+            $SeleniumDriver.SwitchTo().Window($ParentWindowHandle)
+        } catch {
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            }
+        }
     }
 
 }
@@ -84,8 +90,8 @@ function AmazonAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUGqcTDhpqVf2qOY5CAO47gxdr
-# hMWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUtWWbbMN9TMy2i2RZn9XebxAE
+# IYmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -142,11 +148,11 @@ function AmazonAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSVC3XruKVt0TyCH0v4aVMGh2mLCjANBgkqhkiG9w0BAQEFAASCAQCmu8Kp
-# ldOGFKHpTXZUQ+lMZ9Fg9zGOZqWEpiyYNNSnxqc3qH7sPJOvMJC8Bse1+Qt21H2G
-# mFk4XoEFXfYPNoVvr/W4lwZ6jUmKyEswSxwMh3xKSnDg14Jx7LzbwXdg5vpsf647
-# 7K4dMgYKrHQ6MEmvXuMoYb7pr/NW23UKhQhP1y/vuw1Bn3TeVp3TsAIKybiZaf6f
-# QMgJJXXvpfneGPvBtH3FMi+mczXu8rQvhyvVXkmG6VVNrChm2mU3KefDdluxCmWQ
-# +o63C/9TnuVldoYGYBEVh8dVCkl+tZfK2gQimIqavdgmzdn853zPXWub+bis8Yw9
-# +87jEzJyA8fUruQG
+# BDEWBBQv+DnO1PSuEYC6jdw1rBxy4IyH8TANBgkqhkiG9w0BAQEFAASCAQDMtlL/
+# ENEBHpqNnv45AOTUmwaDXcsa43/tx+zQnia0TEWah0XE7b7i8l9+9j6oUNwVs6S2
+# 2mVEdpH8IPaeXBHXSaqbuLGL4LXrKOCDPBPiVnjTJDOr1Fj0tIOl52F/XpnZ/9vx
+# O2I7geqP4+r7ahMJCTlZa/jSq70jMe/8tagO3CT6XtHtCHfQhAeQNoW/diGeAwSB
+# 2Qe9uwiH88vxHn3ydJiEvVTNzJJrBVfORRzmNQGLQZ9zy14MKFQODqzkA/4EBM7U
+# oQPD06aAo2x7TCzGakFNWXX4pGGp5GLRmCPk9lC3PiAbH4pcGgReuB6cnyn52FKK
+# SYWAhlTcM6lsjGok
 # SIG # End signature block
