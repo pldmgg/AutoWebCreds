@@ -179,6 +179,9 @@ function NPRSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@id="user-account-dropdown-mount"]/div/a' -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -196,8 +199,8 @@ function NPRSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUaBM587Eysh2oTTtJ+e+jZk+o
-# lI+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU1oCLe9MG88k8liJWXVqvdmCU
+# vPSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -254,11 +257,11 @@ function NPRSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT6N83jqvRjY0cUgKCtMqVLQhfT7jANBgkqhkiG9w0BAQEFAASCAQDd2ClN
-# TORbzhXw8b0fGgKY0FAxxS4Qwa21bAnr3moiZbP7Ge0Z4LymYs+a7ga/jh5oBVEC
-# TgscLr46XIBRhfm9SblQFSmMFw1sSSPhvSf1T5xalXQ1MhhfwxFAZL1kG2A/B5bv
-# UREXUhGRwmuDYZ2uxUKtfew3sl8f/waL3kyOVtchAkHJBu553UFprWZP42GhFt1S
-# bCc/iSNJM3d88QK1yuQUZCTabEVG6eJHibLys6tONNVAn/YTa2khPgOmd76vZcos
-# eJ1z/gNaYvkjsrXUdvXgeke03dc4vqykC7cQ3sB4mbezeTCJe4GmQ7IMKCTFSbE1
-# WsjzNpN47fR3e1Hf
+# BDEWBBQPFOIRYHuXFiy8jEP4nyKQ1ZzaYTANBgkqhkiG9w0BAQEFAASCAQDv5oMV
+# iSydfH3GjPk3raY7PPZXqgkCwMkci1lwKuFTj5OuL7WXTZ8+HA3HpZv/b4G9Gcm0
+# 83FGFMztrUiLiUoptZuJSP2U8/OTl0eTq0soBCsNhnOENrQw7/7O4CFvpMlzuxrq
+# QG0B9jl2a7CC/LpHuoEfIytVmY8b4QTX74+aLI1ulTqAD1aJGXTVBulMAuUA4rQa
+# AsecA0htUT8Jbli7kEf8rtGbhMWNYXIinJycX7He89XrAQTj+gJ3HCWtvI2pt/3j
+# lDxYVjtWJ/aqfBGVOR9mynhlH3Ljx8EIXpumCtIsPa/WataW+bbxIKulSlKtNxu5
+# RBAWYE24aWWCIvAJ
 # SIG # End signature block

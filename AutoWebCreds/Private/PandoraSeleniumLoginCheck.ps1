@@ -107,6 +107,9 @@ function PandoraSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//span[contains(text(),'My Collection')]" -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -124,8 +127,8 @@ function PandoraSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUEC07w8jgZe3JEHLcLgqRYuY9
-# VC6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBYhAGTFvWSlwnQvKMl86KBRZ
+# Zx6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +185,11 @@ function PandoraSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTaXy2ZGGk9X0MtjOWkA3PhNh2/yjANBgkqhkiG9w0BAQEFAASCAQBHVNqP
-# 5LxglwRA2r4Uz/yM8SOJdvj1dMcP/N/UKC64qPlk4A4kEhV7oa90Y6Bhgvl6Pb0z
-# ekBLSSFJZ+Q8NurvhQpSXZ5MPS3zXPg0ip9pQQMoBHOAGn5zjqQ33Vl4YvTu3alF
-# oz15jKdLM8v5uhE+ATsny1r79l0tE30wlefELldLrdJ1Bm+/fRJEl9Ot7fYbS/uN
-# HRSmVNs3p0cO8D7lqAbyZy0IQTw9JCQW6xJRhodizaVVq0AS1zC9Cj7P4J698Nd1
-# d4ogJRlxdZwEC1rrr77Z0QQPRRKxtdjrJwMULUzwfpEeYCzVplpgyAq8I4I+yqYD
-# hvFGQCGWJlfmJ4EK
+# BDEWBBRkAI/o51B1LwzTWfom5g17OTofHDANBgkqhkiG9w0BAQEFAASCAQBVdwXQ
+# e8vSfa4BPof94mIwTEkjoV/TKls+f1/MuXijCQYmQdQV8IhRMpIwqLDnkqwkgHvU
+# 5m6oTXnRN3xhIhcHarYhhiBrX1kNtmSqN8rjfFHlP3GCSABir5CVy7q8Optpp/Pe
+# qyffc4CuxpGJuvIZLX970YVAPG0OqpzMnByfUoZU4xwPTdP1XNZIkfMja1BSXDfV
+# YV6siIGZU9pZ5edElKXZ3Xib4wH6LbYm1r8AXrRblJvPavmMyeVZKeiT8Ybj7ozy
+# ObSsu2nOu5nPIMGdDx6V63ziR6PgiMfu3tHJuR9B2a60EeMpjlbAmXtLKVx2HLzz
+# BRD3GdBeiplIpi+k
 # SIG # End signature block

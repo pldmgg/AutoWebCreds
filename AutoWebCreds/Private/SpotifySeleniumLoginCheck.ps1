@@ -150,6 +150,9 @@ function SpotifySeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//*[@data-testid='user-widget-avatar']" -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -167,8 +170,8 @@ function SpotifySeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU5GmSsC7vQhza0HVc+KLdO/iK
-# fQ2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUclViIlA0EcW0Nom88OvTmGjC
+# 6kOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -225,11 +228,11 @@ function SpotifySeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSpeHeOahXkIEG6fzH+5TkxQpSjFzANBgkqhkiG9w0BAQEFAASCAQAB1L7A
-# Ht5AJE1c/sGUf8vOCvNdIKPazIrZUohHcioqk9CS8uthIDAz9e31sYydXSlaoeFq
-# 8eoaj0nDWptiEGwignKR3W4VtMDFAYmg9EyDe0KwncEAIijzrph/7bBB2EygoDYZ
-# VZmASEdr4/ClqAOWN0/4ert5vNnUdNRyiCgVX5umNFMx3iI43ggq+NjOLUkhCgaE
-# qK4ZPj2R2t0IRBo1GU02HHDOFC91BNg84krH0q6rspFKexr40l5NX1HKd1hk9iZe
-# 0HfDvUXkMCcbIwCPziMNBxAGRk44idUWxx4dafj6TXh5bWFl6sccr5o/PUX8qUZb
-# sIkyRAnd4M95ykXe
+# BDEWBBTXQgFxO0feHzd0DTZnTXieLjs7EzANBgkqhkiG9w0BAQEFAASCAQC+8m8J
+# zGNl2lhshcIiFA56V9ro/LMDG7JB1ZNvALUwcN1lWDn3x3DK2NOyF2hTDGO5U8r7
+# wRc/LW95EfJv7n7shfY13vum3qVhFZ4AH5wkDASpOtXZSV1a0iPaTBNBTbC1kGWO
+# lC5HKZVNZDH83EYQmJSREhNKU3XqRbPqepLccYLRRs7wGzI5ob/OFxnv20xp7yd0
+# //pv4NI+DwY3XYtKUFRNYu9Ka2ANSyBNvZpj4cbNQbEeVk5Km7Au4J1wJT4J4IJa
+# DZrBTrfpF2Z/RlCY3c/E9bDWyJpSyNrjuD7z08EAwpiVVVcinixR8HhhZqP+N1tv
+# TvbQOl6UcfLnUf6M
 # SIG # End signature block

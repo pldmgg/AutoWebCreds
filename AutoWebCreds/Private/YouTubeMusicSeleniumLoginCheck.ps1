@@ -107,6 +107,9 @@ function YouTubeMusicSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//yt-formatted-string[contains(text(),'History')]" -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -124,8 +127,8 @@ function YouTubeMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUDt89p6SYqlD8f1kzLBhle+VS
-# ZgagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUzT1dpnPjiThWmu+n0fCcQaAP
+# dQugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +185,11 @@ function YouTubeMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTomlUkodeEGnCmYoyfXdK50fCDaDANBgkqhkiG9w0BAQEFAASCAQBdNcGx
-# n/Qc41r3JJgC1l5H9OzdgFz6M3sQKVKjy4Adu70/7+vuLxmZ9mNFNbzl4nz+/E8H
-# 0UZEsvVkM+iLZUOgpvPg8dMo2EKJOyEA+PM+6A4L8J/qCLRLHbuOOqmIbETHSmPG
-# e/9pcWSOYNnyRBpQNB6bZKc2inf2kcuX2GGFebKZE4KllbNXuTBvPHuvPpEgWnbp
-# E6jwuspRF02F4LKKuV6W9YNKrukcMs+KX2pwHLjdzVavv1TX02p+5yn3cV3yf0Wk
-# 393WjCg1zssLbqeo5OaJjwDdCflsdSTRV4kKbLyaXTkIfih1qRY5yLnTNf7+uL9B
-# fBdGehmS3pXqAjsu
+# BDEWBBSUA0UPF1CcWTUzgQLPNbnTVpNpxjANBgkqhkiG9w0BAQEFAASCAQD1zy3Q
+# 9UGiQOt67mda++zYsg8AghVXJhHv4uaKqtTpW1CyzBYFZd2GtkJsIJQUsfTzFt5t
+# p9Ij6FE6/sIMeeOyi/9CuJj6aJ8x8bVvsef7F5+HdA0hctDEIh004sjmcXApiCTv
+# NtaPiY08FoHeE1MKfH6qfzZQNoJLySB1KCP4nlW+Uc3ew5gLX2/D9elpSoHaDHgZ
+# 1kl/BHsLZPx6ljZ9yTl+hSJxqIt8zyUjpOhCsewGITewn2+6VDSf6TMN3vXc6tBy
+# 26qZXiZWqCHws1UyJLnuS02U3ogLV7jM5RA1vpnjMFU3fE/kcPR5STbUFw19+cj4
+# mU1Q1mbRKD5rc4lm
 # SIG # End signature block

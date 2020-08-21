@@ -107,6 +107,9 @@ function AmazonMusicSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@title="Open Play Queue"]' -Target $Driver -ErrorAction Stop
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -124,8 +127,8 @@ function AmazonMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU6tHE/gT1ckhdQLUWp1Jr4fPP
-# HLegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU3ZdLQqoDv61fSnb/U+Tocac9
+# n2igggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +185,11 @@ function AmazonMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR+LZga1lijSVns4d4mzSLHhPeUwTANBgkqhkiG9w0BAQEFAASCAQB6O4nL
-# oS1uuBqjtRixmD+bTxh2+JdCs2AojrdOWrQuPvU3EXyoPvMdwvGtxbaH8/Nj4bHv
-# SnafQ4OVbKyulWtW7on6JJzmgoICi0ZhhIu/7SjwbD66JIF2SwDSCnQ4sgNcKS33
-# aubf9eWW/5r2I/BLGAotK6/P11kW4iDL4Oi2cDmeKZcM1dKhWw/Mq2RmjO20zaQe
-# UtLOYDY9DfdViz6zxKRS3bNh82AuE0JK1hML89DrxVZlF8PeBhrYmoHYt9UfgyY8
-# G09XzMvkAw/vhDwcvK2773ks/bih8JCelbwBfJje033yeTg7seBAvNdVms/M00Zd
-# A+Fnxsr3ZSigiGxp
+# BDEWBBR6SbCyisKT357vcDlSlRi9u4+2sTANBgkqhkiG9w0BAQEFAASCAQCAykpa
+# zDCh+3J7joRWmh4iZ/Gg4CTv5ahd0h1H0lZJtrE2NYddttzeCQYAZi0+ZCNWBLi6
+# IRK0gQNXi2hiGNF5rqw3ENli/hcToV7pE6oDVJ72MEZN/09QGJz89YTVElh1ikqA
+# Mob3RA1RDsLGnQ2/Xut46MPEilgXUnJu/BITzcBpeS5SDMAd3IX7IW3Rs7ViLiQA
+# 5CLKDFppHNRGCGtq53pE85ISCTg+4bGHJJD73yJemE9NOjL+e9VB5vQ9iNH7Rxb7
+# RXRVhKn7Vy717eItzz9hwhKyMUhDkIk50/1OHzj2R7iiH8j6n1DzmF+XaUQ+7Iia
+# HnViTcuT0EnESkHq
 # SIG # End signature block

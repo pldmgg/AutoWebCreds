@@ -180,6 +180,9 @@ function TuneInSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//div[contains(text(),'Logout')]" -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -197,8 +200,8 @@ function TuneInSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlfQ9xOz2KT9QbY7fHuHwt8y5
-# efagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUn7fT5tEzNUw/8lrtiPuACXVU
+# VGegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -255,11 +258,11 @@ function TuneInSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQt6WNFsUB7t2aNeWa8UAM2qtEYpTANBgkqhkiG9w0BAQEFAASCAQCuMdvX
-# zYIfIRzR3U0TWfWGxj45q/6pFqN3xPboFKJKAr2mkoIYVwY4IaYctif6FHANgv4G
-# 2zVCKf+Nv9wr5G0AuubArApYhimyl2ITlVhn/86OqFfrJqB2hHKpSzMTj0T8nQnN
-# RoNmnHJivtgCz5XJ0n4NKty3TQ9hAr4+9kFO6v/sOdUpMiiZDXVdQdsxCMB5XDSb
-# Z1TITSZgh52RGL1r9jA1Myf8FDam+kQC0V1UtEyO0Vl7tKVPzovrsN2EjJc5/6k/
-# pZijfab1qvKL3z9u4GnZpFsDXYcNYVAa6448ftRo3c32+3543kdCJuOOIpmTs4U+
-# TMARoTnW/IheFJI4
+# BDEWBBRn5fHKHvFhYn9TZ2YF3aCmwe0YqTANBgkqhkiG9w0BAQEFAASCAQCfFVNN
+# 8hgIwi5PWX7qEOFe5CICS5vTWi4xMFeidhUWOIKkPZrNFjVho1SjdTCvA35W04jP
+# OrtXFn6B5KxfRgDSrdKA8MIwaeJmePtnNmSZw6oKnufceR1azMhRXxRYqkp2hx2f
+# fZ+kOAi5cUDyOLN2O1QFLVc17vt8uSi88pYEvBs8IWWqn/3Ph1aKc5ZbyCHSrcig
+# HOA4LnoN/dyxOww8csLVilqcW39ZtzT5vHOgUw6v5+p7XvJwI1rSf3IbAbYIGrWZ
+# Zs3CyOWjShNhvnzX90sDStOh6xu6WeeLgf0wooynFzY3E+bNxnLaSYlxucU1U2hq
+# jp4REHVHsAy3TeK7
 # SIG # End signature block

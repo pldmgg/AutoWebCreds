@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.92 (August 21, 2020)
+
+- Added Global variable "SuccessfulLogin" to determine if login was successful
+
 ## 0.0.91 (August 21, 2020)
 
 - Minor changes to error handling

@@ -107,6 +107,9 @@ function AudibleSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//span[contains(text(),'Library')]" -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -124,8 +127,8 @@ function AudibleSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUke3Dy9Qf8kOnhUhf5tI+RkjB
-# 4OKgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUHPeQrBZkZA7eTjl8Ck80v55W
+# 4OygggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +185,11 @@ function AudibleSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSMY+fMhfaddz//vr0sWFziLXz5BzANBgkqhkiG9w0BAQEFAASCAQDWbCNH
-# rpBKNDTJH1Pxf46JXQOQtLk//k0en4qAo7bFgRDkqzglyPRwXHzy/h5aOUcG9jdL
-# 5DMqoSUSBywmqBgtaNrT25nRSemmUZZentdIHDn/WFC+X/9kc6rJSyyvqeBc3gXr
-# 9MIOiLsA6Vg8NDQJUJjTem04XngxFd8Iax4c5JYrT1iWRGexFQy6PV5sVvuOP7fD
-# SVMhIQ6mI003kGCKzzISZEQDiHdj4ksw72ZdZQfjvAckblWkZZxVEo5QiSSQiI/l
-# mTumZld/b5smN3COcJwoEHCbnEI6JLN8iGEx7mDBv0rCISNZoBoDkylCbZDy6ABl
-# zEZuly01BqAlDPxd
+# BDEWBBQoIgHOBBawPre9pQNSGY7+803WfDANBgkqhkiG9w0BAQEFAASCAQDRmU9i
+# 2KXQS3/FQwONo9EEDo9hS4uWDA7W3+bqJh/U1zkMDt9lHEk7m64VmEh0YHSDQkJM
+# m0fGNNxQyAJDiK+bpjfEg9lk4g66TdVmvTHRxxfnapipU3yabDPW6LRc1AAZzmFN
+# NY5j6iBcihamDDU92GTrFdIoicoeIEwDyz1nRVg6D4h3ljyA2OrDPyR0lG51ruli
+# dEkgd/jbj4X8dq1lbsBHbWjQj+aHhpFTSXz7o0MrOnu509hJ4GZOVf1qmgqeb03j
+# ChfQ0h5f1g5S3tUoC3ueQb6aikCuwI5mjZbp0EpN7EJUlYUtjZ2lMqa5i9rMeS70
+# Ywx8C7ayJKryiZMB
 # SIG # End signature block

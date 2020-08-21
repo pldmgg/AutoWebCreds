@@ -161,6 +161,9 @@ function ReelGoodSeleniumLoginCheck {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@href="/userlist/tracking"]' -Target $Driver
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
+            } else {
+                $global:SuccessfulLogin = $True
+                Write-Host "Successfully signed in!" -ForegroundColor Green
             }
         } catch {
             Write-Warning $_.Exception.Message
@@ -178,8 +181,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUUyHwzI6lJ0ltZm6HslThX3XH
-# aMegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBF76PQDSvxRwNY0lZtlVYm2J
+# Iv+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -236,11 +239,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTe5S5QRexYD5xLmQ9AFGPgSm9dMTANBgkqhkiG9w0BAQEFAASCAQATFj3l
-# zhS3TPZAWzcKrpD4b5m2ZtCdoDgexTdgvRQZ/RqQMH9U++SIbvEFQOm4GC1ZPSY1
-# kN/hcPT0iff/URZOkZRs8RbcQyWqTku4BeIs+1tgj1O1jvQ/vf34F5B83am0Vper
-# f9lCsPND+fS6vdJIqSmPKIp98UyxgKjcKGYp44j5RoTXspcFiaRLyanOg+15GSi3
-# lJ7D+6azgLxj8RIgj2+CQCfVl7nIXixllz4yXCzMSw4W0yYm0R8ata3MTQgk3ZW8
-# abdLl1yXQPEXCyCiNsD3KC1zJiTN4/xPyKU4Kd85OcdSiRVbQ6QmqgrIjNmV2ixE
-# Ra2DtbwkIFH1fMEZ
+# BDEWBBQ3xgi2IM/djQML0jYkiutObGnhnDANBgkqhkiG9w0BAQEFAASCAQBsutx4
+# zl1dO0Wlg8fTtkCSIvDm+jvLVLwF+76z903k/zoZsgaH/vlL90UnkjerKFyVMdj5
+# Yj9pfrrsvsVFhWoB8uepxwYnHzoB88E7k4upNGjpkV/cdkd4RR/uONE8WdZrERYV
+# 7aDUBGrw9LTnW4iWrcNpXgkZ6dE++TnLSvAxq66BeDucsVKQqqPV9sC0CmY1wQtN
+# 3V+zvJjgO+oxntZ07VKeEqnKns60A5bzwtrJRsuqYjoUBUH6Qxyot0Z8R6I/3z5L
+# i95o7SKhHCm++RhS/rWWwicQCBzsgI75cWH00mHHS56pQzY7oAtoMvgdndb+O7pA
+# 4hYrOSx64tmI53Ub
 # SIG # End signature block
