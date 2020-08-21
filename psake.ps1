@@ -107,14 +107,20 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
     $LatestPSCoreSystemPath = "$LatestPSCoreDirPath\Modules"
     $LatestWinPSSystemPath = "$env:ProgramFiles\WindowsPowerShell\Modules"
 
-    $AllPSModulePaths = @(
+    $PSCoreModulePaths = @(
         $PSCoreUserDocsModulePath
-        $WinPSUserDocsModulePath
         $($LatestPSCoreDirPath | Split-Path -Parent)
         $LatestPSCoreSystemPath
+    )
+    $WinPSModulePaths = @(
+        $WinPSUserDocsModulePath
         $LatestWinPSSystemPath
         "$env:SystemRoot\system32\WindowsPowerShell\v1.0\Modules"
     )
+
+    $AllPSModulePaths = [System.Collections.Generic.List[object]]::new()
+    $PSCoreModulePaths | foreach {$AllPSModulePaths.Add($_)}
+    $WinPSModulePaths | foreach {$AllPSModulePaths.Add($_)}
 
     <#
     foreach ($ModPath in $AllPSModulePaths) {
@@ -131,10 +137,28 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         # Make sure it's installed
         $GetModResult = [System.Collections.Generic.List[object]]::new()
         @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
-        $AllPSModulePaths | foreach {
-            if (Test-Path $_) {
-                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+        if ($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "Core") {
+            foreach ($ModPath in $PSCoreModulePaths) {
+                if (Test-Path $ModPath) {
+                    $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
+            }
+        }
+        if ($($PSVersionTable.PSEdition -eq "Desktop" -and $ModuleData.Value.PSVersion -eq "WinPS") -or $($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "WinPS")) {
+            foreach ($ModPath in $WinPSModulePaths) {
+                if (Test-Path $ModPath) {
+                    $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
+            }
+        }
+        if ($ModuleData.Value.PSVersion -eq "WinPSAndPSCore") {
+            foreach ($ModPath in $AllPSModulePaths) {
+                if (Test-Path $ModPath) {
+                    $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
             }
         }
 
@@ -152,17 +176,36 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                 }
             }
             catch {
-                Write-Error "Problem installing Module dependency $ModuleName ! Halting!"
+                $Msg = "Problem installing Module dependency $ModuleName : " + $_.Exception.Message
+                Write-Error $Msg
                 return
             }
 
             # Check again to make sure it's installed
             $GetModResult = [System.Collections.Generic.List[object]]::new()
             @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
-            $AllPSModulePaths | foreach {
-                if (Test-Path $_) {
-                    $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            if ($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "Core") {
+                foreach ($ModPath in $PSCoreModulePaths) {
+                    if (Test-Path $ModPath) {
+                        $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                        if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                    }
+                }
+            }
+            if ($($PSVersionTable.PSEdition -eq "Desktop" -and $ModuleData.Value.PSVersion -eq "WinPS") -or $($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "WinPS")) {
+                foreach ($ModPath in $WinPSModulePaths) {
+                    if (Test-Path $ModPath) {
+                        $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                        if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                    }
+                }
+            }
+            if ($ModuleData.Value.PSVersion -eq "WinPSAndPSCore") {
+                foreach ($ModPath in $AllPSModulePaths) {
+                    if (Test-Path $ModPath) {
+                        $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                        if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                    }
                 }
             }
 
@@ -181,7 +224,8 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                     Import-Module $ModuleName -ErrorAction Stop
                 }
             } catch {
-                Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
+                $Msg = "Problem importing Module dependency $ModuleName : " + $_.Exception.Message
+                Write-Error $Msg
                 return
             }
         }
@@ -190,7 +234,8 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                 Import-Module -Name $ModuleName -ErrorAction Stop
             }
             catch {
-                Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
+                $Msg = "Problem importing Module dependency $ModuleName : " + $_.Exception.Message
+                Write-Error $Msg
                 return
             }
         }
@@ -369,8 +414,8 @@ Task Deploy -Depends Build {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYQPBE8AdFHkv55ft//OlAGxQ
-# ahmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULJtNzJaw+Hj85CiJMlct/HJW
+# 1NOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -427,11 +472,11 @@ Task Deploy -Depends Build {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQXZ3LYpI22KLvFvjdojcxzs5i0tzANBgkqhkiG9w0BAQEFAASCAQACFOe4
-# sLMOvvPO3P1Jk6gmUs7WzPYIseMFwEMRy1hhaOD2I1mxBsggi2ymVr0Txv42S8hu
-# uha6r48rgSUyWcYzsQWVUp4k8IweETN2w82jQQPtoReNquqwCACQpjd1AvyrKrHj
-# njhKrgwZPJ1GWJojRxA1Rb3FUkolTqqpkpBKikz8VxTC1WYHdVff2L+B8EjmZW8H
-# YS7ez1VGaoX/pbS5Vixt6RGst69QMhtH6lusvGdra3XBMXyiBdplga9rUd2WFFKM
-# r5L3d5lV8Pt7/M5PRCGhKcF3++3FfpUMAT3dWy7+983obPo9xE8BcJ0TuvzZYD4h
-# 4cx1cl0aFMJUf42F
+# BDEWBBT3naD/IX7w7/5jZiEO6VBovW1qBDANBgkqhkiG9w0BAQEFAASCAQA7H8io
+# gi+FQPLuoUKPue45tEXTAMcxjHTUUV2rEng5chkt2bPBMDmeCTSZ9FIAR+Ex50qN
+# /3QFqpyGTX1ZuY1M9rTrFL5aA4YStRbd5SYYQ+IDNuTNnhXhcvjvts6xhAStAmUM
+# WfOJ/F/SFwFnsVBMfrB337xo3ZSfiSIXvPw0rup68/nU6BvXL9d7XkWd80xZtKsR
+# N4iQutWwHzZLVbRgsxkr5s7T5wJJ10tMB6wcvYH1BbizP9DFKtUEKw/6FVebSoAG
+# h33pnumBp+wQv6vn/2sasehTM7eMyy7j0MWC1lXkXCbNRqvINbyhPVaDSZHUpynS
+# TTij1KXT43QwHdgo
 # SIG # End signature block

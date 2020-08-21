@@ -41,14 +41,20 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
     $LatestPSCoreSystemPath = "$LatestPSCoreDirPath\Modules"
     $LatestWinPSSystemPath = "$env:ProgramFiles\WindowsPowerShell\Modules"
 
-    $AllPSModulePaths = @(
+    $PSCoreModulePaths = @(
         $PSCoreUserDocsModulePath
-        $WinPSUserDocsModulePath
         $($LatestPSCoreDirPath | Split-Path -Parent)
         $LatestPSCoreSystemPath
+    )
+    $WinPSModulePaths = @(
+        $WinPSUserDocsModulePath
         $LatestWinPSSystemPath
         "$env:SystemRoot\system32\WindowsPowerShell\v1.0\Modules"
     )
+
+    $AllPSModulePaths = [System.Collections.Generic.List[object]]::new()
+    $PSCoreModulePaths | foreach {$AllPSModulePaths.Add($_)}
+    $WinPSModulePaths | foreach {$AllPSModulePaths.Add($_)}
 
     <#
     foreach ($ModPath in $AllPSModulePaths) {
@@ -65,10 +71,28 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
         # Make sure it's installed
         $GetModResult = [System.Collections.Generic.List[object]]::new()
         @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
-        $AllPSModulePaths | foreach {
-            if (Test-Path $_) {
-                $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-                if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+        if ($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "Core") {
+            foreach ($ModPath in $PSCoreModulePaths) {
+                if (Test-Path $ModPath) {
+                    $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
+            }
+        }
+        if ($($PSVersionTable.PSEdition -eq "Desktop" -and $ModuleData.Value.PSVersion -eq "WinPS") -or $($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "WinPS")) {
+            foreach ($ModPath in $WinPSModulePaths) {
+                if (Test-Path $ModPath) {
+                    $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
+            }
+        }
+        if ($ModuleData.Value.PSVersion -eq "WinPSAndPSCore") {
+            foreach ($ModPath in $AllPSModulePaths) {
+                if (Test-Path $ModPath) {
+                    $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                }
             }
         }
 
@@ -86,17 +110,36 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                 }
             }
             catch {
-                Write-Error "Problem installing Module dependency $ModuleName ! Halting!"
+                $Msg = "Problem installing Module dependency $ModuleName : " + $_.Exception.Message
+                Write-Error $Msg
                 return
             }
 
             # Check again to make sure it's installed
             $GetModResult = [System.Collections.Generic.List[object]]::new()
             @(Get-Module -ListAvailable -Name $ModuleName) | foreach {$GetModResult.Add($_)}
-            $AllPSModulePaths | foreach {
-                if (Test-Path $_) {
-                    $ModuleDir = Get-ChildItem -Path $_ -Directory | Where-Object {$_.Name -eq $ModuleName}
-                    if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+            if ($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "Core") {
+                foreach ($ModPath in $PSCoreModulePaths) {
+                    if (Test-Path $ModPath) {
+                        $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                        if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                    }
+                }
+            }
+            if ($($PSVersionTable.PSEdition -eq "Desktop" -and $ModuleData.Value.PSVersion -eq "WinPS") -or $($PSVersionTable.PSEdition -eq "Core" -and $ModuleData.Value.PSVersion -eq "WinPS")) {
+                foreach ($ModPath in $WinPSModulePaths) {
+                    if (Test-Path $ModPath) {
+                        $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                        if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                    }
+                }
+            }
+            if ($ModuleData.Value.PSVersion -eq "WinPSAndPSCore") {
+                foreach ($ModPath in $AllPSModulePaths) {
+                    if (Test-Path $ModPath) {
+                        $ModuleDir = Get-ChildItem -Path $ModPath -Directory | Where-Object {$_.Name -eq $ModuleName}
+                        if ($ModuleDir) {$GetModResult.Add($ModuleDir)}
+                    }
                 }
             }
 
@@ -115,7 +158,8 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                     Import-Module $ModuleName -ErrorAction Stop
                 }
             } catch {
-                Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
+                $Msg = "Problem importing Module dependency $ModuleName : " + $_.Exception.Message
+                Write-Error $Msg
                 return
             }
         }
@@ -124,7 +168,8 @@ if ($ModulesToInstallAndImport.Count -gt 0) {
                 Import-Module -Name $ModuleName -ErrorAction Stop
             }
             catch {
-                Write-Error "Problem importing Module dependency $ModuleName ! Halting!"
+                $Msg = "Problem importing Module dependency $ModuleName : " + $_.Exception.Message
+                Write-Error $Msg
                 return
             }
         }
@@ -199,31 +244,75 @@ function New-WebLogin {
         [string]$ServiceName,
 
         [parameter(Mandatory=$false)]
-        [int]$ChromeProfileNumber,
+        [ValidatePattern('[0-9]')]
+        [int]$ChromeProfileNumber = '0'
 
-        [parameter(Mandatory=$true)]
-        [ValidateSet("UserNamePwd","Google","Amazon","Apple","Facebook","Twitter")]
-        [string]$LoginType
+        #[parameter(Mandatory=$true)]
+        #[ValidateSet("UserNamePwd","Google","Amazon","Apple","Facebook","Twitter")]
+        #[string]$LoginType
     )
-
-    $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
-
-    if ($ChromeProfileNumber) {
-        $PSCmdString = $PSCmdString + ' ' + '-ChromeProfileNumber' + ' ' + $ChromeProfileNumber
+    DynamicParam {
+        # Need dynamic parameters for LoginType
+        # Set the dynamic parameters' name
+        $paramLoginType = 'LoginType'
+        # Create the collection of attributes
+        $AttributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+        # Create and set the parameters' attributes
+        $ParameterAttribute = New-Object System.Management.Automation.ParameterAttribute
+        $ParameterAttribute.Mandatory = $true
+        #$ParameterAttribute.Position = 1
+        # Add the attributes to the attributes collection
+        $AttributeCollection.Add($ParameterAttribute)
+        # Create the dictionary 
+        $RuntimeParameterDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+        # Generate and set the ValidateSet
+        $ParameterValidateSet = switch ($ServiceName) {
+            'AmazonMusic'       {@("Amazon")}
+            'Audible'           {@("Amazon")}
+            'GooglePlay'        {@("Google")}
+            'InternetArchive'   {@("UserNamePwd")}
+            'NPR'               {@("UserNamePwd","Google","Facebook","Apple")}
+            'Pandora'           {@("UserNamePwd")}
+            'ReelGood'          {@("UserNamePwd","Google","Facebook")}
+            'Spotify'           {@("UserNamePwd","Apple","Facebook")}
+            'Tidal'             {@("UserNamePwd","Apple","Facebook","Twitter")}
+            'TuneIn'            {@("UserNamePwd","Apple","Facebook","Google")}
+            'YouTube'           {@("Google")}
+            'YouTubeMusic'      {@("Google")}
+        }
+        $ValidateSetAttribute = New-Object System.Management.Automation.ValidateSetAttribute($ParameterValidateSet)
+        # Add the ValidateSet to the attributes collection
+        $AttributeCollection.Add($ValidateSetAttribute) 
+        # Create and return the dynamic parameter
+        $RuntimeParameter = New-Object System.Management.Automation.RuntimeDefinedParameter($paramLoginType, [string], $AttributeCollection)
+        $RuntimeParameterDictionary.Add($paramLoginType, $RuntimeParameter) 
+    
+        return $RuntimeParameterDictionary
     }
 
-    if ($LoginType) {
-        $PSCmdString = $PSCmdString + ' ' + '-LoginType' + ' ' + $LoginType
+    Begin {
+        $LoginType = $PSBoundParameters[$paramLoginType]
+
+        $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
+        
+        if ($ChromeProfileNumber) {
+            $PSCmdString = $PSCmdString + ' ' + '-ChromeProfileNumber' + ' ' + $ChromeProfileNumber
+        }
+
+        if ($LoginType) {
+            $PSCmdString = $PSCmdString + ' ' + '-LoginType' + ' ' + $LoginType
+        }
     }
 
-    try {
-        Invoke-Expression -Command $PSCmdString
-    } catch {
-        $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
-        Write-Error $Msg
-        return
+    Process {
+        try {
+            Invoke-Expression -Command $PSCmdString
+        } catch {
+            $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
+            Write-Error $Msg
+            return
+        }
     }
-
 }
 
 
@@ -348,8 +437,8 @@ function Update-StoredCredential {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUeztivBER822PQ0xT4Eyio1gp
-# PjWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU7aQxsr0ZnVILW+Svq1eUwrKo
+# RmCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -406,11 +495,11 @@ function Update-StoredCredential {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS3eoR1sTe7Xo2rdfyjhPd+tqz+4DANBgkqhkiG9w0BAQEFAASCAQDNd/5J
-# VTGrlhmSQ2AvEx7vYz6BaiWQgb3zGNb/kE7y8qjXQkybKLbeA0LRT5e3kBCsolaO
-# 940kFZ1Za97QEXZfNHGtvyY4qepHSxWEfXFjBuxcERDb3vFsCAR83Ka+dhyi81Bz
-# e5e3RcE2R30YJDG/axTMXZtuO+wnNdWQZU7mV+B9obznkmfMCTf2p7/EdzNhz83K
-# loTWI/AqMplvKJRbqnASjumEdG0Oq0uqTmyCmb/sM9tVSGF8NDm+VqHTPeJ7r0/5
-# yTC0g/NtKSOejrmGFQlStxfpovBZsShuTtcQkxnz56AVF78OVCgtLqtP/9YJ2U+9
-# ripz9xQuXz7Zc0JE
+# BDEWBBSc8IgpJVfrwUcIBRMFva+tayfS0DANBgkqhkiG9w0BAQEFAASCAQDSJenl
+# TjNkq4rzS7TBP6eaIPjVZ1UtxMWAq0uW3RHxgTVQXmS+3Ojmh6C0vm5yG/jtWkuQ
+# 3VyKw4tqt1euWi9rhzk3BiwrJfkm/GiSosBxTZSEDRgt2pT4J5lZdz1M1ChJ2gAh
+# S/446WUYO/ZuJToRsf+qZ/blYgXgGr0JYYCSDgdOzcJrIfmMtKAUU+73T6HC6DMa
+# i0MdafSuiJdUq5kr8NbPpzpJSxBYauLjXmtpjrOrMDToLbK/5lYF4A1L/TLFw9g2
+# MZC/kBwm5LZv+wYj87HIEBtOerLUSnBiMKcNwV8wATnsgo0rdfZ3TbmseMpuWLYw
+# EE1WpkO068zbPujZ
 # SIG # End signature block

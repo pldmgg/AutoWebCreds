@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.9 (August 21, 2020)
+
+- Fixed issue with installing/importing Module dependencies (no, but really this time)
+
 ## 0.0.8 (August 20, 2020)
 
 - Changed logic for determining if logic was successful

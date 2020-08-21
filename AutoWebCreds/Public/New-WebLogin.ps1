@@ -39,38 +39,82 @@ function New-WebLogin {
         [string]$ServiceName,
 
         [parameter(Mandatory=$false)]
-        [int]$ChromeProfileNumber,
+        [ValidatePattern('[0-9]')]
+        [int]$ChromeProfileNumber = '0'
 
-        [parameter(Mandatory=$true)]
-        [ValidateSet("UserNamePwd","Google","Amazon","Apple","Facebook","Twitter")]
-        [string]$LoginType
+        #[parameter(Mandatory=$true)]
+        #[ValidateSet("UserNamePwd","Google","Amazon","Apple","Facebook","Twitter")]
+        #[string]$LoginType
     )
-
-    $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
-
-    if ($ChromeProfileNumber) {
-        $PSCmdString = $PSCmdString + ' ' + '-ChromeProfileNumber' + ' ' + $ChromeProfileNumber
+    DynamicParam {
+        # Need dynamic parameters for LoginType
+        # Set the dynamic parameters' name
+        $paramLoginType = 'LoginType'
+        # Create the collection of attributes
+        $AttributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+        # Create and set the parameters' attributes
+        $ParameterAttribute = New-Object System.Management.Automation.ParameterAttribute
+        $ParameterAttribute.Mandatory = $true
+        #$ParameterAttribute.Position = 1
+        # Add the attributes to the attributes collection
+        $AttributeCollection.Add($ParameterAttribute)
+        # Create the dictionary 
+        $RuntimeParameterDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+        # Generate and set the ValidateSet
+        $ParameterValidateSet = switch ($ServiceName) {
+            'AmazonMusic'       {@("Amazon")}
+            'Audible'           {@("Amazon")}
+            'GooglePlay'        {@("Google")}
+            'InternetArchive'   {@("UserNamePwd")}
+            'NPR'               {@("UserNamePwd","Google","Facebook","Apple")}
+            'Pandora'           {@("UserNamePwd")}
+            'ReelGood'          {@("UserNamePwd","Google","Facebook")}
+            'Spotify'           {@("UserNamePwd","Apple","Facebook")}
+            'Tidal'             {@("UserNamePwd","Apple","Facebook","Twitter")}
+            'TuneIn'            {@("UserNamePwd","Apple","Facebook","Google")}
+            'YouTube'           {@("Google")}
+            'YouTubeMusic'      {@("Google")}
+        }
+        $ValidateSetAttribute = New-Object System.Management.Automation.ValidateSetAttribute($ParameterValidateSet)
+        # Add the ValidateSet to the attributes collection
+        $AttributeCollection.Add($ValidateSetAttribute) 
+        # Create and return the dynamic parameter
+        $RuntimeParameter = New-Object System.Management.Automation.RuntimeDefinedParameter($paramLoginType, [string], $AttributeCollection)
+        $RuntimeParameterDictionary.Add($paramLoginType, $RuntimeParameter) 
+    
+        return $RuntimeParameterDictionary
     }
 
-    if ($LoginType) {
-        $PSCmdString = $PSCmdString + ' ' + '-LoginType' + ' ' + $LoginType
+    Begin {
+        $LoginType = $PSBoundParameters[$paramLoginType]
+
+        $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
+        
+        if ($ChromeProfileNumber) {
+            $PSCmdString = $PSCmdString + ' ' + '-ChromeProfileNumber' + ' ' + $ChromeProfileNumber
+        }
+
+        if ($LoginType) {
+            $PSCmdString = $PSCmdString + ' ' + '-LoginType' + ' ' + $LoginType
+        }
     }
 
-    try {
-        Invoke-Expression -Command $PSCmdString
-    } catch {
-        $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
-        Write-Error $Msg
-        return
+    Process {
+        try {
+            Invoke-Expression -Command $PSCmdString
+        } catch {
+            $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
+            Write-Error $Msg
+            return
+        }
     }
-
 }
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUTExBuiAlyhAJKQKChJzmNaJ9
-# YyOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlTbIP/4Sp+y5+/3PfWgpcijF
+# jJegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -127,11 +171,11 @@ function New-WebLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQNE+ay6arZWMp7SOivXW+xCsnLMzANBgkqhkiG9w0BAQEFAASCAQAuzD2u
-# TEAJlTL/rlrY/ImJzmHHqVDdXCksgLWlCc5yTHmywrdifJrJc84pvZ96SKMKJJzN
-# HXpFzPBR1ZzJbAa4C/JWPiipYWYVuR0MElZoxbfRnwsfTztXIG2nzzp5XHKNO02P
-# IAbaS95zO4N3aSaXPH9R5sTeKugYTbE8aQaKmlwjbsNhbagWAI0LBAYylDFFfvQr
-# vo93eASMUzVMgt52zEdWnMsN86KrrveQxarkQCT4p6nzKbO2a/Nu7e26Y/bA6K13
-# gsFXEa6ijakRRFrR8cTDl2yZFvpPJSFSV0BjwHu9STukRAcP3Q2b0fK2grWHmitn
-# iAUBAev0ZAlh9HS3
+# BDEWBBQhJC49r9UJnIBzj2P2yinUC8baNTANBgkqhkiG9w0BAQEFAASCAQDLKY43
+# zXLFtLxnlzHARgdQixGjrEPjPdM022cXSNsxn3hCHfFgQ9I9M/6jycFMYyXHqJua
+# 3+VenRrjsdx8EYYiM6/frVtJgrO+1r7tJUPz/k9S4d/SklO4egmYTevI57VOxb12
+# JiggbgombLEGlotlfUOFZ4nHgeFGR0LAivA+/Wx+ENTZRY/J1BIlB0tpeYTDPvgN
+# wrJGrIz84pq7Vi3HizRYGDSAOBbHcyqk4bYHFjIR7Rl+dN7z6cRcypjxE+bWJwTd
+# qN4f6gWBpA9vnejJT2pv6GeP7+5YJ0ducuEkjSxYdDlxq/yZnAqvuYIXyCsDboFi
+# tg4g3yEbVwR73SCQ
 # SIG # End signature block
