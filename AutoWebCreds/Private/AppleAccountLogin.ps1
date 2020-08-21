@@ -15,8 +15,10 @@ function AppleAccountLogin {
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
             $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
-            Write-Error $_
-            return
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+                return
+            }
         }
     }
 
@@ -102,8 +104,8 @@ function AppleAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUSqcighEjrJVwspua1kV5PO5V
-# I6mgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUAgnqa9p2qkvB2W5KfgF0uk7n
+# QbqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -160,11 +162,11 @@ function AppleAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT3qOOAIY3UL64JmmDmZYYt2AVawTANBgkqhkiG9w0BAQEFAASCAQCngzQu
-# e5Xn6oBlGJcEs7Jwzywl7EHDuWwER8B2NEjdgWNG5aPOdvUCWmE7pJZy8hda85uI
-# EzyKzNg0HwAyP0Q0FeEtTekL5QEPwspn7ZsZdvCivPMLQMq0ECO1izIqnLV0pwsm
-# V5spAdWuZ3LTdd8jdZ1ML43b8RZXKj98LphODU6GogSjx9fBeewLaCyATG8WGJt+
-# /GUE9GPbG/xQXbJxJSFoj3mlqoZaKsXf/3HIEk6B/th3dNyDGd9sFwt6OtlPhkdR
-# mIGu14ji+6E9DQ9LWNTZglMzCvbYjosJiM53WVeZBUeOqCKEjZWw52HDJb4zB6vz
-# eXhKYqheWp0neuPb
+# BDEWBBSDUuNNguJc8LLdYdrp8YB+hP53ADANBgkqhkiG9w0BAQEFAASCAQCrCSPy
+# w1b0iy3iJCQb/wLrIK6v4KO/m2T+zS2uXRuGgfIMIZm36dGI6/4Ew7/J/Wf4n9fR
+# jn0t7SHvKcEjQyy5uXAHSBfNbwp/93YiM/H2CG6Utp0OMbsc6PiwE5w83aF+ofUm
+# Sxd3h68WTYfmZtK0lzyqFnPcsIolrNy8bgNyH9q+hC4Xl0uBQOtvBEaOK8Fiuhl+
+# J5wWfF/WltNDxXreqGoQNSRyoQ7JoA7sdAOvRzUw0rjanZvBdY87bLfaf68+pCwD
+# 043nmEhRT+t1iZOaOFejhJgGJjuqQXk83L17fSIZrpf4GtH1K2TOk+7GY3iA4zRJ
+# qpsZ0kqPccOP4YCt
 # SIG # End signature block

@@ -15,8 +15,10 @@ function GoogleAccountLogin {
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
             $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
-            Write-Error $_
-            return
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+                return
+            }
         }
     }
 
@@ -102,8 +104,8 @@ function GoogleAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJeWNfCQ/hQP7ViB2lGd8oSFR
-# BB2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/ZmGmjhWTcXzpGlUcLdgmTSw
+# FjGgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -160,11 +162,11 @@ function GoogleAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRIeuk2b8mF92VV2CATZulZXOM/lzANBgkqhkiG9w0BAQEFAASCAQAPFXCm
-# Pz6YowuTLiAzutCE3VnkxJRZyCYzW4KoPfz6zdKa3isQlaXI9VEXK0OWvjXIVjq/
-# ZjY48jiy6Pifll+UkR5JEjBPkFTXSRxHQ1QNMymTvGq5MfYuNuUNG8AVuLkSf4sc
-# cZZhH4fguz12N0iNmvE5mInnsKmlrWL1m2/YxAIt4XsoMnFacALMEcMaf7Rh4kSn
-# vt7XT2ZpjzNqzGOCBiYQACzcqEHe6BOKBIKx15vgn1s4W/M59tINi3/656sbgzjr
-# AgAZRda3W857tR7hQRoQgQxCa3VyDuzRLSgU1iGEHwk+w67U1XNPPja/DFygrX61
-# tp6quDIHA1JSG+d8
+# BDEWBBTOPp6dGXCT4UOhunwiADQ5YOcX9DANBgkqhkiG9w0BAQEFAASCAQAnJTfe
+# k3nT1M7IjpQIm1ze4Ox0vZKa354+ecDHBDD5UcFNCAJ2dWoKnBVRtXdIwSIQYc9U
+# P9OznULuHga+eGuyWYPB+dm1srmhmsqKYKvwlNf+Sa2mN2KczjBspuBoko4Tj3ic
+# RDZeZq2oizN9frmQOaUnfC76FdlbXL4Uzcq8s/pKuAk0XpNAx2+9ctAnjgZ2cIoD
+# 6vHHr+MYS+JFlZlATgYCmfLMtTmeWYYP5STneyLyienTNBcEe50OKawfQurpVzNZ
+# Sk0Tcx+YpAIoa5CU55Tc2S3noG7TBbr6AwPq7ghYk5GcZ8I2CLyqgC+BQllxg8TP
+# TDYkiP7wuC6V3xgt
 # SIG # End signature block

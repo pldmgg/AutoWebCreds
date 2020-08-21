@@ -15,8 +15,10 @@ function TwitterAccountLogin {
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
             $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
-            Write-Error $_
-            return
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+                return
+            }
         }
     }
 
@@ -89,8 +91,8 @@ function TwitterAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8RZQypqxJSowadTJfgpXdZ+n
-# rqegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdFCskH83NbtJzIPem+CAEn/Y
+# uSSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -147,11 +149,11 @@ function TwitterAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT3MxnsCa+5hqEqxnO+uQvUD1bQYzANBgkqhkiG9w0BAQEFAASCAQCljX/1
-# np9ELGCVD5L5XFpD+Ug/QabYW1/y97NpbVqmcOx7hBL5DvAo3TjeqLs9VbB/XCNk
-# KxeJASnWYEPw3sXiuLkVbMuPisx2GSldi7wp7+EGBQaUSqIxaNkgilXacH7cXtXc
-# hcpF3XmCIVgCXD1Qs8u8F8F4svVP3QZm+SS2qtfNX8qTYR/DJ5AJpc/khS7d1w+A
-# N429r/K2gD/SHpbf7gXxq80jpKFIJCOUVujWj1frAWilksud6Qy2+RKfpHAqZxYL
-# a/HMDKo9O1fSOPyTqdLbV029mzneCT4y0XMNC3bnvvyGx9KV3FqLlAFqcWwj9Wdh
-# KSRSjHYLgiyinyMm
+# BDEWBBRxgIP81nbdRlY0MLr5tVqoT2gGEjANBgkqhkiG9w0BAQEFAASCAQDvFUHo
+# oeA/zG/9eMNdQSfRtHCiDshFKI0UFLzDAkmxR982O9+oHOg+AvD4G/a8FWsqCYQZ
+# TdZlcmWPeKTI/uUTIypehtx5oWCfugezJaIwO4WIswyuW0HJbkqSi0ey06VvKdu3
+# JcTh//fxlIg9aBOO8RifaLjXoCaRAT6iVpmZTIINxqlPfyhrq2H1vNNcKYSc6hoK
+# XYfTcluo75mheLvufHG3LoDUGpg0dMR8rM3jGYa28HlHuwY9oUUnB8728PRGpNEH
+# PxXP4Qy7p6ziy9eGTB7n3ReLHImNBdMQAO0yV9OOnKIH60cM5EFap4nbG0uOZH4V
+# Ge/v4wRJ9WGQSTb1
 # SIG # End signature block

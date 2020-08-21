@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.95 (August 21, 2020)
+
+- Minor updates
+
 ## 0.0.94 (August 21, 2020)
 
 - Fixed switching back to parent window if login pops open a child window (for real this time)

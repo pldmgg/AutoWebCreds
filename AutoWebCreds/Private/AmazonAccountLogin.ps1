@@ -15,8 +15,10 @@ function AmazonAccountLogin {
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
             $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
-            Write-Error $_
-            return
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+                return
+            }
         }
     }
 
@@ -90,8 +92,8 @@ function AmazonAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUtWWbbMN9TMy2i2RZn9XebxAE
-# IYmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUfOKnLjdzNt1X6fUoLulW8jo5
+# d36gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -148,11 +150,11 @@ function AmazonAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQv+DnO1PSuEYC6jdw1rBxy4IyH8TANBgkqhkiG9w0BAQEFAASCAQDMtlL/
-# ENEBHpqNnv45AOTUmwaDXcsa43/tx+zQnia0TEWah0XE7b7i8l9+9j6oUNwVs6S2
-# 2mVEdpH8IPaeXBHXSaqbuLGL4LXrKOCDPBPiVnjTJDOr1Fj0tIOl52F/XpnZ/9vx
-# O2I7geqP4+r7ahMJCTlZa/jSq70jMe/8tagO3CT6XtHtCHfQhAeQNoW/diGeAwSB
-# 2Qe9uwiH88vxHn3ydJiEvVTNzJJrBVfORRzmNQGLQZ9zy14MKFQODqzkA/4EBM7U
-# oQPD06aAo2x7TCzGakFNWXX4pGGp5GLRmCPk9lC3PiAbH4pcGgReuB6cnyn52FKK
-# SYWAhlTcM6lsjGok
+# BDEWBBQs7V7Ex1sFW0bPREtlADKmczGpOjANBgkqhkiG9w0BAQEFAASCAQA/L+Uf
+# WLBQlkNJ8aSkYmua+GsANzCB15gpDhewnxGI7OlW8luoyHmLKCLVL3oOZP9R0pYM
+# 0qCmDbW+qaYrTpuLcbCW70Sw9rVbG7r/hbWSKFAGKoqEOxFfG1YcpeQ9buLkZW3M
+# u3sZxlMbBADjA8JNVZKpPrvN6J6BFwtUzkX1j51RZMBpngSmyvVv66ZCoK7BgPPn
+# OyJmEdB9JHPXfI9GmOhXLv9oAXucAy0Owc9huYaALOlsz/HHpZ54h+1pI1EFUuvM
+# zJ5pFvOqIX6ZXCth8jXWdNIEmfPDasBPp3gtgfweKd+l3AI2nObOxAhKHu47Dxh3
+# PLNg09G8cOVnhyl3
 # SIG # End signature block

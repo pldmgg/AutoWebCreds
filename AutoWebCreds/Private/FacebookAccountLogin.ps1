@@ -15,8 +15,10 @@ function FacebookAccountLogin {
             $ParentWindowHandle = $SeleniumDriver.WindowHandles[0]
             $SeleniumDriver.SwitchTo().Window($SeleniumDriver.WindowHandles[-1])
         } catch {
-            Write-Error $_
-            return
+            if ($_.Exception.Message -match 'no such window') {
+                $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+                return
+            }
         }
     }
 
@@ -90,8 +92,8 @@ function FacebookAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU2/S7ygNDDIBqwE1svqgr6yvY
-# o5WgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU+TNyuhPYFxupDauL7Lur8h09
+# b8OgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -148,11 +150,11 @@ function FacebookAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTHOsV6n1OzIStWnkltHpjnHTwLOTANBgkqhkiG9w0BAQEFAASCAQDqJ7sq
-# Scmhu2E2ISLkBs0L9LZ+mFgrWM6TxYLC7y4psBnHbbCWqd6t9oYB2de8T2mlnPXS
-# MRP/hVo2YjmiIBTogwjQlq8lrXIWuGXXzY6xMfw50eyOWkGG41yFhneLJrkFyjOv
-# Zh9L6mrCfAOJvH+hShoqrcEvEtt8NZaszMixIu/2i+ranGYP1bs1zhS6pcrIouxa
-# 8Qtr9Ms2ItnjCyI8Jm2FImj1TDl002F2S6iV2lvSk8/MM9Ih7GU0uMwqr6Eh6k42
-# ylrh4iF/YmeridzxxeSvzszFf/mvOBZ5StmO7SG5wAyHlZErPMyQE/ctC9Gzt0Cq
-# f3rphgwo8BZPP4wp
+# BDEWBBRyv7eye+6I07y4K0JyGhqO9LU3mTANBgkqhkiG9w0BAQEFAASCAQAq5xPp
+# 3xCutd0yWnJEBeHZ3nvUQ/a/6I3OWPXlKRhrGcNMnixNaJpf51OBmjF1vY4rK/If
+# fqenEuL9HmJy6KosTk7PEYY0Z3aWD59mKvqYwLkY6Bxs23AGsg9Hhgt6JUIU5Fsu
+# 1T8z9AE3Ap0guzTQM786qdTt0Mou5MDZPoYZkFMzCd9RyONJFgX/0v4l0f0lSYAC
+# SEqoGe/M9ue62p94QS9a/ahJoKb2Zxq4q94P3zkfNDUfpUwyR9rHHRwDwk4zChjU
+# fP1++X3MRkY84kGk7JsFYN+qut6f/aTiqN92xMwY3bG5e41pgsUV6O/e+uDZsI72
+# xWl+Oin4nPl70x+/
 # SIG # End signature block
