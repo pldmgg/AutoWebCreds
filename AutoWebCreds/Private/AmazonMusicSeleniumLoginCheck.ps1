@@ -96,7 +96,10 @@ function AmazonMusicSeleniumLoginCheck {
         ### Amazon Login ####
         if ($LoginType -eq 'Amazon') {
             try {
-                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $AmazonLoginResult = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($AmazonLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $AmazonLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -127,8 +130,8 @@ function AmazonMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU3ZdLQqoDv61fSnb/U+Tocac9
-# n2igggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9ckHkDdViWJ9Y2svosSM+KhD
+# H0ugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -185,11 +188,11 @@ function AmazonMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR6SbCyisKT357vcDlSlRi9u4+2sTANBgkqhkiG9w0BAQEFAASCAQCAykpa
-# zDCh+3J7joRWmh4iZ/Gg4CTv5ahd0h1H0lZJtrE2NYddttzeCQYAZi0+ZCNWBLi6
-# IRK0gQNXi2hiGNF5rqw3ENli/hcToV7pE6oDVJ72MEZN/09QGJz89YTVElh1ikqA
-# Mob3RA1RDsLGnQ2/Xut46MPEilgXUnJu/BITzcBpeS5SDMAd3IX7IW3Rs7ViLiQA
-# 5CLKDFppHNRGCGtq53pE85ISCTg+4bGHJJD73yJemE9NOjL+e9VB5vQ9iNH7Rxb7
-# RXRVhKn7Vy717eItzz9hwhKyMUhDkIk50/1OHzj2R7iiH8j6n1DzmF+XaUQ+7Iia
-# HnViTcuT0EnESkHq
+# BDEWBBSZvatvHo19C0ZaFpaTuRp8MsIrMzANBgkqhkiG9w0BAQEFAASCAQB9TIyk
+# 4J5x3VFVFd8QCdwI6LnsDnnQtlyourzdvBP19WOqIPBJGAG5TCmeyq4JEXiqGM0P
+# BMXzX93VswTpO9FHpz8f7lPMyy/Br/8NuULvMNNiIolp0hHS8oUSqEohM6J5o+hQ
+# ZriJgAbEguX+opjswxfvrv2DwiMnPRGRX+kz6v7mPTOTCpIQsp3LQ40JnjdR0Bc/
+# L+L5Tj6PifwFFkAvFnO3Wbw4sMD9wXwacGmN/Wh8oACS67v7ldYRQr8cC6ASlHHD
+# Y6XY/nmjiDUIHQ6ZkncDc1eHSr7O6fb9Mp+h9u3wZCKD3kAKipMd35CxNCHDCq01
+# zpAwQXkNjrrfNLpz
 # SIG # End signature block

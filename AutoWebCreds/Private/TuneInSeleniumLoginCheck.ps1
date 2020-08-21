@@ -124,7 +124,10 @@ function TuneInSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $GoogleLoginResult = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($GoogleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $GoogleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -146,7 +149,10 @@ function TuneInSeleniumLoginCheck {
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $FacebookLoginResult = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($FacebookLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $FacebookLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -168,7 +174,10 @@ function TuneInSeleniumLoginCheck {
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $AppleLoginResult = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($AppleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $AppleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -200,8 +209,8 @@ function TuneInSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUn7fT5tEzNUw/8lrtiPuACXVU
-# VGegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUyU4nN0FkwHNWcSrKlBBOvT9e
+# DCqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -258,11 +267,11 @@ function TuneInSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRn5fHKHvFhYn9TZ2YF3aCmwe0YqTANBgkqhkiG9w0BAQEFAASCAQCfFVNN
-# 8hgIwi5PWX7qEOFe5CICS5vTWi4xMFeidhUWOIKkPZrNFjVho1SjdTCvA35W04jP
-# OrtXFn6B5KxfRgDSrdKA8MIwaeJmePtnNmSZw6oKnufceR1azMhRXxRYqkp2hx2f
-# fZ+kOAi5cUDyOLN2O1QFLVc17vt8uSi88pYEvBs8IWWqn/3Ph1aKc5ZbyCHSrcig
-# HOA4LnoN/dyxOww8csLVilqcW39ZtzT5vHOgUw6v5+p7XvJwI1rSf3IbAbYIGrWZ
-# Zs3CyOWjShNhvnzX90sDStOh6xu6WeeLgf0wooynFzY3E+bNxnLaSYlxucU1U2hq
-# jp4REHVHsAy3TeK7
+# BDEWBBSgtoR5HaW9ayHwsMme9tGVPyEydjANBgkqhkiG9w0BAQEFAASCAQBUftEe
+# L1EgLizNJL4LlNgZoJzQ0aUOMBXibpO0lqlabHG7rXQT/R2qNAHYmd71slKDlunJ
+# iKrn7Qrp1JvobaOf3VwyBDXypLBqrdlieN6m41fp0YWACICtzVTAAXoxcI7sOC5Y
+# u4gkQymgSDaCO2BHyEV+f4f2SfIMstM0TgLyVrw1KZmif3JYVq/gnwqYAOU5zEPP
+# LtZ0cUUpaPdC3ruoM3O7MVOqjap87kDCnmrjxZe6Me3C2ECE2UMmzbQ2YGSbd0zN
+# FRyohRnn2HqpJbg7NWLdA1zVbWZyuhhcF8KVHh354icxG8u52sACNJcmC/PWmqVY
+# SDIW9taZCQaMNK5f
 # SIG # End signature block

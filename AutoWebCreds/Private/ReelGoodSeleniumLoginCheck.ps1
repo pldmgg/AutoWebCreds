@@ -127,7 +127,10 @@ function ReelGoodSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $GoogleLoginResult = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($GoogleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $GoogleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -149,7 +152,10 @@ function ReelGoodSeleniumLoginCheck {
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $FacebookLoginResult = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($FacebookLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $FacebookLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -181,8 +187,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBF76PQDSvxRwNY0lZtlVYm2J
-# Iv+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU+1nCiqlF5LpvuZQRDTCg8NI/
+# DNCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -239,11 +245,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQ3xgi2IM/djQML0jYkiutObGnhnDANBgkqhkiG9w0BAQEFAASCAQBsutx4
-# zl1dO0Wlg8fTtkCSIvDm+jvLVLwF+76z903k/zoZsgaH/vlL90UnkjerKFyVMdj5
-# Yj9pfrrsvsVFhWoB8uepxwYnHzoB88E7k4upNGjpkV/cdkd4RR/uONE8WdZrERYV
-# 7aDUBGrw9LTnW4iWrcNpXgkZ6dE++TnLSvAxq66BeDucsVKQqqPV9sC0CmY1wQtN
-# 3V+zvJjgO+oxntZ07VKeEqnKns60A5bzwtrJRsuqYjoUBUH6Qxyot0Z8R6I/3z5L
-# i95o7SKhHCm++RhS/rWWwicQCBzsgI75cWH00mHHS56pQzY7oAtoMvgdndb+O7pA
-# 4hYrOSx64tmI53Ub
+# BDEWBBRPBxlWi7S9q95pdSvcQP3i4QjrGjANBgkqhkiG9w0BAQEFAASCAQDPJlqA
+# In7dWcmgjhRpanGTgRM14m7s+qUZgCOrbLuqWYXltkqEu5iPkRHr9q+7CUFKVUAh
+# Z4aMmLcCC0z5nzflCF+f8X9TPGcYPhBTKdfpp7RN5ae4bKZvRr3f58E3TZ6UNtcR
+# i3wWZo0edVaJIkNKRrJ1ycCFmfJrNiwnYjNwNmS/wLDvBb90DrRm7ZA57gCb3PSO
+# qr+ZfTai5DE7BMmGgoMsY3N6B89mhhjBRcnpdw1lpXzXDbrB8qdqmOuIuKuFejjO
+# even/bVzR0HPX2V8YbS7cBhDEoTapNp2vc4AT5EENOoohPdbtAFSEGvawKAp9pUp
+# jJT46oPO7nkQDPns
 # SIG # End signature block

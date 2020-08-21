@@ -96,7 +96,10 @@ function YouTubeMusicSeleniumLoginCheck {
         if ($LoginType -eq "Google") {
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $GoogleLoginResult = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($GoogleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $GoogleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -127,8 +130,8 @@ function YouTubeMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUzT1dpnPjiThWmu+n0fCcQaAP
-# dQugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUqNNPk438f9t7b4yNFsEXgDc5
+# o0ygggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -185,11 +188,11 @@ function YouTubeMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSUA0UPF1CcWTUzgQLPNbnTVpNpxjANBgkqhkiG9w0BAQEFAASCAQD1zy3Q
-# 9UGiQOt67mda++zYsg8AghVXJhHv4uaKqtTpW1CyzBYFZd2GtkJsIJQUsfTzFt5t
-# p9Ij6FE6/sIMeeOyi/9CuJj6aJ8x8bVvsef7F5+HdA0hctDEIh004sjmcXApiCTv
-# NtaPiY08FoHeE1MKfH6qfzZQNoJLySB1KCP4nlW+Uc3ew5gLX2/D9elpSoHaDHgZ
-# 1kl/BHsLZPx6ljZ9yTl+hSJxqIt8zyUjpOhCsewGITewn2+6VDSf6TMN3vXc6tBy
-# 26qZXiZWqCHws1UyJLnuS02U3ogLV7jM5RA1vpnjMFU3fE/kcPR5STbUFw19+cj4
-# mU1Q1mbRKD5rc4lm
+# BDEWBBQ9BlTxuDNFE9k19896niMtxYzMfjANBgkqhkiG9w0BAQEFAASCAQA3CD3a
+# JiXb4IizNG4QO6XT1Cv/cQOZ1WK3+WRlqicp9ela1PCBoc199w6g2aToMRDqppEk
+# M+gpUUSmmjYr+ZTmxMCgkRbjKmqEQ3EYRehb6wbb9XbqK9ClKgtgcK84a6FAhh5m
+# V/m7oCVJZ8U4rdz1gsrWzD4qOkjxGLFHFBcjQCuNwxNekOR9bJfF65brLQP28QCb
+# YLfQldCSgwy8sH+AaIqqtvUVCGYqZJMmSwjc0j7MUYjw5YOnd+r/+ZV+C9DLWzwZ
+# kKUjgiqTRN/nAzK3/dnzKzp6CCFTULF8SJGgJg20LoNgZ0LzFlsseuQSr1feLFPW
+# 5x475F+tJVnXBgHp
 # SIG # End signature block

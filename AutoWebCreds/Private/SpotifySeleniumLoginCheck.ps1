@@ -119,7 +119,10 @@ function SpotifySeleniumLoginCheck {
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $FacebookLoginResult = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($FacebookLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $FacebookLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -139,7 +142,10 @@ function SpotifySeleniumLoginCheck {
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $AppleLoginResult = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($AppleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $AppleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -170,8 +176,8 @@ function SpotifySeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUclViIlA0EcW0Nom88OvTmGjC
-# 6kOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUQ+ezyBpO5wqUPrExLvnfTaW5
+# EZmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -228,11 +234,11 @@ function SpotifySeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTXQgFxO0feHzd0DTZnTXieLjs7EzANBgkqhkiG9w0BAQEFAASCAQC+8m8J
-# zGNl2lhshcIiFA56V9ro/LMDG7JB1ZNvALUwcN1lWDn3x3DK2NOyF2hTDGO5U8r7
-# wRc/LW95EfJv7n7shfY13vum3qVhFZ4AH5wkDASpOtXZSV1a0iPaTBNBTbC1kGWO
-# lC5HKZVNZDH83EYQmJSREhNKU3XqRbPqepLccYLRRs7wGzI5ob/OFxnv20xp7yd0
-# //pv4NI+DwY3XYtKUFRNYu9Ka2ANSyBNvZpj4cbNQbEeVk5Km7Au4J1wJT4J4IJa
-# DZrBTrfpF2Z/RlCY3c/E9bDWyJpSyNrjuD7z08EAwpiVVVcinixR8HhhZqP+N1tv
-# TvbQOl6UcfLnUf6M
+# BDEWBBTQ6RXuVPE7gUX2O97wZ+7p2/VJSjANBgkqhkiG9w0BAQEFAASCAQCKBtyk
+# aqCxvYSYI4h5SAoIOGnJ8Dz+0L9193vvT+K6WP5/KHC9mg0icrG+7UD/7vDs4XfF
+# ikFF7/Es+ZZort0Pdp7Zerp3HMDACVeJZJjkNM8ZMDXVrpv49OajvoFVCn8dbR/h
+# OKDrYRCDA3sIJ3ZnPFfhmZtJLAb7EONZRzWwiZyF2txcghKMBaT1rdGuBVoWi6ra
+# pmIuMc5oQE73Vash4VgOXzXKZ+RC+l8po2o5zGoy9yJ06NYlX7hNssd9/FnAbSOr
+# ye5RJQHx5YbC08HvAq7cYvNYp6noyiSNGU0Rl4OSCybQOeYIo0LW/F+NrjReuMUG
+# Q960KtpuhZ1E39FJ
 # SIG # End signature block

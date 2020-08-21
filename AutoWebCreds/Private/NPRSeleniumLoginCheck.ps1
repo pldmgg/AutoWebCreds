@@ -102,8 +102,7 @@ function NPRSeleniumLoginCheck {
             try {
                 $null = NPRUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
-                Write-Error $_
-                return
+                Write-Warning $_.Exception.Message
             }
         }
         
@@ -124,7 +123,10 @@ function NPRSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $GoogleLoginResult = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($GoogleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $GoogleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -146,7 +148,10 @@ function NPRSeleniumLoginCheck {
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $FacebookLoginResult = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($FacebookLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $FacebookLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -167,7 +172,10 @@ function NPRSeleniumLoginCheck {
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                $AppleLoginResult = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
+                if ($AppleLoginResult.GetType().FullName -eq 'OpenQA.Selenium.Chrome.ChromeDriver') {
+                    $Driver = $AppleLoginResult
+                }
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -199,8 +207,8 @@ function NPRSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU1oCLe9MG88k8liJWXVqvdmCU
-# vPSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUpoa90M1JaNsRw6txHO1wvNvi
+# ScSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -257,11 +265,11 @@ function NPRSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQPFOIRYHuXFiy8jEP4nyKQ1ZzaYTANBgkqhkiG9w0BAQEFAASCAQDv5oMV
-# iSydfH3GjPk3raY7PPZXqgkCwMkci1lwKuFTj5OuL7WXTZ8+HA3HpZv/b4G9Gcm0
-# 83FGFMztrUiLiUoptZuJSP2U8/OTl0eTq0soBCsNhnOENrQw7/7O4CFvpMlzuxrq
-# QG0B9jl2a7CC/LpHuoEfIytVmY8b4QTX74+aLI1ulTqAD1aJGXTVBulMAuUA4rQa
-# AsecA0htUT8Jbli7kEf8rtGbhMWNYXIinJycX7He89XrAQTj+gJ3HCWtvI2pt/3j
-# lDxYVjtWJ/aqfBGVOR9mynhlH3Ljx8EIXpumCtIsPa/WataW+bbxIKulSlKtNxu5
-# RBAWYE24aWWCIvAJ
+# BDEWBBTjcj5xgAbhA5coBeSdJUXkbCe2DTANBgkqhkiG9w0BAQEFAASCAQBLZtlX
+# ADWL6G/hUy2xHv7pjMDpVOlUX7KVhINiZr2WTX4yx99f73DtCtWg3Pv8VfSf4PYz
+# h7RHq9c6ZTMpjBoUO/ejWbCQZs8S+pfsFpsE3ekz9Y72UXI3NKM0Pd7XLy24uvGB
+# G2TlmPZf8uGMlyQnw65+ShlFGHQbyNPPhQsuTfykwj12RkuyC9tjPu8v/PzJC53f
+# Es+R35ZkxnDMFxEpXtK65mDfRJeZvcnv9Atv8HXICNcBoEiKeMOEVWti9fXAvLIl
+# wGEmRHPJuCcxmA1OZIwEG9rX/ROLdwtVIzjEW7ZZnICyl365VfE9yNVz5hHyMLwO
+# y/gllN5Jl8+xgO5G
 # SIG # End signature block

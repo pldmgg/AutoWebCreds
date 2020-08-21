@@ -90,8 +90,7 @@ function InternetArchiveSeleniumLoginCheck {
             try {
                 $null = InternetArchiveUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
-                Write-Error $_
-                return
+                Write-Warning $_.Exception.Message
             }
         }
 
@@ -124,8 +123,8 @@ function InternetArchiveSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIWIEKuA28/7raRMslBbbsfwv
-# iYqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUy4+moyOmVOzLG0ZFjiArXZlz
+# Id+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +181,11 @@ function InternetArchiveSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT7IzG3DQPk4JRbTTuzv3LaXFEckjANBgkqhkiG9w0BAQEFAASCAQCUUPG3
-# GqARA+sEQlTL/L6WpZqN/upqpzoZIlAUpcRz8k98k6vpCvlmuhz9Ec0871PDc4BP
-# D5rfbNWhWLlRe0ESwOpJJ3VH7IygWA/00uqqqQZX1JniH0TXfIYcWurGFkpr3spi
-# hBaEvvFCSxUZAqfqdDS95w4qcOe8/GPmeG0F4UYDZLULqdmQCDp4ssY69ln62gyk
-# SfEuFik95tSU0iDKjS+zBXWgmjcj1QXtciQaX9Gz9vXj1LsyXYzng4U/PcaN++W1
-# mBAEw+I7g2yYiWGxtHb5piTzaBA8Sg11g7LKIHHUESBd5NEML3YZa4fLaZCPzuj7
-# ws2iFNB3hs0tKK+w
+# BDEWBBSaxEMnR7OCqPROwPTuyvNfZLaXXTANBgkqhkiG9w0BAQEFAASCAQAmdsGD
+# eqsf961ydFPiAUhdJoqclvNMZggp8SDnSwb4vghWeAz4VYiqCUeJO4manG4BJqcf
+# FO4nh6QkUvg3Lb8x6ffj2svVZZ59zlxEI4JmXQEbcB+n0i/SIn4KEusmiKh3hesX
+# O9bV+bD5K5XvNGeFe7SZGjh9f0StxWxVHYXWmzXi5o+Vbwx5NUAdBl4vA+HH5Plj
+# fCUPg2bkQRDjGGDVOycbfMYRocNGSNO/VPGpf/r9F7N+WeC0g4++ZnSdONUejJJx
+# j51b0ebfMNPw0QEidFTGrEF4M6M2UBczIOPYmrv860LkrnvCqG4u4oGd/m/Rh0Vs
+# XzyqqEqURhnKS4xo
 # SIG # End signature block
