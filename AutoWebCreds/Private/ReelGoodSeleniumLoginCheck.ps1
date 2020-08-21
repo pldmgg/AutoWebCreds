@@ -147,11 +147,10 @@ function ReelGoodSeleniumLoginCheck {
         try {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@href="/userlist/tracking"]' -Target $Driver
             if (!$SuccessfulLoginIndicator) {
-                throw "Did not successfully login with $LoginService! Halting!"
+                throw 'Unable to determine login was successful!'
             }
         } catch {
-            Write-Error $_
-            return
+            Write-Warning $_.Exception.Message
         }
     }
 
@@ -166,8 +165,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU8hv9nbkeCefNRysEHi8oUSd3
-# vuegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUz+el/M907ZuI/3yzGvGeK5Bt
+# 9EegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -224,11 +223,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRY8yZWAEWvtNtqSTtG93o83eKQMjANBgkqhkiG9w0BAQEFAASCAQDwLZ2e
-# 5SkhSYhOgnHARTCZSw6JziMhLYYp1w8ITG7kqtTgH6WooiJDCp/Q5dvH/r7wH6f0
-# 2vm3ou7l3Rbf6mxgNjGFIuvsSuu3y5jnd3huXiRYKGRUmjsj4u5hSTWSGxItGPML
-# Iva/8MaKoDLHS0oIMEw3TQb7SGgCefn+MhBVOZpaMYunn0wOhGA1+sR5k+7fVi90
-# OQL9XlRicttoD4jHGqcFOMNsOsQpz29hevzKdcx6ZCqWA1xsFVmdyjdoRqBJgK+z
-# 55dpCG1eY9Y9zsuF902Y19c7J2zU+INP3gXeOPJ7Vs3vRbObyvToT+FQKKL6hWqS
-# 5Wp6ugTJ9i4mE9Dh
+# BDEWBBTBU7qXP/d1yF1s7MpoMZ7uS1/UIjANBgkqhkiG9w0BAQEFAASCAQC30ArK
+# r01rIjaXfw8gVAzJ+LLANLyRKhZsuiY9YalZtb4yz8WWP4cvvPPdtpYp3DgrxVoX
+# 75O+5K1WGjL9Z4G8NlI2Bc/BY1h4klC7oqVbGW7vXOn/SulsaCK8YG93zqYTjvBW
+# t3AsjAh6/ogiKDcj5QCWMzut+aKLDjF0Z/eZKPOr7EN1TqHXcbhYrq2USCc0bZmz
+# y6GFOwB+X4TSMQxoqGJPKFfNZi4r42GIdihUvZyGAYHuXkR31caAlKarY3P6VEXC
+# jpFdwVSaCG2dZ+Qx7MBCx+JAufo76qwPsGVCtAB2NtBKFhzX8yaA9VgalwSpHjah
+# 27vL3aE0njJ+T9i7
 # SIG # End signature block

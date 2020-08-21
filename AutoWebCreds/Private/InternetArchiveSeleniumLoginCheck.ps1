@@ -81,11 +81,10 @@ function InternetArchiveSeleniumLoginCheck {
             Enter-SeUrl 'https://archive.org/account/login' -Driver $Driver
             $SuccessfulLoginIndicator = $UserNameField = Get-SeElement -By XPath -Selection '//*[@id="maincontent"]/div/div/div[2]/section[2]/form/label[1]/input' -Target $Driver
             if ($SuccessfulLoginIndicator) {
-                throw "Did not successfully login with $LoginService! Halting!"
+                throw 'Unable to determine login was successful!'
             }
         } catch {
-            Write-Error $_
-            return
+            Write-Warning $_.Exception.Message
         }
     }
 
@@ -102,8 +101,8 @@ function InternetArchiveSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUTV6C3HUOXitgj20AQoxqM1DE
-# xFegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUDCyplrPrScROJKjRueD8PyyT
+# 8KmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -160,11 +159,11 @@ function InternetArchiveSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRoLZZ3gKXji51BT2PVgkS6J6tNXzANBgkqhkiG9w0BAQEFAASCAQC8H0rH
-# 7DBlDuKlpgU/h/GhhgZpZjDlT0Z3PNt2oFROBv/VMf8XI3VAhhvulj+HcrbVWyg2
-# r+EXWQMD3wFcLfDacNh5TJPCdeG3bOqRIIszoRJQjrdWXVddi2NCYlltYeR2M4BB
-# 2oOBNLCQ9TAmtRXM21ysE4mUcvLyOimG37dGAO7FD4KuK3GBjvOL26mXM5/kDhS5
-# ZVqmCrERmTLnhngIerbKo/kcFJ+9v1KiYhFf5p/oXmYitw+41/QE2Lxlro8hJSv5
-# 016enIFp2TssjXOLmLAZwTlE9zr4a8ifVr/pIEfTLvHPCN7Ba7mEibIZBLYa//3e
-# IFJ/PWkTlTdsWkmN
+# BDEWBBQdCNQXK20XMMTRo4hUWR688U27VjANBgkqhkiG9w0BAQEFAASCAQCpSj6R
+# MIwjCPDe8VtBCkElEgzmQJnz9EsmCMJAmHcjqGYknx8lWKZBSDqTNnM30JeMVxa/
+# ZOVlZlXOwfxeuu++XjtGfQY+u/xby9gNdyOOQOIQvc1LeuwCKChNy9koy8zvnuLl
+# aPpQasLd3qBSDQPQJ/xXi4uOq1kc8LYv8md4nKS43Q1yKJFsru9T0TdCn/w6kA6a
+# /kYF2aGutz7c1zmr5HAkCl+ria7jCVTlILG6wIy8gpXeL+eY04Kubw6AOWDEIe5X
+# HGy++3y6r2yD8koK3kt+FZdXbd546+z5IRFlPLjetgmQ+HnZw7rHv3f/A3/qDZ8I
+# gyDE45cTZ2Zhohb9
 # SIG # End signature block

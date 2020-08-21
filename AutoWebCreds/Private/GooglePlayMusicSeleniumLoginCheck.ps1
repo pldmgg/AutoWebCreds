@@ -97,11 +97,10 @@ function GooglePlayMusicSeleniumLoginCheck {
         try {
             $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@data-type="mylibrary"]' -Target $Driver
             if (!$SuccessfulLoginIndicator) {
-                throw 'Did not successfully login with Google! Halting!'
+                throw 'Unable to determine login was successful!'
             }
         } catch {
-            Write-Error $_
-            return
+            Write-Warning $_.Exception.Message
         }
     }
 
@@ -116,8 +115,8 @@ function GooglePlayMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdDHclFlaVr+L40cxH8Z8Dk0L
-# aUSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJY24nFnSdGsXgziMIBgUKf/p
+# KjWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -174,11 +173,11 @@ function GooglePlayMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSDDENgwc8V1TydeNi4wbIwAJAhijANBgkqhkiG9w0BAQEFAASCAQCKuGIl
-# xNUfG65+Co/ATeNsf8HCgMTNKzTrAnNtIIGGCDl8A2B6rLygxc3FzuIOwLJRij/w
-# MK5jYxQ0IM22ozrygzt3c75kcXJIzVfv8Og9ypBxFXQrSRB3LDUKU+mZn2IjKwld
-# kRo1wrg1Rset86pIeiSuJ/pizLuwBTCqqKUR14z/wwLN5yaiiUyz2IgUOEL2A94n
-# kVWN/d9YoJVqXg/kDTaAVWowJHioJ2J2Wo9sk1LolxgTSzfD9FHYeQ3b0qILAsQR
-# T2iN366zd8JzE+z6RuP7+8J6kRgAF+4yNaXemzIUuRJ3kF5yp7JtrUw+8y/AHPXx
-# 68srwvKDguTevRZr
+# BDEWBBRGubD+ia9EiCQRRQYydUDf895oCDANBgkqhkiG9w0BAQEFAASCAQBXMbMa
+# BulGPJMNGUMfzlFFs7FRO+REN2jyINzl3Ub9nCkozT2Psz/jGdNsh5mwWzV/reWX
+# U3R3paksrWN6AdSiU1Vj5ldKqqMfP/KfQTmwki5LqFlrpvlh+QlKN8JTY99ZTEBS
+# Wekk4hLJnjdgSLc0eXRNxrP4BP9k7I1/pkrmPFiR7HnEBdFnZNbHka1ehXg48ZtH
+# hhO8Hozuvc3L8NJ2UyQImDksivIJGbbw5tM+HdWc0cCfVdPG3g0YdivfDCiow7bd
+# rvheSNFMmeJq5S0kHU4Qswh6LnNxWfBpgCCi3HwwZnkYIv0L3NV7dB5SNOEgxiCz
+# y0SGBdY/Gq4ZaFjQ
 # SIG # End signature block

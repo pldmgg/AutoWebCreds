@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.8 (August 20, 2020)
+
+- Changed logic for determining if logic was successful
+
 ## 0.0.7 (August 20, 2020)
 
 - Minimize EventGhost after launch when it is needed

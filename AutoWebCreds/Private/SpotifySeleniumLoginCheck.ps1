@@ -139,13 +139,12 @@ function SpotifySeleniumLoginCheck {
 
         # So we need to check the webpage for an indication that we are actually logged in now
         try {
-            $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//a[contains(text(),'Account')]" -Target $Driver
+            $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection "//*[@data-testid='user-widget-avatar']" -Target $Driver
             if (!$SuccessfulLoginIndicator) {
-                throw "Did not successfully login with $LoginService! Halting!"
+                throw 'Unable to determine login was successful!'
             }
         } catch {
-            Write-Error $_
-            return
+            Write-Warning $_.Exception.Message
         }
     }
 
@@ -160,8 +159,8 @@ function SpotifySeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUwQGEkMZUG9Bn+5A7/lmSEgQ8
-# JSSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUOukc3rbNMR/NgZw2rXxWYwxS
+# ga+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -218,11 +217,11 @@ function SpotifySeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS4TfqhKyjk/HrlqFm4heAZGZXghjANBgkqhkiG9w0BAQEFAASCAQCDQVpe
-# 3+y4X32qK6SHVMMwPvYYQEDDuy3P/EgDXKTnpv1hGeMUsp3QTxWp1Yam9zDbkinp
-# /IvIHKwo59f+ttWAyn/oRoevUN8aGj75iArNTke8KeSmMqeQgP7IeYFKarOH3LJy
-# A713oX1PxiXnrGP7AqyHJiGnDMowREz5ox3crkOAmr2De/ljhe7VxVQ/l1V9gKur
-# DT/YhwAbL5tUceh4JedpKwjAlL4lhkccPDgivliuY0hHB1Yhdr8JFQM6fBJ7Vb5j
-# mlM4yMi6yWYSxiNrAzc7pZcG9MSskq687kcS4rnO3usqB0MFili9wFBxZbB6aaO9
-# Z5om4axN7KI4f51h
+# BDEWBBRUBtCHxBzHO0yBfw15wxezdXofljANBgkqhkiG9w0BAQEFAASCAQAC81GM
+# ND6ejerTrDQjIiry9bY/DZfLgLxr5KQzH++LoG1rppe+lI0wXtBsHcrrW7HOYyoV
+# 8Z03dOF9YotSyxBKwKguJhhypghMnEbu5j5+G7HaIWJUM6iiVL1Z7X5kyQNEPQzL
+# gEASzMb0MJZHPPNg8s86RLN9cquth35VIwoh2cgselg1q2BcAHbF9kFz8NGZT6qi
+# j4etdQZfJbAgcpw4RP/ddOH/GBoDzh1IfOkJFrEopPtThY5Mbg7sZauIu91sCdgA
+# IEVWlkjeVArAvjmLoQz3Zx9GHJ5n7e05j1+OaCovvS8XMy/9wsdOwDNBF6g/uquL
+# WAyrnmZ/rGdFC3ml
 # SIG # End signature block
