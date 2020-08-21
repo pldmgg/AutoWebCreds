@@ -199,7 +199,11 @@ function New-WebLogin {
         [string]$ServiceName,
 
         [parameter(Mandatory=$false)]
-        [int]$ChromeProfileNumber
+        [int]$ChromeProfileNumber,
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd","Google","Amazon","Apple","Facebook","Twitter")]
+        [string]$LoginType
     )
 
     $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
@@ -208,7 +212,17 @@ function New-WebLogin {
         $PSCmdString = $PSCmdString + ' ' + '-ChromeProfileNumber' + ' ' + $ChromeProfileNumber
     }
 
-    Invoke-Expression -Command $PSCmdString
+    if ($LoginType) {
+        $PSCmdString = $PSCmdString + ' ' + '-LoginType' + ' ' + $LoginType
+    }
+
+    try {
+        Invoke-Expression -Command $PSCmdString
+    } catch {
+        $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
+        Write-Error $Msg
+        return
+    }
 
 }
 
@@ -334,8 +348,8 @@ function Update-StoredCredential {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUFkAtmsqO1H+qwy8j6EHpa7q+
-# zhCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUeztivBER822PQ0xT4Eyio1gp
+# PjWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -392,11 +406,11 @@ function Update-StoredCredential {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSr9P+xWXW4DRQaTPjlpEXSdyhxWTANBgkqhkiG9w0BAQEFAASCAQDVG9j8
-# /hEAPtG0YvznAFgLkHyNGW4dvoF9ock7e1FxsoltRUi9K5bw8bCx8c9WDTAhXRBb
-# +QA4iL8Nc9b+ocRYR7XXAxZp+rm9sB8SfgjJbO5VFEZkWMEdPhxYsLiNLaSu5R3T
-# 1X+UuupJ8uXIc2ZIkIACi5deIExY3enpcmcHLv0ltA+YqIhT9nXtoQi/f+hEF5dP
-# 9itwsgwOJAouZPzmWbbTa6qF+yLDO7MGklB/dTQIqqtGYsH3UtEaTlZoI4CRCO1H
-# 0ClhcnQfG4pYjD2+9UD4ocs5ij7CBVUIjfbNiYBR16Q2dQP2aNJ9Cja1jY0OOR8/
-# EPShx3RsshDrrs5H
+# BDEWBBS3eoR1sTe7Xo2rdfyjhPd+tqz+4DANBgkqhkiG9w0BAQEFAASCAQDNd/5J
+# VTGrlhmSQ2AvEx7vYz6BaiWQgb3zGNb/kE7y8qjXQkybKLbeA0LRT5e3kBCsolaO
+# 940kFZ1Za97QEXZfNHGtvyY4qepHSxWEfXFjBuxcERDb3vFsCAR83Ka+dhyi81Bz
+# e5e3RcE2R30YJDG/axTMXZtuO+wnNdWQZU7mV+B9obznkmfMCTf2p7/EdzNhz83K
+# loTWI/AqMplvKJRbqnASjumEdG0Oq0uqTmyCmb/sM9tVSGF8NDm+VqHTPeJ7r0/5
+# yTC0g/NtKSOejrmGFQlStxfpovBZsShuTtcQkxnz56AVF78OVCgtLqtP/9YJ2U+9
+# ripz9xQuXz7Zc0JE
 # SIG # End signature block

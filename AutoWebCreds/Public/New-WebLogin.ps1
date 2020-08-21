@@ -39,7 +39,11 @@ function New-WebLogin {
         [string]$ServiceName,
 
         [parameter(Mandatory=$false)]
-        [int]$ChromeProfileNumber
+        [int]$ChromeProfileNumber,
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd","Google","Amazon","Apple","Facebook","Twitter")]
+        [string]$LoginType
     )
 
     $PSCmdString = $ServiceName + 'SeleniumLoginCheck'
@@ -48,15 +52,25 @@ function New-WebLogin {
         $PSCmdString = $PSCmdString + ' ' + '-ChromeProfileNumber' + ' ' + $ChromeProfileNumber
     }
 
-    Invoke-Expression -Command $PSCmdString
+    if ($LoginType) {
+        $PSCmdString = $PSCmdString + ' ' + '-LoginType' + ' ' + $LoginType
+    }
+
+    try {
+        Invoke-Expression -Command $PSCmdString
+    } catch {
+        $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
+        Write-Error $Msg
+        return
+    }
 
 }
 
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUNzPcCYlzGDkbFD3QVTJcSG+J
-# mrugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUTExBuiAlyhAJKQKChJzmNaJ9
+# YyOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -113,11 +127,11 @@ function New-WebLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRJC66NekQZbDAQWV2sYcPDFZRI9TANBgkqhkiG9w0BAQEFAASCAQC3x4ol
-# wIaxQAd1jx23y+U3jN+DIFZl3wzXV26x0w81F596vZWI9kj7o1ebo7m0Wjp26Glp
-# qqqvD+d2Fpkm0/GPyD5ONObXZp5gRou27a8BHozHN0rZ10awS0tFBojYA7K5G6vd
-# /KJhSxvoIMbQk5lFKxbP/A5/EYIAnQaTohyuNXweNTUxzksCs/naV56qNgayTkOf
-# iaNJa3hSUOXS6t3m4sKGHX7kfoRE3WnJ0hpxJDxomQ/a0badOw7ikD6XlRgWqcm9
-# xg74kR8/BXYxX0BrE4vPrRCUpepCPMseU0sSABq/TQx30jOU9wQmXvBQvK65ZZy+
-# 0ByAw4NSMxz47NhN
+# BDEWBBQNE+ay6arZWMp7SOivXW+xCsnLMzANBgkqhkiG9w0BAQEFAASCAQAuzD2u
+# TEAJlTL/rlrY/ImJzmHHqVDdXCksgLWlCc5yTHmywrdifJrJc84pvZ96SKMKJJzN
+# HXpFzPBR1ZzJbAa4C/JWPiipYWYVuR0MElZoxbfRnwsfTztXIG2nzzp5XHKNO02P
+# IAbaS95zO4N3aSaXPH9R5sTeKugYTbE8aQaKmlwjbsNhbagWAI0LBAYylDFFfvQr
+# vo93eASMUzVMgt52zEdWnMsN86KrrveQxarkQCT4p6nzKbO2a/Nu7e26Y/bA6K13
+# gsFXEa6ijakRRFrR8cTDl2yZFvpPJSFSV0BjwHu9STukRAcP3Q2b0fK2grWHmitn
+# iAUBAev0ZAlh9HS3
 # SIG # End signature block

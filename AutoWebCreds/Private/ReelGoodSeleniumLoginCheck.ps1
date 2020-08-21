@@ -3,7 +3,11 @@ function ReelGoodSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd","Google","Facebook")]
+        [string]$LoginType
     )
 
     $ServiceName = 'ReelGood'
@@ -16,6 +20,12 @@ function ReelGoodSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'UserNamePwd'   {$Message = "Login to $ServiceName using your $ServiceName account UserName and Password"}
+        'Google'        {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
+        'Facebook'      {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -77,7 +87,7 @@ function ReelGoodSeleniumLoginCheck {
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
             } catch {
                 Write-Error $_
                 return
@@ -92,56 +102,59 @@ function ReelGoodSeleniumLoginCheck {
             return
         }
 
-        <#
         ### Basic UserName and Password Login ####
-        try {
-            $null = ReelGoodUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        if ($LoginType -eq "UserNamePwd") {
+            try {
+                $null = ReelGoodUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
-        #>
 
         ### Login With Google ###
-        try {
-            # Next click, the "Login with Google" button
-            $LoginWithGoogleButton = Get-SeElement -By XPath -Selection '//*[@id="modal_mountpoint"]/div/div/div[2]/div[1]/a[2]/button' -Target $Driver
-            if (!$LoginWithGoogleButton) {
-                throw "Cannot find 'Login With Google' button! Halting!"
-            }
-            Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
-        } catch {
-            Write-Error $_
-            return
-        }
-
-        # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
-        try {
-            $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
-        }
-
-        <#
-        ### Login With Facebook ###
-        try {
-            # Get "Continue With Facebook" Link
-            $ContinueWithFacebookLink = Get-SeElement -By XPath -Selection '//*[@id="modal_mountpoint"]/div/div/div[2]/div[1]/a[1]' -Target $SeleniumDriver
-            if (!$ContinueWithFacebookLink) {
-                throw "Cannot find 'Continue With Facebook' link! Halting!"
+        if ($LoginType -eq "Google") {
+            try {
+                # Next click, the "Login with Google" button
+                $LoginWithGoogleButton = Get-SeElement -By XPath -Selection '//*[@id="modal_mountpoint"]/div/div/div[2]/div[1]/a[2]/button' -Target $Driver
+                if (!$LoginWithGoogleButton) {
+                    throw "Cannot find 'Login With Google' button! Halting!"
+                }
+                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
+            } catch {
+                Write-Error $_
                 return
             }
-            Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
-        } catch {
-            Write-Error $_
-            return
+
+            # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
+            try {
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
-        try {
-            $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        ### Login With Facebook ###
+        if ($LoginType -eq "Facebook") {
+            try {
+                # Get "Continue With Facebook" Link
+                $ContinueWithFacebookLink = Get-SeElement -By XPath -Selection '//*[@id="modal_mountpoint"]/div/div/div[2]/div[1]/a[1]' -Target $SeleniumDriver
+                if (!$ContinueWithFacebookLink) {
+                    throw "Cannot find 'Continue With Facebook' link! Halting!"
+                    return
+                }
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+            } catch {
+                Write-Error $_
+                return
+            }
+
+            try {
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
-        #>
+        
 
         # So we need to check the webpage for an indication that we are actually logged in now
         try {
@@ -165,8 +178,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUz+el/M907ZuI/3yzGvGeK5Bt
-# 9EegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUtVM+ns48X8sO5q0CQPUP+7Ma
+# DsKgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -223,11 +236,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTBU7qXP/d1yF1s7MpoMZ7uS1/UIjANBgkqhkiG9w0BAQEFAASCAQC30ArK
-# r01rIjaXfw8gVAzJ+LLANLyRKhZsuiY9YalZtb4yz8WWP4cvvPPdtpYp3DgrxVoX
-# 75O+5K1WGjL9Z4G8NlI2Bc/BY1h4klC7oqVbGW7vXOn/SulsaCK8YG93zqYTjvBW
-# t3AsjAh6/ogiKDcj5QCWMzut+aKLDjF0Z/eZKPOr7EN1TqHXcbhYrq2USCc0bZmz
-# y6GFOwB+X4TSMQxoqGJPKFfNZi4r42GIdihUvZyGAYHuXkR31caAlKarY3P6VEXC
-# jpFdwVSaCG2dZ+Qx7MBCx+JAufo76qwPsGVCtAB2NtBKFhzX8yaA9VgalwSpHjah
-# 27vL3aE0njJ+T9i7
+# BDEWBBSOxB+ukM+prtOY7Z3RuAaro6kItTANBgkqhkiG9w0BAQEFAASCAQArmT72
+# IkPOZtdEsPfa1riQVbNeMvmhFKS77CLCdLKU5wfrUHURWzpo2r/Iy59gT0Nd+T1L
+# Jg9l17tVvm9SdjHaHfjXz0tqbG8GctlZxMlzthiqPPNDypYiurt7W3BPmt/Kj+uG
+# Id1ivU708Xd536RpK90gUW2hHDUMIL9C3yEElE7jonnv4UMkKMK1YAK01WdPqO87
+# yNge5ogcZreNzPGLMHTU+NF930cilpAeKgV03mPwMBisBzKjyh6yULqUW0PHb53r
+# lfP4MUA5u+v0pfYR1R5NY8aVF/G+vJmE4Is9g4U9CI42w1PHVBVoVQnv4UAFp7oc
+# 3oCh6FA0GFk6VWC4
 # SIG # End signature block

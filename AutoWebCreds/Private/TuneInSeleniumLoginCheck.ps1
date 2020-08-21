@@ -3,7 +3,11 @@ function TuneInSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd","Apple","Facebook","Google")]
+        [string]$LoginType
     )
 
     $ServiceName = "TuneIn"
@@ -16,6 +20,13 @@ function TuneInSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'UserNamePwd'   {$Message = "Login to $ServiceName with a dedicated $ServiceName UserName and Password"}
+        'Apple'         {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
+        'Facebook'      {$Message = "Login to $ServiceName using your$LoginType account UserName and Password"}
+        'Google'       {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -60,12 +71,21 @@ function TuneInSeleniumLoginCheck {
     }
 
     if ($SignInButton) {
-        # Have the user provide Credentials
-        try {
-            [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
-        } catch {
-            Write-Error $_
-            return
+        if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
+            try {
+                # Have the user provide Credentials
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+            } catch {
+                Write-Error $_
+                return
+            }
+        } else {
+            try {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+            } catch {
+                Write-Error $_
+                return
+            }
         }
 
         # We need to actually Login
@@ -76,77 +96,84 @@ function TuneInSeleniumLoginCheck {
             return
         }
 
-        <#
+        
         ### Basic UserName and Password Login ####
-        try {
-            $null = TuneInUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Error $_
-            return
+        if ($LoginType -eq "UserNamePwd") {
+            try {
+                $null = TuneInUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Error $_
+                return
+            }
         }
-        #>
+        
 
         ### Login With Google ###
-        try {
-            # Get "Continue with Google" Link
-            $LoginWithGoogleButton = Get-SeElement -By XPath -Selection '//*[@id="googleOauthButton"]' -Target $Driver
-            if (!$LoginWithGoogleButton) {
-                throw "Cannot find 'Login With Google' button! Halting!"
+        if ($LoginType -eq "Google") {
+            try {
+                # Get "Continue with Google" Link
+                $LoginWithGoogleButton = Get-SeElement -By XPath -Selection '//*[@id="googleOauthButton"]' -Target $Driver
+                if (!$LoginWithGoogleButton) {
+                    throw "Cannot find 'Login With Google' button! Halting!"
+                }
+                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
+            } catch {
+                Write-Error $_
+                return
             }
-            Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
-        } catch {
-            Write-Error $_
-            return
-        }
 
-        # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
-        try {
-            $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+            # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
+            try {
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
 
-        <#
         ### Login With Facebook ###
-        try {
-            # Get "Continue With Facebook" Link
-            $ContinueWithFacebookLink = Get-SeElement -By XPath -Selection '//*[@id="facebookOauthButton"]' -Target $SeleniumDriver
-            if (!$ContinueWithFacebookLink) {
-                throw "Cannot find 'Continue With Facebook' link! Halting!"
+        if ($LoginType -eq "Facebook") {
+            try {
+                # Get "Continue With Facebook" Link
+                $ContinueWithFacebookLink = Get-SeElement -By XPath -Selection '//*[@id="facebookOauthButton"]' -Target $SeleniumDriver
+                if (!$ContinueWithFacebookLink) {
+                    throw "Cannot find 'Continue With Facebook' link! Halting!"
+                }
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+            } catch {
+                Write-Error $_
+                return
             }
-            Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
-        } catch {
-            Write-Error $_
-            return
-        }
 
-        try {
-            $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+            try {
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
 
         ### Login with Apple ###
-        try {
-            # Get "Continue With Apple" Link
-            $ContinueWithAppleLink = Get-SeElement -By XPath -Selection '//*[@id="appleSignInOauthButton"]' -Target $SeleniumDriver
-            if (!$ContinueWithAppleLink) {
-                throw "Cannot find 'Continue With Apple' link! Halting!"
+        if ($LoginType -eq "Apple") {
+            try {
+                # Get "Continue With Apple" Link
+                $ContinueWithAppleLink = Get-SeElement -By XPath -Selection '//*[@id="appleSignInOauthButton"]' -Target $SeleniumDriver
+                if (!$ContinueWithAppleLink) {
+                    throw "Cannot find 'Continue With Apple' link! Halting!"
+                }
+                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
+            } catch {
+                Write-Error $_
+                return
             }
-            Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
-        } catch {
-            Write-Error $_
-            return
-        }
 
-        try {
-            $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+            try {
+                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
-        #>
+        
 
         # So we need to check the webpage for an indication that we are actually logged in now
         try {
@@ -157,7 +184,6 @@ function TuneInSeleniumLoginCheck {
         } catch {
             Write-Warning $_.Exception.Message
         }
-
     }
 
     $Driver
@@ -171,8 +197,8 @@ function TuneInSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUQkiSQZYGJX9uXjvRdGQlozS5
-# RGWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUhNGpOlZERwNKsYGwh6D+eKm0
+# GEKgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -229,11 +255,11 @@ function TuneInSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQTObuVHFRXEpkvx12eyOuGe+5vpjANBgkqhkiG9w0BAQEFAASCAQCFNC+1
-# VCgE2HZzqSvmXJEmA3OuRxjOEhef0HP7PV1AhRoRjFX4ZLHymm0up41S+VzEI3bC
-# tQ+Ti84zWcN0p93WDMf0CgNWJqdwuOO5gekjdINLkoMM4UzA3IltVGUvk9hlFR2w
-# gFlyRy4so0r9Ov0BFfL4mmdVYFxOe1f6FCd6lWpQ5yjq+obSAHCfm0pBVKxbZFg/
-# j8j0poaxcgWlZWqFsfTQmOKrU8MdbeQ+NIjcB1hmoYqpIbllTAY9R9fhGpsyM/QV
-# 9W5vcRrkxr460GO8G60Vtt0Gbik0tK+7m+A/qSj4hS3zwnEnNCSKkJpNfcNb7wVK
-# 1wS+l40ff7ri5hJW
+# BDEWBBR5VOh9dL1FaroeGyi4kO+HCA8uJDANBgkqhkiG9w0BAQEFAASCAQBGqmSN
+# V9iBFVnQA7DaUyHahthivn91fvAm9QgAxieZ3Zly3lgVdewwbR5x7eE3kG8XJ4NA
+# ybd1D91HeSwNJOYP/WWGxyBp0i07mu7lPvZkO+oil0UvE9ENeLjPs2h4D2J+pa9g
+# XvgU493RavYVq9bcA9i9FayZOZXh4PZV6wySksZwojX6JfSuuOWWqpOpxQjujM7P
+# eETCzd8jGfhTwye96vrRCfyrof3sA9uhdIKDFMwyaHo+/HOUIUFvuHmKcpuPjSVl
+# Njsq3sJ6q1ZVXlhkXth+R6U6f8/h3mlzfMkzGHYlaY+SG97wdMm41QHFlSOW0DHN
+# VmzQ4d9TvKqwVU08
 # SIG # End signature block

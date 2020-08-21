@@ -1,9 +1,13 @@
 function YouTubeMusicSeleniumLoginCheck {
     [CmdletBinding()]
     param(
+        [parameter(Mandatory=$false)]
+        [ValidatePattern('[0-9]')]
+        [int]$ChromeProfileNumber = '0',
+
         [parameter(Mandatory=$true)]
-        [ValidateNotNullOrEmpty()]
-        [string]$ServiceName
+        [ValidateSet("Google")]
+        [string]$LoginType
     )
 
     $ServiceName = "YouTubeMusic"
@@ -16,6 +20,10 @@ function YouTubeMusicSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'Google' {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -69,7 +77,7 @@ function YouTubeMusicSeleniumLoginCheck {
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
             } catch {
                 Write-Error $_
                 return
@@ -85,11 +93,13 @@ function YouTubeMusicSeleniumLoginCheck {
         }
 
         ### Login With Google ###
-        # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
-        try {
-            $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        if ($LoginType -eq "Google") {
+            # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
+            try {
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
         # So we need to check the webpage for an indication that we are actually logged in now
@@ -114,8 +124,8 @@ function YouTubeMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUCyd8cvaWLvNHoDJYgduAabvx
-# mZ+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrFRhZ8RwMeJFB9fTEA7lwZ74
+# rJSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -172,11 +182,11 @@ function YouTubeMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR5oJAVQ9VqBc+9dQnDcoVxCjPoNTANBgkqhkiG9w0BAQEFAASCAQAHm1bW
-# WovMI1wR/KLSIy1Ts7x5nNFaHRN0HgUrL5exCUc5A5TeKqhrUJaNaFmWw2FZwQru
-# EuNXh7FAcJUQiRWuL+jieWXsttaMPPjESb1WCJL6M9LV977vFjPAR18FPpifRVeF
-# LKYFzvnyprdEfzosACz/zuH/m+yz7Fwkpf0UylY4fYc78BR+RWEdsTah5c6ymdrV
-# Rec02oC7P58Bj43GWUeHR6LGaE/TEw7IY6kkE91chH/l+4noLKgRENgfOpA9C8ra
-# rkdEm5Lfrj92RilHvetMdLtyUJgEAB9pCz9pMxlhsiPkIDrPIbsUHjnxn1svgGcW
-# j0xwh7kjPLcGXBsL
+# BDEWBBTmsB4W06k9e69aX1ep80BXgw2M2TANBgkqhkiG9w0BAQEFAASCAQDnFJhU
+# Uoog81XPTy1ckT9tCW9ArkC9y+sUwO1P/z55fk2d2VWxIuAMu5SSra6EHI3NI6HH
+# hbiW7AgsYGCCQ6hiwf00GbsooHeQJYhn/AYDbHG1ljbfopDZ7mBKUT3+EJL30o4O
+# hGcxK6m7YilcsTVSQSKKOYa4F7y+S7QVosXG/oiYIKrDK9kLNbqyvtGyHZ7MbxHi
+# 53qsV4KoJxP6DpDEp0U9ioc5c/bGsNlJ3w8j0OZuqjKVE71Ck964IYXAk6RVUKIM
+# ELOL4iJazSltdEOlezVVHLwEW+tRDgoZP2qb45WzCIr5sQpB/3uROmvWeUFNnoSG
+# r5dn+m3YDQfikkJ0
 # SIG # End signature block

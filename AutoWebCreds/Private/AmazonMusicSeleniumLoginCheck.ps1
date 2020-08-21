@@ -3,7 +3,11 @@ function AmazonMusicSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("Amazon")]
+        [string]$LoginType
     )
 
     $ServiceName = "AmazonMusic"
@@ -16,6 +20,10 @@ function AmazonMusicSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'Amazon' {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -70,7 +78,7 @@ function AmazonMusicSeleniumLoginCheck {
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
             } catch {
                 Write-Error $_
                 return
@@ -86,10 +94,12 @@ function AmazonMusicSeleniumLoginCheck {
         }
 
         ### Amazon Login ####
-        try {
-            $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        if ($LoginType -eq 'Amazon') {
+            try {
+                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
         # So we need to check the webpage for an indication that we are actually logged in now
@@ -114,8 +124,8 @@ function AmazonMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU6dYqghibLInZfQr7A4Gl02V+
-# o3egggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrH4XNXKlYQJ+pHjMWzV3OvUX
+# S62gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -172,11 +182,11 @@ function AmazonMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTbYkTgMZb3cfJ7410uusNRYqVfxTANBgkqhkiG9w0BAQEFAASCAQDylupg
-# /MjHX/kKA+aCqGm0D3KcSuKkOmwAp+12rWj+n708LLtVkh/HNiR1dnrxP17wF5kA
-# XcHln0kmSl3uEptJ9WJIPQsc1IQ8ekpnjx2RPVmmJvKge3q+UlcC3EK7NZLMisGM
-# Doq+Yy+yxK8zM9SuKI/5ZuRhQPmNOyZjjs5CdqTtaWhuWc4iq3rpUbs7XzQBaR7B
-# V7zdADicyRHyk9C+4+SDlcTBFEbWjpPzXNhyO0p7k0KbA+Ex9+pYWduKges5inXn
-# KMeD2kGwrEgW6sItYoWzx7XJALZxCgm0kY/EiuU12isutFBoiijhO+SAvjVYdq3o
-# 4Dv4ROthFK+3fVZi
+# BDEWBBSINdm7aGypVFzNCtErZeSMX0T7TTANBgkqhkiG9w0BAQEFAASCAQBIizQI
+# xfFKCfqtbxLfoWqZpbFOBaD+fBTxPXmwr37SxOQ7RsdIvgBGxymQFJrXR0r7VHv6
+# kyYzvhfbumRe5PJYfZ0TQzFtOYd0oeNBf3jzvixV2PrIquOpteB0ypeS+0fROvs9
+# VwhsEOFuG34eR8NVRJ14pRaTHZPpS0Sb+kH7aQ5j3014QV7fGKMAzydJMAUXtpuC
+# gYAL9oeWnKD0JvjlOyEaglD3YwysCuAk60O4TXtkM0t63bxeeUIhPu7/YAPA97xZ
+# ZzVS0/Yg7/5WIze8pJOwkkpsAn79VZeIlDatLss3Tz2RbG7SOsfPLi8BM++THCyu
+# slxTWUDvKX+8HPzx
 # SIG # End signature block

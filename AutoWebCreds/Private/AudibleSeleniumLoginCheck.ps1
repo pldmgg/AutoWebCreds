@@ -3,7 +3,11 @@ function AudibleSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("Amazon")]
+        [string]$LoginType
     )
 
     $ServiceName = "Audible"
@@ -16,6 +20,10 @@ function AudibleSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'Amazon' {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -70,7 +78,7 @@ function AudibleSeleniumLoginCheck {
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
             } catch {
                 Write-Error $_
                 return
@@ -86,10 +94,12 @@ function AudibleSeleniumLoginCheck {
         }
 
         ### Amazon Login ####
-        try {
-            $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        if ($LoginType -eq "Amazon") {
+            try {
+                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
         # So we need to check the webpage for an indication that we are actually logged in now
@@ -114,8 +124,8 @@ function AudibleSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQURhWEYd4nanBZfLuusfSShXq3
-# ueOgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUsPPGhZ/T84dPt0Ii5vPtJO+s
+# BPWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -172,11 +182,11 @@ function AudibleSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRMZKZ7NJwXIn7J3k2YCU0TODCotDANBgkqhkiG9w0BAQEFAASCAQAdOGyB
-# VDkOVSqO8WhscqiwQ8pbApMX+UyVmiNVzfZkhgG0nDPNlz7h3VKGbAV74sJ8MLZR
-# NoYkL33h6yKAB3AoRMy0epQ7SNHaLvx13lJGz2kVH12tsXiPgu3tjtQT172e+iUG
-# +vtA7HbzrPfiod6cWygqzDKkyIMcw4zf4pxcYBvXdCYS2cfJG3w1rnU/Uv83nhAx
-# KL8m4EVM8ZxX1R0XodqlABhdmjnemmxhq1T0rRtn+CkKo9JaMEmhMW80Urdnw2eW
-# DhvbW6ZbfsRWZX1mhjf1GcPcFaPfJnV7NPok3dkTAl7krUIIPlqjJtSJhnEI3+un
-# WF9ToLjX2uS6MwJi
+# BDEWBBT0S2oDS91IKMmBqZpTaYO2WjSz6jANBgkqhkiG9w0BAQEFAASCAQAEwvH2
+# 8uVug/u+e7H4C9PzZOTmqhOVvViL4oaEi/VsOibi7b6HB0ED8Yr0xi9WYJ6d03H9
+# 36qCmUy/rN8UxKDlFn8Ce05CVcTDzh6fHpnbPIW85LO8SNXaotJoIpOgFsgoYzVh
+# 7MO4yrAFN6ZOLZIk6imiMl6Q1qm7gkxi8fA62NzqK+NIohZ/p23Nm9OyrrOxWuBp
+# E22qFLP2jKC+z0k3SN1gGT7il96MXvl2PjRADL3aOxtlJ/TUHzR7egbAQFyioMza
+# Bp2+usLePZUzuhM2gMlsjlyO9MPE+xACDJ/V7OqSzpch73ageZ19OX0/0kJJ4EW+
+# k4amNF4gigNBMgNo
 # SIG # End signature block

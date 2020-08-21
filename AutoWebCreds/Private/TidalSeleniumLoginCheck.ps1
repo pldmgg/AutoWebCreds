@@ -3,7 +3,11 @@ function TidalSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd","Apple","Facebook","Twitter")]
+        [string]$LoginType
     )
 
     $ServiceName = "Tidal"
@@ -16,6 +20,13 @@ function TidalSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'UserNamePwd'   {$Message = "Login to $ServiceName with a dedicated $ServiceName UserName and Password"}
+        'Apple'         {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
+        'Facebook'      {$Message = "Login to $ServiceName using your$LoginType account UserName and Password"}
+        'Twitter'       {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -60,12 +71,21 @@ function TidalSeleniumLoginCheck {
     }
 
     if ($LoginButton) {
-        # Have the user provide Credentials
-        try {
-            [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
-        } catch {
-            Write-Error $_
-            return
+        if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
+            try {
+                # Have the user provide Credentials
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+            } catch {
+                Write-Error $_
+                return
+            }
+        } else {
+            try {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+            } catch {
+                Write-Error $_
+                return
+            }
         }
 
         # We need to actually Login
@@ -76,77 +96,84 @@ function TidalSeleniumLoginCheck {
             return
         }
 
-        <#
+        
         ### Basic UserName and Password Login ####
-        try {
-            $null = TidalUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Error $_
-            return
+        if ($LoginType -eq "UserNamePwd") {
+            try {
+                $null = TidalUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Error $_
+                return
+            }
         }
-        #>
+        
 
         ### Login With Twitter ###
-        try {
-            # Get "Twitter" Button
-            $TwitterButton = Get-SeElement -By XPath -Selection "//button[contains(@class, 'btn-client-twitter')]" -Target $Driver
-            if (!$TwitterButton) {
-                throw "Cannot find 'Twitter' button! Halting!"
+        if ($LoginType -eq "Twitter") {
+            try {
+                # Get "Twitter" Button
+                $TwitterButton = Get-SeElement -By XPath -Selection "//button[contains(@class, 'btn-client-twitter')]" -Target $Driver
+                if (!$TwitterButton) {
+                    throw "Cannot find 'Twitter' button! Halting!"
+                }
+                Send-SeClick -Element $TwitterButton -Driver $Driver
+            } catch {
+                Write-Error $_
+                return
             }
-            Send-SeClick -Element $TwitterButton -Driver $Driver
-        } catch {
-            Write-Error $_
-            return
-        }
 
-        # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
-        try {
-            $null = TwitterAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+            # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
+            try {
+                $null = TwitterAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
 
-        <#
         ### Login With Facebook ###
-        try {
-            # Get "Continue With Facebook" Link
-            $ContinueWithFacebookLink = Get-SeElement -By XPath -Selection '//button[contains(@class, 'btn-client-facebook')]' -Target $SeleniumDriver
-            if (!$ContinueWithFacebookLink) {
-                throw "Cannot find 'Continue With Facebook' link! Halting!"
+        if ($LoginType -eq "Facebook") {
+            try {
+                # Get "Continue With Facebook" Link
+                $ContinueWithFacebookLink = Get-SeElement -By XPath -Selection '//button[contains(@class, 'btn-client-facebook')]' -Target $SeleniumDriver
+                if (!$ContinueWithFacebookLink) {
+                    throw "Cannot find 'Continue With Facebook' link! Halting!"
+                }
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+            } catch {
+                Write-Error $_
+                return
             }
-            Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
-        } catch {
-            Write-Error $_
-            return
-        }
 
-        try {
-            $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+            try {
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
 
         ### Login with Apple ###
-        try {
-            # Get "Continue With Apple" Link
-            $ContinueWithAppleLink = Get-SeElement -By XPath -Selection '//*[@id="appleid-signin"]' -Target $SeleniumDriver
-            if (!$ContinueWithAppleLink) {
-                throw "Cannot find 'Continue With Apple' link! Halting!"
+        if ($LoginType -eq "Apple") {
+            try {
+                # Get "Continue With Apple" Link
+                $ContinueWithAppleLink = Get-SeElement -By XPath -Selection '//*[@id="appleid-signin"]' -Target $SeleniumDriver
+                if (!$ContinueWithAppleLink) {
+                    throw "Cannot find 'Continue With Apple' link! Halting!"
+                }
+                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
+            } catch {
+                Write-Error $_
+                return
             }
-            Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
-        } catch {
-            Write-Error $_
-            return
-        }
 
-        try {
-            $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+            try {
+                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
-        #>
+        
 
         # So we need to check the webpage for an indication that we are actually logged in now
         try {
@@ -171,8 +198,8 @@ function TidalSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUAneZ/SPG9ZT5H+9VruYT+5TT
-# wlmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUKOtAANdvrPuksHb+o5FJndLL
+# 9O+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -229,11 +256,11 @@ function TidalSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQT+mocqclCegEak57FLy+KN9gATDANBgkqhkiG9w0BAQEFAASCAQCm120G
-# yn9ku7a7cG+zZubbJpOiwEahITEaLqG7NzMd0Z71+7cxU+vhED3SB3Xl0js/mP2r
-# oA/4AiMgcs6F2yDHgd10whLJduUwVuPNk/XDEspKy0pflCjchQwR2wchJmRBTWBq
-# qbmC9etWHyxYAMk4Ks39fohxlUM1Qz21ksB/gSDGII4+ZM51e2Y3nq5j5aG6/Kib
-# hSfMnQ3QhV99kocTBnvRtE8whupHe1Md2xKFWlKAhFrgfv5PNtIPV4lQUnsH5lw4
-# vAd7cSx716SddPVmwbCgrFeFugCucgC56warT8ATVSh6CbA1bWOSkbndEEGKg/kA
-# iRvAPO/uPW6+aABw
+# BDEWBBTPp74cZ0O35nWv9c2EdGbjdOW5rzANBgkqhkiG9w0BAQEFAASCAQCxgY/L
+# qtvfjyw7+RAhGkj4qKAxXT1XG2386o3lmIeTDew6uIVD4PdPwmA51H2AdavIxogp
+# ueE9CSYi+dXh6KC78L984SU3NNtcmvSnMh66+TBiopGAuJ0tc03b/k0IlgxmRsMa
+# yhXJfo1qGcZoxbkak33IKWoOAY0LBNF9nKyM3qLl1ruKvhVe3yGvYI06yHfAwV0S
+# ZusmRs2eXTcsY1ZGIHcl90Bv5bnlVr/Hlt6Cs3IT2dqu4rb73dTLTYx6mVXeuOIv
+# UJC5/YyQZS8OhBZN8SK4BpMbBMN/+RiQekSiD6Q3jR2rPAVt2mpaF1XibliA/h7z
+# uBWIRlB8kVQhwCMT
 # SIG # End signature block

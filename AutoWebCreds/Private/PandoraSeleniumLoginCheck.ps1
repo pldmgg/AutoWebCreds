@@ -3,7 +3,11 @@ function PandoraSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd")]
+        [string]$LoginType
     )
 
     $ServiceName = "Pandora"
@@ -16,6 +20,10 @@ function PandoraSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'UserNamePwd' {$Message = "Login to $ServiceName using your $ServiceName account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -70,7 +78,7 @@ function PandoraSeleniumLoginCheck {
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
             } catch {
                 Write-Error $_
                 return
@@ -86,10 +94,12 @@ function PandoraSeleniumLoginCheck {
         }
 
         ### Basic UserName and Password Login ####
-        try {
-            $null = PandoraUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        if ($LoginType -eq 'UserNamePwd') {
+            try {
+                $null = PandoraUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
         # So we need to check the webpage for an indication that we are actually logged in now
@@ -114,8 +124,8 @@ function PandoraSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU+Ps7LNX5j0G7KfF/UOF7paRt
-# H9igggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYkzDWG2DbuP9vm+H6rcMAVNr
+# pnagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -172,11 +182,11 @@ function PandoraSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTDqH+5AZRbUkUMhMDRrTs45zn8MTANBgkqhkiG9w0BAQEFAASCAQDKyWdw
-# b41qvsm+C+geG1nYWBCYuIziPMsNUZ/9BxfCdW6AswM2s+IJpM2WPGlR/8zxcFz3
-# i2BTaSPI78y69sG+HCiwfFgR7kucClwcqOwiAfr1wATHOYGAdP2tqLnyTGl5DXgI
-# qEx88jK63hbFadvmusXVmqW7OrKpaoLEA2XsEOxy4Ydn0d6nZeZvl36zTrKOLFis
-# bXEXZPFYHI+J3DqSlPlTekAaJgLY+///qMwPoiJKNcUAJhvfzAnB4XSttSje7VEZ
-# mGwuqqJU1SPXe1ujfgZMr0EqjyZSaWU39/2yW+Lg0ve+LRMGwL0ADaMwrJYYbeof
-# DKRwIvoGg97CRF/A
+# BDEWBBQFK17OjjLjh87dr9C+buUEJOx1ojANBgkqhkiG9w0BAQEFAASCAQAX/Nv2
+# aOcNRpxtvExgtVZLvjZ+7JHaIRBEg/2M9QgzqVssoBnPnkgvDjFGoeU3EMxPyY+u
+# 3J+8Sd+1qxVkgMqPfWiiSkblFLfA/70RGpU/tlR07vLD0zllXvUbDg87ZFCZUcVA
+# A8y+GWDNlrqQdqMk1m5wWNhmo6/nQTdhSHiZLabvCfEoE+B/wP1GoXVh0zsQRF77
+# bJ7IUQi5WOafU9ms1ymb22AgVvJrcXpqB41Y24OvIoFCAhYgzIPHwYe9uBgRMzHa
+# hRdbar9WVVjxKMqZz7+tYsYlxu899a+LdHYGWZbJ3XDODQMeZ4sFDL3zB//F32l8
+# jMk1FDg9nECjAkoc
 # SIG # End signature block

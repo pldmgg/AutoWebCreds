@@ -3,7 +3,11 @@ function InternetArchiveSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("UserNamePwd")]
+        [string]$LoginType
     )
 
     $ServiceName = "InternetArchive"
@@ -16,6 +20,10 @@ function InternetArchiveSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'UserNamePwd' {$Message = "Login to $ServiceName using your $ServiceName account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -60,20 +68,31 @@ function InternetArchiveSeleniumLoginCheck {
     }
 
     if ($UserNameField) {
-        # Have the user provide Credentials
-        try {
-            [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
-        } catch {
-            Write-Error $_
-            return
+        if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
+            try {
+                # Have the user provide Credentials
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+            } catch {
+                Write-Error $_
+                return
+            }
+        } else {
+            try {
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+            } catch {
+                Write-Error $_
+                return
+            }
         }
 
         ### Basic UserName and Password Login ####
-        try {
-            $null = InternetArchiveUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Error $_
-            return
+        if ($LoginType -eq 'UserNamePwd') {
+            try {
+                $null = InternetArchiveUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Error $_
+                return
+            }
         }
 
         # So we need to check the webpage for an indication that we are actually logged in now
@@ -101,8 +120,8 @@ function InternetArchiveSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUDCyplrPrScROJKjRueD8PyyT
-# 8KmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUzPzFyOogtTSRtPJ0NPb78I6X
+# 7zmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -159,11 +178,11 @@ function InternetArchiveSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQdCNQXK20XMMTRo4hUWR688U27VjANBgkqhkiG9w0BAQEFAASCAQCpSj6R
-# MIwjCPDe8VtBCkElEgzmQJnz9EsmCMJAmHcjqGYknx8lWKZBSDqTNnM30JeMVxa/
-# ZOVlZlXOwfxeuu++XjtGfQY+u/xby9gNdyOOQOIQvc1LeuwCKChNy9koy8zvnuLl
-# aPpQasLd3qBSDQPQJ/xXi4uOq1kc8LYv8md4nKS43Q1yKJFsru9T0TdCn/w6kA6a
-# /kYF2aGutz7c1zmr5HAkCl+ria7jCVTlILG6wIy8gpXeL+eY04Kubw6AOWDEIe5X
-# HGy++3y6r2yD8koK3kt+FZdXbd546+z5IRFlPLjetgmQ+HnZw7rHv3f/A3/qDZ8I
-# gyDE45cTZ2Zhohb9
+# BDEWBBRAc6H8GZTB+T03Dx0GEd6gQsb8ezANBgkqhkiG9w0BAQEFAASCAQCvJkER
+# drzk9ZtMp10T6L856qikErThiggn+oh4/l2dYmNOosJ0S/Ff1HKkUteuvxFAwrHP
+# NQImEMPfFLpDvdwcp6We1cDDd5BadK2XD7hX5aSMx4Lfq3ckheCeM7CVLUFiUEiz
+# bsCGjO9PF6fVVYTi6VTM6IEaE3EEyBnggVS/+MK5p1FrAw57Ok9T9YI+TArr9bEr
+# mIXLLDmoEMmhbQBah1D0/9Dbd7oQ0QUZ69lN3/JdUFh5ESDSzuRaP3DBbkJGj8lV
+# byswuyRLi7K/e+kAY4RsEHV8FRZJq4WGI37XHCIOu8vqb20ypoH8kmkLjObwTMiS
+# DwgRLV0T7a4jV523
 # SIG # End signature block

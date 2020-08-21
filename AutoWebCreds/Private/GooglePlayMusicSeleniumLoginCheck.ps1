@@ -3,7 +3,11 @@ function GooglePlayMusicSeleniumLoginCheck {
     param(
         [parameter(Mandatory=$false)]
         [ValidatePattern('[0-9]')]
-        [int]$ChromeProfileNumber = '0'
+        [int]$ChromeProfileNumber = '0',
+
+        [parameter(Mandatory=$true)]
+        [ValidateSet("Google")]
+        [string]$LoginType
     )
 
     $ServiceName = "GooglePlayMusic"
@@ -16,6 +20,10 @@ function GooglePlayMusicSeleniumLoginCheck {
     if (!$ChromeProfile) {
         Write-Error "Unable to find Chrome Profile '$ProfileDirName'. Halting!"
         return
+    }
+
+    switch ($LoginType) {
+        'Google' {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
@@ -70,7 +78,7 @@ function GooglePlayMusicSeleniumLoginCheck {
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
             } catch {
                 Write-Error $_
                 return
@@ -86,11 +94,13 @@ function GooglePlayMusicSeleniumLoginCheck {
         }
 
         ### Login With Google ###
-        # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
-        try {
-            $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
-        } catch {
-            Write-Warning $_.Exception.Message
+        if ($LoginType -eq "Google") {
+            # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
+            try {
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+            } catch {
+                Write-Warning $_.Exception.Message
+            }
         }
 
         # So we need to check the webpage for an indication that we are actually logged in now
@@ -115,8 +125,8 @@ function GooglePlayMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJY24nFnSdGsXgziMIBgUKf/p
-# KjWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUF5v3iBjqaWQtTSZR/gJbnfQn
+# /NugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -173,11 +183,11 @@ function GooglePlayMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRGubD+ia9EiCQRRQYydUDf895oCDANBgkqhkiG9w0BAQEFAASCAQBXMbMa
-# BulGPJMNGUMfzlFFs7FRO+REN2jyINzl3Ub9nCkozT2Psz/jGdNsh5mwWzV/reWX
-# U3R3paksrWN6AdSiU1Vj5ldKqqMfP/KfQTmwki5LqFlrpvlh+QlKN8JTY99ZTEBS
-# Wekk4hLJnjdgSLc0eXRNxrP4BP9k7I1/pkrmPFiR7HnEBdFnZNbHka1ehXg48ZtH
-# hhO8Hozuvc3L8NJ2UyQImDksivIJGbbw5tM+HdWc0cCfVdPG3g0YdivfDCiow7bd
-# rvheSNFMmeJq5S0kHU4Qswh6LnNxWfBpgCCi3HwwZnkYIv0L3NV7dB5SNOEgxiCz
-# y0SGBdY/Gq4ZaFjQ
+# BDEWBBQwGVuF7XN/arYOp+XFPjayLXg4NTANBgkqhkiG9w0BAQEFAASCAQBxpZU9
+# LwQdFHvAdPbkbHql6i/qz2cwPBDRqC4kMfrDwlYSUIqU+M6iHF8QXf7basm5mHrK
+# 7MrjNl30G1JjSLgWGV1FVsSvIfuYsJy0DBnFuf9OM63ztLoBWMa86vTAkW4vxr5O
+# 18u39PhAQhg1nHddd9AC/Ccybgl6FiCh6oLbe+3WHQ+ONIxo17AhuI8YsB3pO/w/
+# 4Zfp3a8BuK7uDyhp5NagwUrV35l3viydOyJXIHOp7Ama1cfWlkDGb4udhOccB7vs
+# t8NJsNQtC4URIlZtc+1XwGpJweB80pY53q3+vq1TvwtY94mBQBWrSrrAYbox3t6O
+# w+HQYtYEP5UIg81Y
 # SIG # End signature block
