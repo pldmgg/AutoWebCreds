@@ -30,7 +30,7 @@ function SpotifySeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -73,14 +73,14 @@ function SpotifySeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -89,7 +89,7 @@ function SpotifySeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $LoginButton -Driver $Driver
+            Send-SeClick -Element $LoginButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -98,7 +98,7 @@ function SpotifySeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq 'UserNamePwd') {
             try {
-                $null = SpotifyUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = SpotifyUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -112,14 +112,14 @@ function SpotifySeleniumLoginCheck {
                 if (!$ContinueWithFacebookLink) {
                     throw "Cannot find 'Continue With Facebook' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -133,13 +133,13 @@ function SpotifySeleniumLoginCheck {
                 if (!$ContinueWithAppleLink) {
                     throw "Cannot find 'Continue With Apple' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -167,8 +167,8 @@ function SpotifySeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU7yj+8Lm5VZ+cPZe4diZEAiPN
-# n02gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU5GmSsC7vQhza0HVc+KLdO/iK
+# fQ2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -225,11 +225,11 @@ function SpotifySeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRpWHhs8+hQuVhZE1FC1wTheW/vkTANBgkqhkiG9w0BAQEFAASCAQCgqVdI
-# Yhwv0FU50XdJ/BPGejq9vlvdvL5JMSIpe9KDFFGAP4AXwdQqadjkl5ubUH15VTd9
-# RS9PW5rD5n8D1zCdb96lk22BfzFaO68HtYH1vrcXhuVijqX/KIGMcH1nuUmIqsLY
-# OhEWdMa6OYmI+Kup2OkINpX+VEztsIlEODT+en+KO3hrsuwwJpegF8BpuYWT9TET
-# I0Y6S/5sEp8sfU3yy3uX3C/LZFN5rRKkuj9+rUb/4BJZcOt57cUzNBQ+9pG77w1+
-# zeICrLpTM37pg5grhbIYcg74Sj9N7vZTAVIdOFH/V5aLBZobKtZO7vbCdoTbifRM
-# c/kkA5iyYhGykB0e
+# BDEWBBSpeHeOahXkIEG6fzH+5TkxQpSjFzANBgkqhkiG9w0BAQEFAASCAQAB1L7A
+# Ht5AJE1c/sGUf8vOCvNdIKPazIrZUohHcioqk9CS8uthIDAz9e31sYydXSlaoeFq
+# 8eoaj0nDWptiEGwignKR3W4VtMDFAYmg9EyDe0KwncEAIijzrph/7bBB2EygoDYZ
+# VZmASEdr4/ClqAOWN0/4ert5vNnUdNRyiCgVX5umNFMx3iI43ggq+NjOLUkhCgaE
+# qK4ZPj2R2t0IRBo1GU02HHDOFC91BNg84krH0q6rspFKexr40l5NX1HKd1hk9iZe
+# 0HfDvUXkMCcbIwCPziMNBxAGRk44idUWxx4dafj6TXh5bWFl6sccr5o/PUX8qUZb
+# sIkyRAnd4M95ykXe
 # SIG # End signature block

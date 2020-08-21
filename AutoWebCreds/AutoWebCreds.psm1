@@ -306,7 +306,7 @@ function New-WebLogin {
 
     Process {
         try {
-            Invoke-Expression -Command $PSCmdString
+            Invoke-Expression -Command $PSCmdString -ErrorAction Stop
         } catch {
             $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
             Write-Error $Msg
@@ -437,8 +437,8 @@ function Update-StoredCredential {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU7aQxsr0ZnVILW+Svq1eUwrKo
-# RmCgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBxYIlXuYqjuAplS9F+Gbdt7h
+# 3/ugggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -495,11 +495,11 @@ function Update-StoredCredential {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSc8IgpJVfrwUcIBRMFva+tayfS0DANBgkqhkiG9w0BAQEFAASCAQDSJenl
-# TjNkq4rzS7TBP6eaIPjVZ1UtxMWAq0uW3RHxgTVQXmS+3Ojmh6C0vm5yG/jtWkuQ
-# 3VyKw4tqt1euWi9rhzk3BiwrJfkm/GiSosBxTZSEDRgt2pT4J5lZdz1M1ChJ2gAh
-# S/446WUYO/ZuJToRsf+qZ/blYgXgGr0JYYCSDgdOzcJrIfmMtKAUU+73T6HC6DMa
-# i0MdafSuiJdUq5kr8NbPpzpJSxBYauLjXmtpjrOrMDToLbK/5lYF4A1L/TLFw9g2
-# MZC/kBwm5LZv+wYj87HIEBtOerLUSnBiMKcNwV8wATnsgo0rdfZ3TbmseMpuWLYw
-# EE1WpkO068zbPujZ
+# BDEWBBQsBNoVgN/FS8Zg6Y75dJReJZgngTANBgkqhkiG9w0BAQEFAASCAQAE2WYv
+# aanIGsDC1VnkJxGZemR5L1+ZulvMPeKpvi7SzR/s4DKEiqpgsZWEhd32YpzvjWk2
+# RcS7YCjZRXMNOilVIi+LllzCcq8FcIe9RyhsQocbPW+P9TsAI+KNdA3oiBdtWGlE
+# 8UvwazzLiYYDQQdNbVCkUaxLcu3TWPmevrlJbcebTKGyDAVoTFxOvOM1lIG4TZee
+# 8NwTCk9J5aBe3o+od0qWfAcaGpoCKnoFQKcjoC1W6UB59gojo97oO4e8tvftShXK
+# Fuo+/gtgwlNs0EHyo0yxJDriZ28agG/QdIoNl7KTxELVagrmo5uq/rVg/8d5Plbt
+# fEn+pKx8JDacfQR4
 # SIG # End signature block

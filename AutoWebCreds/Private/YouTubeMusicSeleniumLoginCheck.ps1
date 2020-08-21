@@ -28,7 +28,7 @@ function YouTubeMusicSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -70,14 +70,14 @@ function YouTubeMusicSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -86,7 +86,7 @@ function YouTubeMusicSeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $SignInButton -Driver $Driver
+            Send-SeClick -Element $SignInButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -96,7 +96,7 @@ function YouTubeMusicSeleniumLoginCheck {
         if ($LoginType -eq "Google") {
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -124,8 +124,8 @@ function YouTubeMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrFRhZ8RwMeJFB9fTEA7lwZ74
-# rJSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUDt89p6SYqlD8f1kzLBhle+VS
+# ZgagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +182,11 @@ function YouTubeMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTmsB4W06k9e69aX1ep80BXgw2M2TANBgkqhkiG9w0BAQEFAASCAQDnFJhU
-# Uoog81XPTy1ckT9tCW9ArkC9y+sUwO1P/z55fk2d2VWxIuAMu5SSra6EHI3NI6HH
-# hbiW7AgsYGCCQ6hiwf00GbsooHeQJYhn/AYDbHG1ljbfopDZ7mBKUT3+EJL30o4O
-# hGcxK6m7YilcsTVSQSKKOYa4F7y+S7QVosXG/oiYIKrDK9kLNbqyvtGyHZ7MbxHi
-# 53qsV4KoJxP6DpDEp0U9ioc5c/bGsNlJ3w8j0OZuqjKVE71Ck964IYXAk6RVUKIM
-# ELOL4iJazSltdEOlezVVHLwEW+tRDgoZP2qb45WzCIr5sQpB/3uROmvWeUFNnoSG
-# r5dn+m3YDQfikkJ0
+# BDEWBBTomlUkodeEGnCmYoyfXdK50fCDaDANBgkqhkiG9w0BAQEFAASCAQBdNcGx
+# n/Qc41r3JJgC1l5H9OzdgFz6M3sQKVKjy4Adu70/7+vuLxmZ9mNFNbzl4nz+/E8H
+# 0UZEsvVkM+iLZUOgpvPg8dMo2EKJOyEA+PM+6A4L8J/qCLRLHbuOOqmIbETHSmPG
+# e/9pcWSOYNnyRBpQNB6bZKc2inf2kcuX2GGFebKZE4KllbNXuTBvPHuvPpEgWnbp
+# E6jwuspRF02F4LKKuV6W9YNKrukcMs+KX2pwHLjdzVavv1TX02p+5yn3cV3yf0Wk
+# 393WjCg1zssLbqeo5OaJjwDdCflsdSTRV4kKbLyaXTkIfih1qRY5yLnTNf7+uL9B
+# fBdGehmS3pXqAjsu
 # SIG # End signature block

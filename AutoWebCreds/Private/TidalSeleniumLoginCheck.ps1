@@ -31,7 +31,7 @@ function TidalSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -74,14 +74,14 @@ function TidalSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -90,7 +90,7 @@ function TidalSeleniumLoginCheck {
 
         # We need to actually Login
         try {
-            Send-SeClick -Element $SignInButton -Driver $Driver
+            Send-SeClick -Element $SignInButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -100,7 +100,7 @@ function TidalSeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq "UserNamePwd") {
             try {
-                $null = TidalUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = TidalUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -116,7 +116,7 @@ function TidalSeleniumLoginCheck {
                 if (!$TwitterButton) {
                     throw "Cannot find 'Twitter' button! Halting!"
                 }
-                Send-SeClick -Element $TwitterButton -Driver $Driver
+                Send-SeClick -Element $TwitterButton -Driver $Driver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -124,7 +124,7 @@ function TidalSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = TwitterAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = TwitterAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -139,14 +139,14 @@ function TidalSeleniumLoginCheck {
                 if (!$ContinueWithFacebookLink) {
                     throw "Cannot find 'Continue With Facebook' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -161,14 +161,14 @@ function TidalSeleniumLoginCheck {
                 if (!$ContinueWithAppleLink) {
                     throw "Cannot find 'Continue With Apple' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -198,8 +198,8 @@ function TidalSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUKOtAANdvrPuksHb+o5FJndLL
-# 9O+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0Q4nviXwmDaOAjCpB6P51WiZ
+# I3+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -256,11 +256,11 @@ function TidalSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTPp74cZ0O35nWv9c2EdGbjdOW5rzANBgkqhkiG9w0BAQEFAASCAQCxgY/L
-# qtvfjyw7+RAhGkj4qKAxXT1XG2386o3lmIeTDew6uIVD4PdPwmA51H2AdavIxogp
-# ueE9CSYi+dXh6KC78L984SU3NNtcmvSnMh66+TBiopGAuJ0tc03b/k0IlgxmRsMa
-# yhXJfo1qGcZoxbkak33IKWoOAY0LBNF9nKyM3qLl1ruKvhVe3yGvYI06yHfAwV0S
-# ZusmRs2eXTcsY1ZGIHcl90Bv5bnlVr/Hlt6Cs3IT2dqu4rb73dTLTYx6mVXeuOIv
-# UJC5/YyQZS8OhBZN8SK4BpMbBMN/+RiQekSiD6Q3jR2rPAVt2mpaF1XibliA/h7z
-# uBWIRlB8kVQhwCMT
+# BDEWBBSERsMkzCQCmzt1EuGlrUyA6aDz3DANBgkqhkiG9w0BAQEFAASCAQBNjQgK
+# nIXpJsACCF+8Zeqwxd/j7mC3Lkf7Gp+a3lk8eCsLR4l6lJqzYRgkvPo0mkG8z4Rg
+# wjSM/HpBcjCZ3nHuoWQmABKHr6ZdhNsvR/x6u2V2GuSGVVYnlyY2aNDrIY/ETk7z
+# BnDAxQOko/abO66RuPUERB6C8K3vHwFNAFJvRIno3ZoIq+0ipLHEe0ldpAfrio9M
+# 9qxglKfWIJ4hZA+upS+bN29RtNBUHygu4DQxBVIcQxZPPRwUXQYJ+bWRX69iimWA
+# Gmp8O0eddl/J5+Vj6BNzb0sHDpsD+9WRah/G83xjlWCVj+FA3WjNAndOVVIBo7wb
+# c5+NDYI6jkjs/87n
 # SIG # End signature block

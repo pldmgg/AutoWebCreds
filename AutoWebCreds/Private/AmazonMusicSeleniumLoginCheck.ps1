@@ -28,7 +28,7 @@ function AmazonMusicSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -71,14 +71,14 @@ function AmazonMusicSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -87,7 +87,7 @@ function AmazonMusicSeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $SignInButton -Driver $Driver
+            Send-SeClick -Element $SignInButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -96,7 +96,7 @@ function AmazonMusicSeleniumLoginCheck {
         ### Amazon Login ####
         if ($LoginType -eq 'Amazon') {
             try {
-                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -104,7 +104,7 @@ function AmazonMusicSeleniumLoginCheck {
 
         # So we need to check the webpage for an indication that we are actually logged in now
         try {
-            $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@title="Open Play Queue"]' -Target $Driver
+            $SuccessfulLoginIndicator = Get-SeElement -By XPath -Selection '//*[@title="Open Play Queue"]' -Target $Driver -ErrorAction Stop
             if (!$SuccessfulLoginIndicator) {
                 throw 'Unable to determine login was successful!'
             }
@@ -124,8 +124,8 @@ function AmazonMusicSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrH4XNXKlYQJ+pHjMWzV3OvUX
-# S62gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU6tHE/gT1ckhdQLUWp1Jr4fPP
+# HLegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +182,11 @@ function AmazonMusicSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSINdm7aGypVFzNCtErZeSMX0T7TTANBgkqhkiG9w0BAQEFAASCAQBIizQI
-# xfFKCfqtbxLfoWqZpbFOBaD+fBTxPXmwr37SxOQ7RsdIvgBGxymQFJrXR0r7VHv6
-# kyYzvhfbumRe5PJYfZ0TQzFtOYd0oeNBf3jzvixV2PrIquOpteB0ypeS+0fROvs9
-# VwhsEOFuG34eR8NVRJ14pRaTHZPpS0Sb+kH7aQ5j3014QV7fGKMAzydJMAUXtpuC
-# gYAL9oeWnKD0JvjlOyEaglD3YwysCuAk60O4TXtkM0t63bxeeUIhPu7/YAPA97xZ
-# ZzVS0/Yg7/5WIze8pJOwkkpsAn79VZeIlDatLss3Tz2RbG7SOsfPLi8BM++THCyu
-# slxTWUDvKX+8HPzx
+# BDEWBBR+LZga1lijSVns4d4mzSLHhPeUwTANBgkqhkiG9w0BAQEFAASCAQB6O4nL
+# oS1uuBqjtRixmD+bTxh2+JdCs2AojrdOWrQuPvU3EXyoPvMdwvGtxbaH8/Nj4bHv
+# SnafQ4OVbKyulWtW7on6JJzmgoICi0ZhhIu/7SjwbD66JIF2SwDSCnQ4sgNcKS33
+# aubf9eWW/5r2I/BLGAotK6/P11kW4iDL4Oi2cDmeKZcM1dKhWw/Mq2RmjO20zaQe
+# UtLOYDY9DfdViz6zxKRS3bNh82AuE0JK1hML89DrxVZlF8PeBhrYmoHYt9UfgyY8
+# G09XzMvkAw/vhDwcvK2773ks/bih8JCelbwBfJje033yeTg7seBAvNdVms/M00Zd
+# A+Fnxsr3ZSigiGxp
 # SIG # End signature block

@@ -28,7 +28,7 @@ function InternetArchiveSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -71,14 +71,14 @@ function InternetArchiveSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -88,7 +88,7 @@ function InternetArchiveSeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq 'UserNamePwd') {
             try {
-                $null = InternetArchiveUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = InternetArchiveUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -107,7 +107,11 @@ function InternetArchiveSeleniumLoginCheck {
         }
     }
 
-    Enter-SeUrl $SiteUrl -Driver $Driver
+    try {
+        Enter-SeUrl $SiteUrl -Driver $Driver -ErrorAction Stop
+    } catch {
+        Write-Warning $_.Exception.Message
+    }
 
     $Driver
 
@@ -120,8 +124,8 @@ function InternetArchiveSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUzPzFyOogtTSRtPJ0NPb78I6X
-# 7zmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIWIEKuA28/7raRMslBbbsfwv
+# iYqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -178,11 +182,11 @@ function InternetArchiveSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRAc6H8GZTB+T03Dx0GEd6gQsb8ezANBgkqhkiG9w0BAQEFAASCAQCvJkER
-# drzk9ZtMp10T6L856qikErThiggn+oh4/l2dYmNOosJ0S/Ff1HKkUteuvxFAwrHP
-# NQImEMPfFLpDvdwcp6We1cDDd5BadK2XD7hX5aSMx4Lfq3ckheCeM7CVLUFiUEiz
-# bsCGjO9PF6fVVYTi6VTM6IEaE3EEyBnggVS/+MK5p1FrAw57Ok9T9YI+TArr9bEr
-# mIXLLDmoEMmhbQBah1D0/9Dbd7oQ0QUZ69lN3/JdUFh5ESDSzuRaP3DBbkJGj8lV
-# byswuyRLi7K/e+kAY4RsEHV8FRZJq4WGI37XHCIOu8vqb20ypoH8kmkLjObwTMiS
-# DwgRLV0T7a4jV523
+# BDEWBBT7IzG3DQPk4JRbTTuzv3LaXFEckjANBgkqhkiG9w0BAQEFAASCAQCUUPG3
+# GqARA+sEQlTL/L6WpZqN/upqpzoZIlAUpcRz8k98k6vpCvlmuhz9Ec0871PDc4BP
+# D5rfbNWhWLlRe0ESwOpJJ3VH7IygWA/00uqqqQZX1JniH0TXfIYcWurGFkpr3spi
+# hBaEvvFCSxUZAqfqdDS95w4qcOe8/GPmeG0F4UYDZLULqdmQCDp4ssY69ln62gyk
+# SfEuFik95tSU0iDKjS+zBXWgmjcj1QXtciQaX9Gz9vXj1LsyXYzng4U/PcaN++W1
+# mBAEw+I7g2yYiWGxtHb5piTzaBA8Sg11g7LKIHHUESBd5NEML3YZa4fLaZCPzuj7
+# ws2iFNB3hs0tKK+w
 # SIG # End signature block

@@ -28,7 +28,7 @@ function YouTubeSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -71,14 +71,14 @@ function YouTubeSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -87,7 +87,7 @@ function YouTubeSeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $SignInButton -Driver $Driver
+            Send-SeClick -Element $SignInButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -97,7 +97,7 @@ function YouTubeSeleniumLoginCheck {
         if ($LoginType -eq "Google") {
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -125,8 +125,8 @@ function YouTubeSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUwyD8gxGRdPQ/v6stKXJWwnPA
-# 3VagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUe0AiXEOiyGgyLVRrMFCMCXMg
+# kSmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -183,11 +183,11 @@ function YouTubeSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQX3C7w0CD3Vc5yz+x//39Gh5auAjANBgkqhkiG9w0BAQEFAASCAQAth7fo
-# X0sjuM0558sq/7TfqQ3fmDwVQE5+8whN22ZvCO4SalphXZ9uBm94hn5UNW4/3Dt5
-# Bq5JjyPvi1NQEq25tb/lYybKMUBZ6gD6T9Uxxr6izzVnwcYyYRDGXfgjkcolfKDz
-# pVCP8wsTRIY5yk0f0pBZxSU9rYS6D+TDE8LASs39Du0u3AdURh6p4wxrpbOqj5vQ
-# uLtTqpfaRfZHwJbeM9o7yl7K2frCyEcgvjZy+LvhqbeJ3/Xm48SoUvY64hE64ZIL
-# 01Pq7sxyjrW46eHFHkf5tbzMJEIjP32e7aZ5NJC0dxBZM49D+8V3wlLLOY4Lv04k
-# kHSl0Tcipffk+yWl
+# BDEWBBQLatUJhWJcv9z/EuhRfClgAq3sTjANBgkqhkiG9w0BAQEFAASCAQDUp4tn
+# AKRD8GB4tAACSqY7mgVpkAWJ+o0lqO5ERiDXowasgQGPmPFMZ2dZz4TOVGrCnpAV
+# AGOcWkoL812dpRJ45+CeladLtJoTz0n1PrfUyrpVhKPcdplBFrksweYSPomznlYG
+# iCvPv6hreVl8FoGaZmYLNXQNfJlZ4CM/pfwJiIfPOxFgm02LCQbz6IshcxNbdTsU
+# Z3YnJmKML7a3DRZ4ncIOeKwcV1MyzHQPkapN4yAbBVPoyKtrd1njaEI8PYkIydgP
+# LoL51cGV9sK6NjwxpEJ3z8BT5NZJmxemoxwtFVIyO3ZpuZB4ft7Q0tsg0jTq6g/Y
+# BCoPznNu0RjVSR0g
 # SIG # End signature block

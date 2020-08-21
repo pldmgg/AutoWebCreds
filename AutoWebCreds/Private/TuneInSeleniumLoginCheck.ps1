@@ -26,12 +26,12 @@ function TuneInSeleniumLoginCheck {
         'UserNamePwd'   {$Message = "Login to $ServiceName with a dedicated $ServiceName UserName and Password"}
         'Apple'         {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
         'Facebook'      {$Message = "Login to $ServiceName using your$LoginType account UserName and Password"}
-        'Google'       {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
+        'Google'        {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -74,14 +74,14 @@ function TuneInSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -90,7 +90,7 @@ function TuneInSeleniumLoginCheck {
 
         # We need to actually Login
         try {
-            Send-SeClick -Element $SignInButton -Driver $Driver
+            Send-SeClick -Element $SignInButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -100,7 +100,7 @@ function TuneInSeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq "UserNamePwd") {
             try {
-                $null = TuneInUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = TuneInUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -116,7 +116,7 @@ function TuneInSeleniumLoginCheck {
                 if (!$LoginWithGoogleButton) {
                     throw "Cannot find 'Login With Google' button! Halting!"
                 }
-                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
+                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -124,7 +124,7 @@ function TuneInSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -139,14 +139,14 @@ function TuneInSeleniumLoginCheck {
                 if (!$ContinueWithFacebookLink) {
                     throw "Cannot find 'Continue With Facebook' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -161,14 +161,14 @@ function TuneInSeleniumLoginCheck {
                 if (!$ContinueWithAppleLink) {
                     throw "Cannot find 'Continue With Apple' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -197,8 +197,8 @@ function TuneInSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUhNGpOlZERwNKsYGwh6D+eKm0
-# GEKgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlfQ9xOz2KT9QbY7fHuHwt8y5
+# efagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -255,11 +255,11 @@ function TuneInSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR5VOh9dL1FaroeGyi4kO+HCA8uJDANBgkqhkiG9w0BAQEFAASCAQBGqmSN
-# V9iBFVnQA7DaUyHahthivn91fvAm9QgAxieZ3Zly3lgVdewwbR5x7eE3kG8XJ4NA
-# ybd1D91HeSwNJOYP/WWGxyBp0i07mu7lPvZkO+oil0UvE9ENeLjPs2h4D2J+pa9g
-# XvgU493RavYVq9bcA9i9FayZOZXh4PZV6wySksZwojX6JfSuuOWWqpOpxQjujM7P
-# eETCzd8jGfhTwye96vrRCfyrof3sA9uhdIKDFMwyaHo+/HOUIUFvuHmKcpuPjSVl
-# Njsq3sJ6q1ZVXlhkXth+R6U6f8/h3mlzfMkzGHYlaY+SG97wdMm41QHFlSOW0DHN
-# VmzQ4d9TvKqwVU08
+# BDEWBBQt6WNFsUB7t2aNeWa8UAM2qtEYpTANBgkqhkiG9w0BAQEFAASCAQCuMdvX
+# zYIfIRzR3U0TWfWGxj45q/6pFqN3xPboFKJKAr2mkoIYVwY4IaYctif6FHANgv4G
+# 2zVCKf+Nv9wr5G0AuubArApYhimyl2ITlVhn/86OqFfrJqB2hHKpSzMTj0T8nQnN
+# RoNmnHJivtgCz5XJ0n4NKty3TQ9hAr4+9kFO6v/sOdUpMiiZDXVdQdsxCMB5XDSb
+# Z1TITSZgh52RGL1r9jA1Myf8FDam+kQC0V1UtEyO0Vl7tKVPzovrsN2EjJc5/6k/
+# pZijfab1qvKL3z9u4GnZpFsDXYcNYVAa6448ftRo3c32+3543kdCJuOOIpmTs4U+
+# TMARoTnW/IheFJI4
 # SIG # End signature block

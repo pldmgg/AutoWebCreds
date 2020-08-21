@@ -28,7 +28,7 @@ function AudibleSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -71,14 +71,14 @@ function AudibleSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -87,7 +87,7 @@ function AudibleSeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $SignInButton -Driver $Driver
+            Send-SeClick -Element $SignInButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -96,7 +96,7 @@ function AudibleSeleniumLoginCheck {
         ### Amazon Login ####
         if ($LoginType -eq "Amazon") {
             try {
-                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = AmazonAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -124,8 +124,8 @@ function AudibleSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUsPPGhZ/T84dPt0Ii5vPtJO+s
-# BPWgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUke3Dy9Qf8kOnhUhf5tI+RkjB
+# 4OKgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +182,11 @@ function AudibleSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT0S2oDS91IKMmBqZpTaYO2WjSz6jANBgkqhkiG9w0BAQEFAASCAQAEwvH2
-# 8uVug/u+e7H4C9PzZOTmqhOVvViL4oaEi/VsOibi7b6HB0ED8Yr0xi9WYJ6d03H9
-# 36qCmUy/rN8UxKDlFn8Ce05CVcTDzh6fHpnbPIW85LO8SNXaotJoIpOgFsgoYzVh
-# 7MO4yrAFN6ZOLZIk6imiMl6Q1qm7gkxi8fA62NzqK+NIohZ/p23Nm9OyrrOxWuBp
-# E22qFLP2jKC+z0k3SN1gGT7il96MXvl2PjRADL3aOxtlJ/TUHzR7egbAQFyioMza
-# Bp2+usLePZUzuhM2gMlsjlyO9MPE+xACDJ/V7OqSzpch73ageZ19OX0/0kJJ4EW+
-# k4amNF4gigNBMgNo
+# BDEWBBSMY+fMhfaddz//vr0sWFziLXz5BzANBgkqhkiG9w0BAQEFAASCAQDWbCNH
+# rpBKNDTJH1Pxf46JXQOQtLk//k0en4qAo7bFgRDkqzglyPRwXHzy/h5aOUcG9jdL
+# 5DMqoSUSBywmqBgtaNrT25nRSemmUZZentdIHDn/WFC+X/9kc6rJSyyvqeBc3gXr
+# 9MIOiLsA6Vg8NDQJUJjTem04XngxFd8Iax4c5JYrT1iWRGexFQy6PV5sVvuOP7fD
+# SVMhIQ6mI003kGCKzzISZEQDiHdj4ksw72ZdZQfjvAckblWkZZxVEo5QiSSQiI/l
+# mTumZld/b5smN3COcJwoEHCbnEI6JLN8iGEx7mDBv0rCISNZoBoDkylCbZDy6ABl
+# zEZuly01BqAlDPxd
 # SIG # End signature block

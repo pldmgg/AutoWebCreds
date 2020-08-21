@@ -30,7 +30,7 @@ function ReelGoodSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -80,14 +80,14 @@ function ReelGoodSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -96,7 +96,7 @@ function ReelGoodSeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $LoginButton -Driver $Driver
+            Send-SeClick -Element $LoginButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -105,7 +105,7 @@ function ReelGoodSeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq "UserNamePwd") {
             try {
-                $null = ReelGoodUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = ReelGoodUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -119,7 +119,7 @@ function ReelGoodSeleniumLoginCheck {
                 if (!$LoginWithGoogleButton) {
                     throw "Cannot find 'Login With Google' button! Halting!"
                 }
-                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
+                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -127,7 +127,7 @@ function ReelGoodSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -142,14 +142,14 @@ function ReelGoodSeleniumLoginCheck {
                     throw "Cannot find 'Continue With Facebook' link! Halting!"
                     return
                 }
-                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -178,8 +178,8 @@ function ReelGoodSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUtVM+ns48X8sO5q0CQPUP+7Ma
-# DsKgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUUyHwzI6lJ0ltZm6HslThX3XH
+# aMegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -236,11 +236,11 @@ function ReelGoodSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSOxB+ukM+prtOY7Z3RuAaro6kItTANBgkqhkiG9w0BAQEFAASCAQArmT72
-# IkPOZtdEsPfa1riQVbNeMvmhFKS77CLCdLKU5wfrUHURWzpo2r/Iy59gT0Nd+T1L
-# Jg9l17tVvm9SdjHaHfjXz0tqbG8GctlZxMlzthiqPPNDypYiurt7W3BPmt/Kj+uG
-# Id1ivU708Xd536RpK90gUW2hHDUMIL9C3yEElE7jonnv4UMkKMK1YAK01WdPqO87
-# yNge5ogcZreNzPGLMHTU+NF930cilpAeKgV03mPwMBisBzKjyh6yULqUW0PHb53r
-# lfP4MUA5u+v0pfYR1R5NY8aVF/G+vJmE4Is9g4U9CI42w1PHVBVoVQnv4UAFp7oc
-# 3oCh6FA0GFk6VWC4
+# BDEWBBTe5S5QRexYD5xLmQ9AFGPgSm9dMTANBgkqhkiG9w0BAQEFAASCAQATFj3l
+# zhS3TPZAWzcKrpD4b5m2ZtCdoDgexTdgvRQZ/RqQMH9U++SIbvEFQOm4GC1ZPSY1
+# kN/hcPT0iff/URZOkZRs8RbcQyWqTku4BeIs+1tgj1O1jvQ/vf34F5B83am0Vper
+# f9lCsPND+fS6vdJIqSmPKIp98UyxgKjcKGYp44j5RoTXspcFiaRLyanOg+15GSi3
+# lJ7D+6azgLxj8RIgj2+CQCfVl7nIXixllz4yXCzMSw4W0yYm0R8ata3MTQgk3ZW8
+# abdLl1yXQPEXCyCiNsD3KC1zJiTN4/xPyKU4Kd85OcdSiRVbQ6QmqgrIjNmV2ixE
+# Ra2DtbwkIFH1fMEZ
 # SIG # End signature block

@@ -101,7 +101,7 @@ function New-WebLogin {
 
     Process {
         try {
-            Invoke-Expression -Command $PSCmdString
+            Invoke-Expression -Command $PSCmdString -ErrorAction Stop
         } catch {
             $Msg = "Problem with private function" + $($ServiceName + 'SeleniumLoginCheck') + ': ' + $_.Exception.Message
             Write-Error $Msg
@@ -113,8 +113,8 @@ function New-WebLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlTbIP/4Sp+y5+/3PfWgpcijF
-# jJegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUi1wkzymf1co2O363EcDJyFTO
+# eg2gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -171,11 +171,11 @@ function New-WebLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQhJC49r9UJnIBzj2P2yinUC8baNTANBgkqhkiG9w0BAQEFAASCAQDLKY43
-# zXLFtLxnlzHARgdQixGjrEPjPdM022cXSNsxn3hCHfFgQ9I9M/6jycFMYyXHqJua
-# 3+VenRrjsdx8EYYiM6/frVtJgrO+1r7tJUPz/k9S4d/SklO4egmYTevI57VOxb12
-# JiggbgombLEGlotlfUOFZ4nHgeFGR0LAivA+/Wx+ENTZRY/J1BIlB0tpeYTDPvgN
-# wrJGrIz84pq7Vi3HizRYGDSAOBbHcyqk4bYHFjIR7Rl+dN7z6cRcypjxE+bWJwTd
-# qN4f6gWBpA9vnejJT2pv6GeP7+5YJ0ducuEkjSxYdDlxq/yZnAqvuYIXyCsDboFi
-# tg4g3yEbVwR73SCQ
+# BDEWBBTErUX0ogocxDdATBF9Cus2DARE7TANBgkqhkiG9w0BAQEFAASCAQBdiv1S
+# bkGRqe32j4YkYRClpKegtBqrQEatM/MJyNZ3n0ziSJUYKRpCIOsyCATduBjJgWnl
+# WWu8Maz9Tze869h8YLNX2rZsEG+hWevyx1ilIADBSd9lWB74dFGG9OA0SIt9RwxL
+# k6SsZYLQkNn0Caugb3ziEp8c3jGuzLkLY79BqPdVZqcjLsLCYTaNdrtK/3N8+men
+# 3uD0VuwKG334W4mOxDAF8vtegwxyZADHcJ5l/8NMGf8cMUFcPD98Q67RFC+8oHbj
+# R/XiuJ3WT/NddRAcAmwkVZAZzArRSw3wjPpM/9fhIB3n+9d9W0HyE9DR0ESKlrpO
+# mmd0QnoClrxmfar4
 # SIG # End signature block

@@ -26,12 +26,12 @@ function NPRSeleniumLoginCheck {
         'UserNamePwd'   {$Message = "Login to $ServiceName using your $ServiceName account UserName and Password"}
         'Google'        {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
         'Facebook'      {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
-        'Apple'      {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
+        'Apple'         {$Message = "Login to $ServiceName using your $LoginType account UserName and Password"}
     }
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -74,14 +74,14 @@ function NPRSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -100,7 +100,7 @@ function NPRSeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq "UserNamePwd") {
             try {
-                $null = NPRUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = NPRUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -116,7 +116,7 @@ function NPRSeleniumLoginCheck {
                 if (!$LoginWithGoogleButton) {
                     throw "Cannot find 'Login With Google' button! Halting!"
                 }
-                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver
+                Send-SeClick -Element $LoginWithGoogleButton -Driver $Driver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -124,7 +124,7 @@ function NPRSeleniumLoginCheck {
 
             # Even if the below fails, we might be okay if the Chrome Browser is already signed into a Google Account
             try {
-                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = GoogleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -139,14 +139,14 @@ function NPRSeleniumLoginCheck {
                 if (!$ContinueWithFacebookLink) {
                     throw "Cannot find 'Continue With Facebook' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithFacebookLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = FacebookAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -160,14 +160,14 @@ function NPRSeleniumLoginCheck {
                 if (!$ContinueWithAppleLink) {
                     throw "Cannot find 'Continue With Apple' link! Halting!"
                 }
-                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver
+                Send-SeClick -Element $ContinueWithAppleLink -Driver $SeleniumDriver -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
 
             try {
-                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = AppleAccountLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -196,8 +196,8 @@ function NPRSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUvnaUPEOVtUDVLHKyH1sNZPO4
-# 8regggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUaBM587Eysh2oTTtJ+e+jZk+o
+# lI+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -254,11 +254,11 @@ function NPRSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSmPtYso14B+TCsuZQZnLPXVASuUjANBgkqhkiG9w0BAQEFAASCAQAtTaUS
-# AUsljpUOLUn48VE9fwFSO6z3VIsvtZKuk+6M9eh6lkJvMsdJO9kfTL0y+cmB3Z7u
-# RCNXolxZtG7LSCPjjrjDYayB+R8JVg+x5H+ucpdNY+a6REnZMfjlVb32R9F7Ehqw
-# ZINNRIA45jVVAGArh57vyrklpLdmaPh52cIHCf2Io0+ac8vHvQygA+Q5DT6M8v9D
-# QHa9do9y1/hlD4Ry9pBGOej+rVobMol+O6v5z8yJDvFXXhwl/DU37d2Yf72OVrVn
-# OfkcM4zDmZ1M7SGWESq3bdAfAmvD0/7gNbi8UNl95uVFShOdbWss1Ni0jgYRaydz
-# FFLakUwFXgIdjWpV
+# BDEWBBT6N83jqvRjY0cUgKCtMqVLQhfT7jANBgkqhkiG9w0BAQEFAASCAQDd2ClN
+# TORbzhXw8b0fGgKY0FAxxS4Qwa21bAnr3moiZbP7Ge0Z4LymYs+a7ga/jh5oBVEC
+# TgscLr46XIBRhfm9SblQFSmMFw1sSSPhvSf1T5xalXQ1MhhfwxFAZL1kG2A/B5bv
+# UREXUhGRwmuDYZ2uxUKtfew3sl8f/waL3kyOVtchAkHJBu553UFprWZP42GhFt1S
+# bCc/iSNJM3d88QK1yuQUZCTabEVG6eJHibLys6tONNVAn/YTa2khPgOmd76vZcos
+# eJ1z/gNaYvkjsrXUdvXgeke03dc4vqykC7cQ3sB4mbezeTCJe4GmQ7IMKCTFSbE1
+# WsjzNpN47fR3e1Hf
 # SIG # End signature block

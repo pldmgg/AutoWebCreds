@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.91 (August 21, 2020)
+
+- Minor changes to error handling
+
 ## 0.0.9 (August 21, 2020)
 
 - Fixed issue with installing/importing Module dependencies (no, but really this time)

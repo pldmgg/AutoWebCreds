@@ -28,7 +28,7 @@ function PandoraSeleniumLoginCheck {
 
     # Make sure we can connect to the Url
     try {
-        $null = CheckUrlStatus -SiteUrl $SiteUrl
+        $null = CheckUrlStatus -SiteUrl $SiteUrl -ErrorAction Stop
     } catch {
         Write-Error $_
         return
@@ -71,14 +71,14 @@ function PandoraSeleniumLoginCheck {
         if ([System.Environment]::OSVersion.Version.Build -lt 10240) {
             try {
                 # Have the user provide Credentials
-                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName
+                [pscredential]$PSCreds = GetAnyBoxPSCreds -ServiceName $ServiceName -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
             }
         } else {
             try {
-                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message
+                [pscredential]$PSCreds = UWPCredPrompt -ServiceName $ServiceName -SiteUrl $SiteUrl -Message $Message -ErrorAction Stop
             } catch {
                 Write-Error $_
                 return
@@ -87,7 +87,7 @@ function PandoraSeleniumLoginCheck {
 
         try {
             # We need to actually Login
-            Send-SeClick -Element $LoginButton -Driver $Driver
+            Send-SeClick -Element $LoginButton -Driver $Driver -ErrorAction Stop
         } catch {
             Write-Error $_
             return
@@ -96,7 +96,7 @@ function PandoraSeleniumLoginCheck {
         ### Basic UserName and Password Login ####
         if ($LoginType -eq 'UserNamePwd') {
             try {
-                $null = PandoraUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds
+                $null = PandoraUserNamePwdLogin -SeleniumDriver $Driver -PSCreds $PSCreds -ErrorAction Stop
             } catch {
                 Write-Warning $_.Exception.Message
             }
@@ -124,8 +124,8 @@ function PandoraSeleniumLoginCheck {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUYkzDWG2DbuP9vm+H6rcMAVNr
-# pnagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUEC07w8jgZe3JEHLcLgqRYuY9
+# VC6gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -182,11 +182,11 @@ function PandoraSeleniumLoginCheck {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQFK17OjjLjh87dr9C+buUEJOx1ojANBgkqhkiG9w0BAQEFAASCAQAX/Nv2
-# aOcNRpxtvExgtVZLvjZ+7JHaIRBEg/2M9QgzqVssoBnPnkgvDjFGoeU3EMxPyY+u
-# 3J+8Sd+1qxVkgMqPfWiiSkblFLfA/70RGpU/tlR07vLD0zllXvUbDg87ZFCZUcVA
-# A8y+GWDNlrqQdqMk1m5wWNhmo6/nQTdhSHiZLabvCfEoE+B/wP1GoXVh0zsQRF77
-# bJ7IUQi5WOafU9ms1ymb22AgVvJrcXpqB41Y24OvIoFCAhYgzIPHwYe9uBgRMzHa
-# hRdbar9WVVjxKMqZz7+tYsYlxu899a+LdHYGWZbJ3XDODQMeZ4sFDL3zB//F32l8
-# jMk1FDg9nECjAkoc
+# BDEWBBTaXy2ZGGk9X0MtjOWkA3PhNh2/yjANBgkqhkiG9w0BAQEFAASCAQBHVNqP
+# 5LxglwRA2r4Uz/yM8SOJdvj1dMcP/N/UKC64qPlk4A4kEhV7oa90Y6Bhgvl6Pb0z
+# ekBLSSFJZ+Q8NurvhQpSXZ5MPS3zXPg0ip9pQQMoBHOAGn5zjqQ33Vl4YvTu3alF
+# oz15jKdLM8v5uhE+ATsny1r79l0tE30wlefELldLrdJ1Bm+/fRJEl9Ot7fYbS/uN
+# HRSmVNs3p0cO8D7lqAbyZy0IQTw9JCQW6xJRhodizaVVq0AS1zC9Cj7P4J698Nd1
+# d4ogJRlxdZwEC1rrr77Z0QQPRRKxtdjrJwMULUzwfpEeYCzVplpgyAq8I4I+yqYD
+# hvFGQCGWJlfmJ4EK
 # SIG # End signature block
