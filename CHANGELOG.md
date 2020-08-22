@@ -1,5 +1,9 @@
 # Change log
 
+## 0.0.96 (August 21, 2020)
+
+- Minor updates
+
 ## 0.0.95 (August 21, 2020)
 
 - Minor updates

@@ -30,8 +30,13 @@ function TwitterAccountLogin {
         }
         Send-SeClick -Element $EmailField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's email address
@@ -39,8 +44,13 @@ function TwitterAccountLogin {
         Send-SeKeys -Element $EmailField -Keys $PSCreds.UserName -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Get the password field
@@ -51,8 +61,13 @@ function TwitterAccountLogin {
         }
         Send-SeClick -Element $PwdField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's password
@@ -61,8 +76,13 @@ function TwitterAccountLogin {
         Send-SeKeys -Element $PwdField -Keys $PwdPT -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the "Authorize" button to complete Login
@@ -73,8 +93,13 @@ function TwitterAccountLogin {
         }
         Send-SeClick -Element $AuthorizeButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     if ($ParentWindowHandle) {
@@ -91,8 +116,8 @@ function TwitterAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdFCskH83NbtJzIPem+CAEn/Y
-# uSSgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUQIeHy0IrdfVorEw+tmJiraJd
+# 0I+gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -149,11 +174,11 @@ function TwitterAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRxgIP81nbdRlY0MLr5tVqoT2gGEjANBgkqhkiG9w0BAQEFAASCAQDvFUHo
-# oeA/zG/9eMNdQSfRtHCiDshFKI0UFLzDAkmxR982O9+oHOg+AvD4G/a8FWsqCYQZ
-# TdZlcmWPeKTI/uUTIypehtx5oWCfugezJaIwO4WIswyuW0HJbkqSi0ey06VvKdu3
-# JcTh//fxlIg9aBOO8RifaLjXoCaRAT6iVpmZTIINxqlPfyhrq2H1vNNcKYSc6hoK
-# XYfTcluo75mheLvufHG3LoDUGpg0dMR8rM3jGYa28HlHuwY9oUUnB8728PRGpNEH
-# PxXP4Qy7p6ziy9eGTB7n3ReLHImNBdMQAO0yV9OOnKIH60cM5EFap4nbG0uOZH4V
-# Ge/v4wRJ9WGQSTb1
+# BDEWBBT+vCTBLGP7icRErk+pJjUwe3en4jANBgkqhkiG9w0BAQEFAASCAQB9SRdA
+# GUc6c30vWixGFTN01PS4V4aUnHxyKBFCdImE0GWpRue0Dpdkg0AnOSLhcYrwARBO
+# p8Z6aRtll+xnCr8G+xE91HutzFLzwHtYJ53j1oCDmyHreGm9mjhAk4TLFikGlVt6
+# syl2uSotZjnAO92YP7nmTUKUOwTSl14KhmogIBLu+8RSbJIeuH6nmutdBKh2A1l0
+# Xm52yYlqfu8AaMmhd2g1OkvFEIkZxvy6XnI4IxD6xnhxxQ5UKKqsc69USneLuscq
+# SsuNNO8nt3g9ec6Z4aglvXWX9EAZvs8FkCpLz0MRfdG4ua25fDFUJT0he3psCCPc
+# jctYJHKWZyTnYh+M
 # SIG # End signature block

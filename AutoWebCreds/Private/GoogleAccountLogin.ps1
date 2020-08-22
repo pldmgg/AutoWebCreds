@@ -30,8 +30,13 @@ function GoogleAccountLogin {
         }
         Send-SeClick -Element $EmailField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's email address
@@ -40,8 +45,13 @@ function GoogleAccountLogin {
         Send-SeKeys -Element $EmailField -Keys $PSCreds.UserName -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the Next button
@@ -52,8 +62,13 @@ function GoogleAccountLogin {
         }
         Send-SeClick -Element $NextButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Get the Google Password field
@@ -64,8 +79,13 @@ function GoogleAccountLogin {
         }
         Send-SeClick -Element $PwdField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's password
@@ -74,8 +94,13 @@ function GoogleAccountLogin {
         Send-SeKeys -Element $PwdField -Keys $PwdPT -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the "Next" button to complete Login
@@ -86,8 +111,13 @@ function GoogleAccountLogin {
         }
         Send-SeClick -Element $PwdNextButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     if ($ParentWindowHandle) {
@@ -104,8 +134,8 @@ function GoogleAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/ZmGmjhWTcXzpGlUcLdgmTSw
-# FjGgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUZmFXnrMytCEZUwARzBQIE5am
+# 2SqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -162,11 +192,11 @@ function GoogleAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTOPp6dGXCT4UOhunwiADQ5YOcX9DANBgkqhkiG9w0BAQEFAASCAQAnJTfe
-# k3nT1M7IjpQIm1ze4Ox0vZKa354+ecDHBDD5UcFNCAJ2dWoKnBVRtXdIwSIQYc9U
-# P9OznULuHga+eGuyWYPB+dm1srmhmsqKYKvwlNf+Sa2mN2KczjBspuBoko4Tj3ic
-# RDZeZq2oizN9frmQOaUnfC76FdlbXL4Uzcq8s/pKuAk0XpNAx2+9ctAnjgZ2cIoD
-# 6vHHr+MYS+JFlZlATgYCmfLMtTmeWYYP5STneyLyienTNBcEe50OKawfQurpVzNZ
-# Sk0Tcx+YpAIoa5CU55Tc2S3noG7TBbr6AwPq7ghYk5GcZ8I2CLyqgC+BQllxg8TP
-# TDYkiP7wuC6V3xgt
+# BDEWBBQxUaQWkBUR+9ArC7o8v+eHvvhTgzANBgkqhkiG9w0BAQEFAASCAQBSh/sN
+# s+B7Kmou4gy802HGab1O8QmAPzoWT90GYa+zmM+VHPmsPRW7gEXnLkmW0O8+MB9T
+# yYA8zko1p15m0BqLUZTncTDTcsTnXXR+w7JoqPPhPc/JfARyVrcBDdln8OOMkc3n
+# hP5ahcy9a8B0xqeMbgmmGIPUXFVk8NflTl1pLRMIzK8QiTNDqRFgySZrqQmUxpuB
+# nG/crhyf9eFbZVuPmdJN4TAh6DPIunpWBYoOofzEUds24uSd8CVWP6wTvzhi8tVy
+# Qhnn6w4m6peZIHM9u+lMixi6Vdhi2g5PiFmug217+rebTvV/55B4NIXO1q5Fi+bD
+# yttSOhTC67LdP7v5
 # SIG # End signature block

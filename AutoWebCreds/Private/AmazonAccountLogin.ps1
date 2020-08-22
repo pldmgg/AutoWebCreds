@@ -30,8 +30,13 @@ function AmazonAccountLogin {
         }
         Send-SeClick -Element $UserNameField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's UserName/Email
@@ -39,8 +44,13 @@ function AmazonAccountLogin {
         Send-SeKeys -Element $UserNameField -Keys $PSCreds.UserName -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Get the Password field
@@ -51,8 +61,13 @@ function AmazonAccountLogin {
         }
         Send-SeClick -Element $PwdField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's password
@@ -61,8 +76,13 @@ function AmazonAccountLogin {
         Send-SeKeys -Element $PwdField -Keys $PwdPT -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the "Login" button to complete Login
@@ -73,8 +93,13 @@ function AmazonAccountLogin {
         }
         Send-SeClick -Element $ActuallyLoginButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     if ($ParentWindowHandle) {
@@ -92,8 +117,8 @@ function AmazonAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUfOKnLjdzNt1X6fUoLulW8jo5
-# d36gggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkrJjsj1mGEI8hWw2eVAOHfjt
+# aAegggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -150,11 +175,11 @@ function AmazonAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQs7V7Ex1sFW0bPREtlADKmczGpOjANBgkqhkiG9w0BAQEFAASCAQA/L+Uf
-# WLBQlkNJ8aSkYmua+GsANzCB15gpDhewnxGI7OlW8luoyHmLKCLVL3oOZP9R0pYM
-# 0qCmDbW+qaYrTpuLcbCW70Sw9rVbG7r/hbWSKFAGKoqEOxFfG1YcpeQ9buLkZW3M
-# u3sZxlMbBADjA8JNVZKpPrvN6J6BFwtUzkX1j51RZMBpngSmyvVv66ZCoK7BgPPn
-# OyJmEdB9JHPXfI9GmOhXLv9oAXucAy0Owc9huYaALOlsz/HHpZ54h+1pI1EFUuvM
-# zJ5pFvOqIX6ZXCth8jXWdNIEmfPDasBPp3gtgfweKd+l3AI2nObOxAhKHu47Dxh3
-# PLNg09G8cOVnhyl3
+# BDEWBBR3E5XrdDwBZKvNTJx5zE2r1coDcDANBgkqhkiG9w0BAQEFAASCAQDylanY
+# vhMJ8P1A5jubn/4GWTtOYYDlOgQtMSDUr0AMN+sPbIuhY6Ep91bin3L1oQ8D4/Cq
+# FdnRi7evX0o8XD1q80lqbu+Xw+LGQwIxbnhhbAoZ2RFQ/Q5gEWxpY5NJXb0R0wpt
+# tBpoHMm9q1TVYuqt5nyEtOUzIAYqm/O/7/WbpuVYvTSNTkIMB64zUkYQR6utt9ZZ
+# wcBbghG3A/q207Fy6jlJ9ULuqdrnjx1QYKaizufiUsoBJrVGA0aVxO2lwNK+18Z1
+# cKsTHJxWyD2V80BIXckLMN1I6c2eBuJu/z4fHcEOoLHfbbejk5nRiSq+HLVpowNI
+# 3kfUpcyoQFyymdI7
 # SIG # End signature block

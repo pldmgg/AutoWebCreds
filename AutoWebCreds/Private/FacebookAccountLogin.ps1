@@ -30,8 +30,13 @@ function FacebookAccountLogin {
         }
         Send-SeClick -Element $EmailField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's email address
@@ -40,8 +45,13 @@ function FacebookAccountLogin {
         Send-SeKeys -Element $EmailField -Keys $PSCreds.UserName -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Get the Facebook Password field
@@ -52,8 +62,13 @@ function FacebookAccountLogin {
         }
         Send-SeClick -Element $PwdField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's password
@@ -62,8 +77,13 @@ function FacebookAccountLogin {
         Send-SeKeys -Element $PwdField -Keys $PwdPT -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the "Login" button to complete Login
@@ -74,8 +94,13 @@ function FacebookAccountLogin {
         }
         Send-SeClick -Element $LoginButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     if ($ParentWindowHandle) {
@@ -92,8 +117,8 @@ function FacebookAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU+TNyuhPYFxupDauL7Lur8h09
-# b8OgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUVOH/eA0uQvx7bDOWhLE8EUSg
+# ZoagggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -150,11 +175,11 @@ function FacebookAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRyv7eye+6I07y4K0JyGhqO9LU3mTANBgkqhkiG9w0BAQEFAASCAQAq5xPp
-# 3xCutd0yWnJEBeHZ3nvUQ/a/6I3OWPXlKRhrGcNMnixNaJpf51OBmjF1vY4rK/If
-# fqenEuL9HmJy6KosTk7PEYY0Z3aWD59mKvqYwLkY6Bxs23AGsg9Hhgt6JUIU5Fsu
-# 1T8z9AE3Ap0guzTQM786qdTt0Mou5MDZPoYZkFMzCd9RyONJFgX/0v4l0f0lSYAC
-# SEqoGe/M9ue62p94QS9a/ahJoKb2Zxq4q94P3zkfNDUfpUwyR9rHHRwDwk4zChjU
-# fP1++X3MRkY84kGk7JsFYN+qut6f/aTiqN92xMwY3bG5e41pgsUV6O/e+uDZsI72
-# xWl+Oin4nPl70x+/
+# BDEWBBRD7s0+Z/PG1Q86o0hqORCINF03nDANBgkqhkiG9w0BAQEFAASCAQC7AbBs
+# kobV8aZXG9qfFndXkO5kGUB/gFa8jhjGwhvGN2Kvvf5RHa3MWuvFHQ+vCcAtYuuO
+# 8+IIUBfBMdwAG1UO5S/JvHP5YYj8FPnjjLxEI1Py6BzBdgWjGklCttyyZxwcRgOU
+# 8CTsCqoepHpLijbu5G0GPvnCcMEkGi4gq6S0tRmRmMM259vqVzcGI9EEFinhRyvr
+# fzw/2Vc/D1pBQ2sDe3Pcn8N5oe7wm5iZGv2tsAJlWogaHYAKuWbDRLXeY2NQ/K4U
+# VEAXAFIJvWAzyMo4MhOdNiC0Nd0SW0VS/bmz8HtVQUg830dn1MwcAlSCGYVwtE1T
+# pXJWamVCP0Kk+riT
 # SIG # End signature block

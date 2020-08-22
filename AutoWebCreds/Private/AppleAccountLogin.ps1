@@ -30,8 +30,13 @@ function AppleAccountLogin {
         }
         Send-SeClick -Element $EmailField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's email address
@@ -40,8 +45,13 @@ function AppleAccountLogin {
         Send-SeKeys -Element $EmailField -Keys $PSCreds.UserName -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the Right-Arrow button
@@ -52,8 +62,13 @@ function AppleAccountLogin {
         }
         Send-SeClick -Element $NextButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Get the Apple Password field
@@ -64,8 +79,13 @@ function AppleAccountLogin {
         }
         Send-SeClick -Element $PwdField -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Enter the user's password
@@ -74,8 +94,13 @@ function AppleAccountLogin {
         Send-SeKeys -Element $PwdField -Keys $PwdPT -ErrorAction Stop
     }
     catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     # Click the "Next" button to complete Login
@@ -86,8 +111,13 @@ function AppleAccountLogin {
         }
         Send-SeClick -Element $PwdNextButton -Driver $SeleniumDriver
     } catch {
-        Write-Error $_
-        return
+        if ($_.Exception.Message -match 'no such window') {
+            $SeleniumDriver.SwitchTo().Window($($SeleniumDriver.WindowHandles[0]))
+            return
+        } else {
+            Write-Error $_
+            return
+        }
     }
 
     if ($ParentWindowHandle) {
@@ -104,8 +134,8 @@ function AppleAccountLogin {
 # SIG # Begin signature block
 # MIIMaAYJKoZIhvcNAQcCoIIMWTCCDFUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUAgnqa9p2qkvB2W5KfgF0uk7n
-# QbqgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUSuh1Iuj7y0t+xlJNVtLQlNYr
+# TKmgggndMIIEJjCCAw6gAwIBAgITawAAAERR8umMlu6FZAAAAAAARDANBgkqhkiG
 # 9w0BAQsFADAwMQwwCgYDVQQGEwNMQUIxDTALBgNVBAoTBFpFUk8xETAPBgNVBAMT
 # CFplcm9EQzAxMB4XDTE5MTEyODEyMjgyNloXDTIxMTEyODEyMzgyNlowPTETMBEG
 # CgmSJomT8ixkARkWA0xBQjEUMBIGCgmSJomT8ixkARkWBFpFUk8xEDAOBgNVBAMT
@@ -162,11 +192,11 @@ function AppleAccountLogin {
 # DgYDVQQDEwdaZXJvU0NBAhNYAAACUMNtmJ+qKf6TAAMAAAJQMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBSDUuNNguJc8LLdYdrp8YB+hP53ADANBgkqhkiG9w0BAQEFAASCAQCrCSPy
-# w1b0iy3iJCQb/wLrIK6v4KO/m2T+zS2uXRuGgfIMIZm36dGI6/4Ew7/J/Wf4n9fR
-# jn0t7SHvKcEjQyy5uXAHSBfNbwp/93YiM/H2CG6Utp0OMbsc6PiwE5w83aF+ofUm
-# Sxd3h68WTYfmZtK0lzyqFnPcsIolrNy8bgNyH9q+hC4Xl0uBQOtvBEaOK8Fiuhl+
-# J5wWfF/WltNDxXreqGoQNSRyoQ7JoA7sdAOvRzUw0rjanZvBdY87bLfaf68+pCwD
-# 043nmEhRT+t1iZOaOFejhJgGJjuqQXk83L17fSIZrpf4GtH1K2TOk+7GY3iA4zRJ
-# qpsZ0kqPccOP4YCt
+# BDEWBBSd9vCFte41ZSJWdRFTe0huuE0cWDANBgkqhkiG9w0BAQEFAASCAQDSSU0j
+# RgXcJfaLyTdwEExskixlpXaMT4QE30TgzNmvJMBRP05TV7l1xfibuj1pxTovqFxp
+# Cwrlw0lzsQHYlh7qOIpctLsAfZGz9c/3s7zMVt4uvzjrJevtzz50o3zNymNH8y0Z
+# PFltGmtql7DqWGZWHT+XeY8HJlGqw+Cu6yAc/WcgPO2MqLXFfAgx3Zkvf2Ccl6zF
+# EXcys2tDmNDbUsJEprqp6oQD4bieR/sPMxf2sHxn+sy/2gOR+cMHYu0BlkHlBaDd
+# 5KthVR2UZq3UVmKzcV0iE+/447c6NSgoyxTgwrpgtl2c669zEfBWp9qwwd1FqcwZ
+# MgMBjW2tSBLvOR0G
 # SIG # End signature block
